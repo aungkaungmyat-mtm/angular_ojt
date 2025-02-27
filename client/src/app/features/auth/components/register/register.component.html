@@ -1,0 +1,90 @@
+<div class="register-container">
+  <div class="register-card">
+    <h1>Create an account</h1>
+
+    <form action="" [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
+      <div class="form-group">
+        <label for="fullName">Full Name</label>
+        <input
+          type="text"
+          name="fullName"
+          id="fullName"
+          class="form-control"
+          placeholder="Enter your full name"
+          formControlName="fullName"
+        />
+        <mat-error *ngIf="fullName?.hasError('required') && fullName?.dirty">
+          Full name is required
+        </mat-error>
+        <mat-error *ngIf="registerForm.get('fullName')?.hasError('minlength')">
+          Full name must be at least 3 characters
+        </mat-error>
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          type="email"
+          name="email"
+          id="email"
+          class="form-control"
+          placeholder="Enter your email"
+          formControlName="email"
+        />
+        <mat-error *ngIf="email?.hasError('required') && email?.dirty">
+          Email is required
+        </mat-error>
+        <mat-error *ngIf="email?.hasError('email') && email?.dirty"> Email is invalid </mat-error>
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          type="{{ showPassword ? 'password' : 'text' }}"
+          name="password"
+          id="password"
+          class="form-control"
+          placeholder="Enter your password"
+          formControlName="password"
+        />
+        <mat-icon class="password-icon" (click)="showPassword = !showPassword">
+          {{ showPassword ? 'visibility_off' : 'visibility' }}
+        </mat-icon>
+        <mat-error *ngIf="password?.hasError('required') && password?.dirty">
+          Password is required
+        </mat-error>
+        <mat-error *ngIf="password?.hasError('minlength') && password?.dirty">
+          Password must be at least 8 characters
+        </mat-error>
+      </div>
+
+      <div class="form-group">
+        <label for="confirmPassword">Confirm Password</label>
+        <input
+          type="{{ showConfirmPassword ? 'password' : 'text' }}"
+          name="confirmPassword"
+          id="confirmPassword"
+          class="form-control"
+          placeholder="Confirm your password"
+          formControlName="confirmPassword"
+        />
+        <mat-icon class="password-icon" (click)="showConfirmPassword = !showConfirmPassword">
+          {{ showConfirmPassword ? 'visibility_off' : 'visibility' }}
+        </mat-icon>
+        <mat-error *ngIf="confirmPassword?.hasError('required') && confirmPassword?.dirty">
+          Confirm password is required
+        </mat-error>
+        <mat-error *ngIf="confirmPassword?.hasError('passwordMatch') && confirmPassword?.dirty">
+          Passwords do not match
+        </mat-error>
+      </div>
+      <div class="form-group">
+        <button type="submit" class="btn btn-primary" [disabled]="registerForm.invalid"
+          >Register</button
+        >
+      </div>
+    </form>
+    <p>
+      Already have an account?
+      <a class="login-link" routerLink="/auth/login" routerLinkActive="active">Login</a>
+    </p>
+  </div>
+</div>
