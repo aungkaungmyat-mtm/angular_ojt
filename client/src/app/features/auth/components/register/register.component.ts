@@ -40,11 +40,11 @@ export class RegisterComponent implements OnInit {
 
     this.authService.register(registerData).subscribe({
       next: response => {
-        localStorage.setItem('token', response.jwt);
+        this.authService.setToken(response.jwt);
         this.router.navigate(['auth/login']);
       },
       error: error => {
-        console.error(error);
+        console.error('Error while registering: ', error);
       },
     });
   }

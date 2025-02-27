@@ -14,7 +14,6 @@ export const routes: Routes = [
       import('./features/auth/components/register/register.component').then(
         m => m.RegisterComponent
       ),
-    canActivate: [authGuard],
   },
   { path: 'auth/logout', redirectTo: '/auth/login', pathMatch: 'full' },
   {

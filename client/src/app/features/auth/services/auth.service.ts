@@ -2,7 +2,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { jwtDecode } from 'jwt-decode';
-import { catchError, map, Observable, of } from 'rxjs';
+import { catchError, map, Observable, of, tap } from 'rxjs';
 import { API_URL } from '../../../core/constants/api';
 import {
   LoginRequest,
@@ -15,21 +15,35 @@ import {
   providedIn: 'root',
 })
 export class AuthService {
+  private tokenKey = 'token';
+
   constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: string) {}
 
   register(user: RegisterRequest): Observable<RegisterResponse> {
-    return this.http.post<RegisterResponse>(`${API_URL}/api/auth/local/register`, user);
+    this.clearToken();
+    return this.http.post<RegisterResponse>(`${API_URL}/api/auth/local/register`, user).pipe(
+      tap(response => {
+        const token = response.jwt;
+        this.setToken(token);
+      })
+    );
   }
 
   login(user: LoginRequest): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${API_URL}/api/auth/local`, user);
+    return this.http.post<LoginResponse>(`${API_URL}/api/auth/local`, user).pipe(
+      tap(response => {
+        const token = response.jwt;
+        this.setToken(token);
+      })
+    );
   }
 
   isLoggedIn(): Observable<boolean> {
     if (!isPlatformBrowser(this.platformId)) {
       return of(false);
     }
-    const token = localStorage.getItem('token');
+
+    const token = this.getToken();
     if (!token) {
       return of(false);
     }
@@ -65,7 +79,21 @@ export class AuthService {
     }
   }
 
+  getToken(): string | null {
+    if (!isPlatformBrowser(this.platformId)) return null;
+    return localStorage.getItem(this.tokenKey);
+  }
+
+  setToken(token: string): void {
+    if (!isPlatformBrowser(this.platformId)) return;
+    localStorage.setItem(this.tokenKey, token);
+  }
+
+  clearToken(): void {
+    if (isPlatformBrowser(this.platformId)) localStorage.removeItem(this.tokenKey);
+  }
+
   logout(): void {
-    if (isPlatformBrowser(this.platformId)) localStorage.removeItem('token');
+    if (isPlatformBrowser(this.platformId)) this.clearToken();
   }
 }

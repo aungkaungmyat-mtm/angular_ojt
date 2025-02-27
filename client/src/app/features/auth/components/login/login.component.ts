@@ -50,7 +50,7 @@ export class LoginComponent implements OnInit {
 
     this.authService.login(loginData).subscribe({
       next: response => {
-        localStorage.setItem('token', response.jwt);
+        this.authService.setToken(response.jwt);
         this.router.navigate(['/dashboard']);
       },
       error: error => {
