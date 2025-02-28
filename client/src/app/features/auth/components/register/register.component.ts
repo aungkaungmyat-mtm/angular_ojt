@@ -4,13 +4,24 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { MatIcon } from '@angular/material/icon';
 import { MatError, MatInputModule } from '@angular/material/input';
 import { Router, RouterLink } from '@angular/router';
+import { finalize } from 'rxjs';
 import { passwordMatch } from '../../../../core/utils/validators';
+import { LoadingScreenComponent } from '../../../../shared/components/loading-screen/loading-screen.component';
+import { LoadingService } from '../../../../shared/services/loading.service';
 import { RegisterRequest } from '../../interfaces/interfaces';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-register',
-  imports: [RouterLink, CommonModule, MatIcon, MatInputModule, ReactiveFormsModule, MatError],
+  imports: [
+    RouterLink,
+    CommonModule,
+    MatIcon,
+    MatInputModule,
+    ReactiveFormsModule,
+    MatError,
+    LoadingScreenComponent,
+  ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css',
 })
@@ -18,10 +29,12 @@ export class RegisterComponent implements OnInit {
   registerForm!: FormGroup;
   showPassword = false;
   showConfirmPassword = false;
+  success: string = '';
   constructor(
     private formbuilder: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private loadingService: LoadingService
   ) {}
   ngOnInit(): void {
     this.registerForm = this.formbuilder.group({
@@ -32,21 +45,33 @@ export class RegisterComponent implements OnInit {
     });
   }
   onSubmit(): void {
+    if (this.registerForm.invalid) return;
+    this.loadingService.show();
+
     const registerData: RegisterRequest = {
       username: this.registerForm.value.fullName,
       email: this.registerForm.value.email,
       password: this.registerForm.value.password,
     };
 
-    this.authService.register(registerData).subscribe({
-      next: response => {
-        this.authService.setToken(response.jwt);
-        this.router.navigate(['auth/login']);
-      },
-      error: error => {
-        console.error('Error while registering: ', error);
-      },
-    });
+    this.authService
+      .register(registerData)
+      .pipe(
+        finalize(() => {
+          this.loadingService.hide();
+        })
+      )
+      .subscribe({
+        next: response => {
+          this.authService.setToken(response.jwt);
+          this.success =
+            'Registered successfully. Please Confirm your email to activate your account';
+          this.registerForm.reset();
+        },
+        error: error => {
+          console.error('Error while registering: ', error);
+        },
+      });
   }
 
   get fullName() {

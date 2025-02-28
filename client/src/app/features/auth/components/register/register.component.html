@@ -38,7 +38,7 @@
       <div class="form-group">
         <label for="password">Password</label>
         <input
-          type="{{ showPassword ? 'password' : 'text' }}"
+          type="{{ showPassword ? 'text' : 'password' }}"
           name="password"
           id="password"
           class="form-control"
@@ -46,7 +46,7 @@
           formControlName="password"
         />
         <mat-icon class="password-icon" (click)="showPassword = !showPassword">
-          {{ showPassword ? 'visibility_off' : 'visibility' }}
+          {{ showPassword ? 'visibility' : 'visibility_off' }}
         </mat-icon>
         <mat-error *ngIf="password?.hasError('required') && password?.dirty">
           Password is required
@@ -59,7 +59,7 @@
       <div class="form-group">
         <label for="confirmPassword">Confirm Password</label>
         <input
-          type="{{ showConfirmPassword ? 'password' : 'text' }}"
+          type="{{ showConfirmPassword ? 'text' : 'password' }}"
           name="confirmPassword"
           id="confirmPassword"
           class="form-control"
@@ -67,7 +67,7 @@
           formControlName="confirmPassword"
         />
         <mat-icon class="password-icon" (click)="showConfirmPassword = !showConfirmPassword">
-          {{ showConfirmPassword ? 'visibility_off' : 'visibility' }}
+          {{ showConfirmPassword ? 'visibility' : 'visibility_off' }}
         </mat-icon>
         <mat-error *ngIf="confirmPassword?.hasError('required') && confirmPassword?.dirty">
           Confirm password is required
@@ -80,6 +80,9 @@
         <button type="submit" class="btn btn-primary" [disabled]="registerForm.invalid"
           >Register</button
         >
+        <div>
+          <p *ngIf="success" class="success-message">{{ success }}</p>
+        </div>
       </div>
     </form>
     <p>
@@ -88,3 +91,5 @@
     </p>
   </div>
 </div>
+
+<app-loading-screen></app-loading-screen>

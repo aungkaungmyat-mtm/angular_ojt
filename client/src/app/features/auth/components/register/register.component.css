@@ -52,6 +52,10 @@ mat-error {
   font-size: 15px;
 }
 
+.success-message {
+  color: green;
+}
+
 @media (min-width: 600px) {
   .register-container {
     display: grid;
