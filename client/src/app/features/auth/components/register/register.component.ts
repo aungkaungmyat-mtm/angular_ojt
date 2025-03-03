@@ -8,7 +8,7 @@ import { finalize } from 'rxjs';
 import { passwordMatch } from '../../../../core/utils/validators';
 import { LoadingScreenComponent } from '../../../../shared/components/loading-screen/loading-screen.component';
 import { LoadingService } from '../../../../shared/services/loading.service';
-import { RegisterRequest } from '../../interfaces/interfaces';
+import { RegisterRequest } from '../../interfaces/auth-interfaces';
 import { AuthService } from '../../services/auth.service';
 
 @Component({

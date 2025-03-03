@@ -369,30 +369,27 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
-export interface ApiViewerViewer extends Struct.CollectionTypeSchema {
-  collectionName: 'viewers';
+export interface ApiPostPost extends Struct.CollectionTypeSchema {
+  collectionName: 'posts';
   info: {
-    displayName: 'viewer';
-    pluralName: 'viewers';
-    singularName: 'viewer';
+    displayName: 'Post';
+    pluralName: 'posts';
+    singularName: 'post';
   };
   options: {
     draftAndPublish: true;
   };
   attributes: {
+    author: Schema.Attribute.String;
+    content: Schema.Attribute.Text;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    email: Schema.Attribute.Email;
-    fullname: Schema.Attribute.String;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::viewer.viewer'
-    > &
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::post.post'> &
       Schema.Attribute.Private;
-    password: Schema.Attribute.Password;
     publishedAt: Schema.Attribute.DateTime;
+    title: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -908,7 +905,7 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
-      'api::viewer.viewer': ApiViewerViewer;
+      'api::post.post': ApiPostPost;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;

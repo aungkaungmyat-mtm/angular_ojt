@@ -5,7 +5,7 @@ import { MatError } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { Router, RouterLink } from '@angular/router';
-import { LoginRequest } from '../../interfaces/interfaces';
+import { LoginRequest } from '../../interfaces/auth-interfaces';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -51,7 +51,7 @@ export class LoginComponent implements OnInit {
     this.authService.login(loginData).subscribe({
       next: response => {
         this.authService.setToken(response.jwt);
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/post/list']);
       },
       error: error => {
         console.error(error);
