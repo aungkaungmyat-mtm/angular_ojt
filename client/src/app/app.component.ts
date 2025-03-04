@@ -9,10 +9,12 @@ import {
 } from '@angular/router';
 import { LoadingScreenComponent } from './shared/components/loading-screen/loading-screen.component';
 import { LoadingService } from './shared/services/loading.service';
+import { HeaderComponent } from "./shared/components/header/header.component";
+import { FooterComponent } from "./shared/components/footer/footer.component";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, LoadingScreenComponent],
+  imports: [RouterOutlet, LoadingScreenComponent, HeaderComponent, FooterComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
