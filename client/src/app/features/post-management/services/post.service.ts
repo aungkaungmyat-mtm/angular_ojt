@@ -28,7 +28,6 @@ import {
 })
 export class PostService {
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = `${API_CONFIG.baseUrl}${API_CONFIG.endPoints.posts}`;
   private readonly _loading$ = new BehaviorSubject<boolean>(true);
   private readonly _search$ = new Subject<void>();
   private readonly _posts$ = new BehaviorSubject<Post[]>([]);
@@ -69,7 +68,7 @@ export class PostService {
     // };
 
     // return this.http.get<PostResponse>(this.apiUrl, { params }).pipe(
-    return this.http.get<PostResponse>(this.apiUrl).pipe(
+    return this.http.get<PostResponse>(`${API_CONFIG.baseUrl}${API_CONFIG.endPoints.post}`).pipe(
       map(
         response =>
           ({
@@ -81,34 +80,54 @@ export class PostService {
     );
   }
 
+  public findOne(documentId: string): Observable<PostResponse> {
+    return this.http
+      .get<PostResponse>(`${API_CONFIG.baseUrl}${API_CONFIG.endPoints.post}/${documentId}`)
+      .pipe(
+        map(response => {
+          // Ensure data is always an array, even if API returns a single object
+          const data = Array.isArray(response.data) ? response.data : [response.data];
+          return {
+            data,
+            meta: response.meta,
+          } as PostResponse;
+        }),
+        catchError(handleError<PostResponse>('findOne'))
+      );
+  }
+
   public createPost(post: PostRequest): Observable<PostResponse> {
-    return this.http.post<PostResponse>(this.apiUrl, post).pipe(
-      map(
-        response =>
-          ({
-            data: response.data,
-            meta: response.meta,
-          } as PostResponse)
-      ),
-      catchError(handleError<PostResponse>('createPost'))
+    return this.http
+      .post<PostResponse>(`${API_CONFIG.baseUrl}${API_CONFIG.endPoints.post}`, post)
+      .pipe(
+        map(response => {
+          return response;
+        }),
+        catchError(handleError<PostResponse>('createPost'))
+      );
+  }
+
+  public updatePost(post: PostRequest, documentId: string): Observable<PostResponse> {
+    return this.http.put<PostResponse>(
+      `${API_CONFIG.baseUrl}${API_CONFIG.endPoints.post}/${documentId}`,
+      post
     );
   }
 
-  public updatePost(post: PostRequest): Observable<PostResponse> {
-    return this.http.put<PostResponse>(this.apiUrl, post).pipe(
-      map(
-        response =>
-          ({
-            data: response.data,
-            meta: response.meta,
-          } as PostResponse)
-      ),
-      catchError(handleError<PostResponse>('updatePost'))
-    );
-  }
-
-  public deletePost(documentId: string): Observable<PostResponse> {
-    return this.http.delete<PostResponse>(`${this.apiUrl}/${documentId}`);
+  public deletePost(documentId: string): void {
+    this.http
+      .delete<PostResponse>(`${API_CONFIG.baseUrl}${API_CONFIG.endPoints.post}/${documentId}`)
+      .subscribe({
+        next: response => {
+          console.log('Post deleted successfully', response);
+        },
+        error: error => {
+          console.error('Error deleting post', error);
+        },
+        complete: () => {
+          this.refresh();
+        },
+      });
   }
 
   private _search(): Observable<SearchResult> {
@@ -130,6 +149,10 @@ export class PostService {
         return of({ posts: filteredPosts, total });
       })
     );
+  }
+
+  public refresh(): void {
+    this._search$.next();
   }
 
   get posts$(): Observable<Post[]> {

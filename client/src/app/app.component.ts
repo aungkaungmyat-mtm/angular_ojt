@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import {
   NavigationCancel,
   NavigationEnd,
@@ -7,10 +7,10 @@ import {
   Router,
   RouterOutlet,
 } from '@angular/router';
+import { FooterComponent } from './shared/components/footer/footer.component';
+import { HeaderComponent } from './shared/components/header/header.component';
 import { LoadingScreenComponent } from './shared/components/loading-screen/loading-screen.component';
-import { LoadingService } from './shared/services/loading.service';
-import { HeaderComponent } from "./shared/components/header/header.component";
-import { FooterComponent } from "./shared/components/footer/footer.component";
+import { LoadingService } from './shared/services/loading/loading.service';
 
 @Component({
   selector: 'app-root',
@@ -19,7 +19,9 @@ import { FooterComponent } from "./shared/components/footer/footer.component";
   styleUrl: './app.component.css',
 })
 export class AppComponent implements OnInit {
-  constructor(private router: Router, private loadingService: LoadingService) {}
+  private readonly router = inject(Router);
+  private readonly loadingService = inject(LoadingService);
+
   ngOnInit(): void {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationStart) {

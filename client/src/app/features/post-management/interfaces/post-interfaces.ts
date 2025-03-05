@@ -20,14 +20,12 @@ export interface Post {
   publishedAt: string;
 }
 
-export interface State {
-  page: number;
-  pageSize: number;
-  searchTerm: string;
-  sortColumn: SortColumn;
-  sortDirection: SortDirection;
+export interface PostResponse {
+  data: Post[];
+  meta: {
+    pagination: Pagination;
+  };
 }
-
 export interface Pagination {
   page: number;
   pageSize: number;
@@ -35,11 +33,12 @@ export interface Pagination {
   total: number;
 }
 
-export interface PostResponse {
-  data: Post[];
-  meta: {
-    pagination: Pagination;
-  };
+export interface State {
+  page: number;
+  pageSize: number;
+  searchTerm: string;
+  sortColumn: SortColumn;
+  sortDirection: SortDirection;
 }
 
 export interface SortEvent {

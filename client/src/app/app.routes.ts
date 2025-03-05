@@ -33,10 +33,18 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   {
-    path: 'post/detail/:id',
+    path: 'post/detail/:documentId',
     loadComponent: () =>
       import('./features/post-management/components/post-detail/post-detail.component').then(
         m => m.PostDetailComponent
+      ),
+    canActivate: [authGuard],
+  },
+  {
+    path: 'post/edit/:documentId',
+    loadComponent: () =>
+      import('./features/post-management/components/post-form/post-form.component').then(
+        m => m.PostFormComponent
       ),
     canActivate: [authGuard],
   },
@@ -50,6 +58,6 @@ export const routes: Routes = [
   },
 
   { path: '', redirectTo: '/post/list', pathMatch: 'full' },
-  { path: '**', redirectTo: '', pathMatch: 'full' },
+  { path: '**', redirectTo: '/post/list', pathMatch: 'full' },
   // { path: '**', component: PageNotFoundComponent },
 ];

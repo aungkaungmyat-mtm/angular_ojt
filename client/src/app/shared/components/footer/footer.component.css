@@ -13,7 +13,7 @@
 
 .footer-content {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   flex-wrap: wrap;
 }
@@ -21,9 +21,4 @@
 .footer p {
   margin: 0;
   color: #1d3557;
-}
-
-.footer-content {
-  display: flex;
-  justify-content: center;
 }

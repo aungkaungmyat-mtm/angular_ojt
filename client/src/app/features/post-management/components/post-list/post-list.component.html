@@ -117,30 +117,29 @@
 
 <div class="container">
   <form>
-    <!-- Search Input and Sort Dropdown -->
     <div class="mb-3 row align-items-center">
-      <label for="post-search" class="col-auto col-form-label search-label">
-        <mat-icon class="search-icon">search</mat-icon>
-      </label>
       <div class="col-auto">
         <input
           id="post-search"
           type="text"
           class="form-control"
           name="searchTerm"
-          [(ngModel)]="postService.searchTerm"
+          [(ngModel)]="searchTerm"
           (ngModelChange)="onSearch($event)"
+          placeholder="Search..."
         />
       </div>
       <div class="col-auto">
-        <label for="sort-select">Sort by:</label>
-        <select id="sort-select" [(ngModel)]="sortOption" name="sortOptionValue">
+        <select
+          class="form-select"
+          id="sort-select"
+          [(ngModel)]="sortOption"
+          name="sortOptionValue"
+        >
           <option value="title_asc">Title (A-Z)</option>
           <option value="title_desc">Title (Z-A)</option>
           <option value="author_asc">Author (A-Z)</option>
           <option value="author_desc">Author (Z-A)</option>
-          <option value="content_asc">Content (A-Z)</option>
-          <option value="content_desc">Content (Z-A)</option>
           <option value="createdAt_asc">Created At (Oldest first)</option>
           <option value="createdAt_desc">Created At (Newest first)</option>
           <option value="updatedAt_asc">Updated At (Oldest first)</option>
@@ -160,28 +159,31 @@
       <div class="col-12 mb-3">
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">
-              <ngb-highlight [result]="post.title" [term]="postService.searchTerm" />
-            </h5>
-            <div class="d-flex justify-content-between mb-2">
-              <small>
-                By <ngb-highlight [result]="post.author" [term]="postService.searchTerm" />
-              </small>
-              <small>
-                Created:
+            <div [routerLink]="['/post/detail', post.documentId]">
+              <h5 class="card-title">
+                <ngb-highlight [result]="post.title" [term]="searchTerm" />
+              </h5>
+              <div class="d-flex justify-content-between mb-2">
+                <small> By <ngb-highlight [result]="post.author" [term]="searchTerm" /> </small>
+                <small>
+                  Created:
 
-                {{ post.createdAt | date : 'yyyy-MM-dd' }}
-                | Updated:
-                {{ post.updatedAt | relativeTime }}
-              </small>
+                  {{ post.createdAt | date : 'MMMM d, y' }}
+                  | Updated:
+                  {{ post.updatedAt | relativeTime }}
+                </small>
+              </div>
+              <p class="card-text">
+                {{ post.content }}
+              </p>
             </div>
-            <p class="card-text">
-              <!-- <ngb-highlight [result]="post.content" [term]="postService.searchTerm" /> -->
-              {{ post.content }}
-            </p>
             <div class="action">
-              <button class="btn btn-primary btn-sm" (click)="onEdit(post)">Edit</button>
-              <button class="btn btn-danger btn-sm" (click)="onDelete(post.documentId)">Delete</button>
+              <button class="btn btn-primary btn-sm" [routerLink]="['/post/edit', post.documentId]"
+                >Edit</button
+              >
+              <button class="btn btn-danger btn-sm" (click)="onDelete(post.documentId)"
+                >Delete</button
+              >
             </div>
           </div>
         </div>
@@ -197,15 +199,15 @@
     <div class="d-flex justify-content-between p-2">
       <ngb-pagination
         [collectionSize]="(total$ | async) || 0"
-        [(page)]="postService.page"
-        [pageSize]="postService.pageSize"
+        [(page)]="page"
+        [pageSize]="pageSize"
         (pageChange)="onPageChange($event)"
       ></ngb-pagination>
       <select
         class="form-select"
         style="width: auto"
         name="pageSize"
-        [(ngModel)]="postService.pageSize"
+        [(ngModel)]="pageSize"
         (ngModelChange)="onPageSizeChange($event)"
       >
         <option [ngValue]="2">2 items per page</option>

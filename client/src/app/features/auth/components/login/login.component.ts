@@ -20,10 +20,10 @@ export class LoginComponent implements OnInit {
   errorMessage = '';
   isServer = false;
   constructor(
-    private formbuilder: FormBuilder,
-    private authService: AuthService,
-    private router: Router,
-    @Inject(PLATFORM_ID) private platformId: string
+    private readonly formbuilder: FormBuilder,
+    private readonly authService: AuthService,
+    private readonly router: Router,
+    @Inject(PLATFORM_ID) private readonly platformId: string
   ) {
     this.isServer = isPlatformServer(this.platformId);
   }

@@ -1,40 +1,46 @@
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { Component, inject, QueryList, ViewChildren } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { MatIcon } from '@angular/material/icon';
+import { RouterLink } from '@angular/router';
 import { NgbHighlight, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
+
+import { RelativeTimePipe } from '../../../../shared/pipes/relative-time.pipe';
+import { SnackbarService } from '../../../../shared/services/snackbar/snackbar.service';
 import { NgbdSortableHeader, SortColumn, SortDirection } from '../../directives/post.directive';
 import { Post, SortEvent } from '../../interfaces/post-interfaces';
-import { RelativeTimePipe } from '../../pipes/relative-time.pipe';
 import { PostService } from '../../services/post.service';
 
 @Component({
   selector: 'app-post-list',
   imports: [
     CommonModule,
+    FormsModule,
+    RouterLink,
+    RelativeTimePipe,
+    AsyncPipe,
     NgbHighlight,
     NgbPaginationModule,
-    AsyncPipe,
-    FormsModule,
-    MatIcon,
-    RelativeTimePipe,
   ],
   templateUrl: './post-list.component.html',
   styleUrl: './post-list.component.css',
 })
 export class PostListComponent {
-  public readonly postService = inject(PostService);
-
-  constructor() {
-    this.sortOption = 'title_asc';
-  }
+  private readonly snackbar = inject(SnackbarService);
+  private readonly postService = inject(PostService);
 
   posts$: Observable<Post[]> = this.postService.posts$;
   total$: Observable<number> = this.postService.total$;
   loading$: Observable<boolean> = this.postService.loading$;
+  searchTerm: string = this.postService.searchTerm;
+  page: number = this.postService.page;
+  pageSize: number = this.postService.pageSize;
 
   @ViewChildren(NgbdSortableHeader) headers!: QueryList<NgbdSortableHeader>;
+
+  constructor() {
+    this.sortOption = 'title_asc';
+  }
 
   onSort({ column, direction }: SortEvent) {
     this.headers.forEach(header => {
@@ -46,20 +52,12 @@ export class PostListComponent {
     this.postService.sortDirection = direction || 'asc';
   }
 
-  onEdit(post: Post) {}
-
   onDelete(documentId: string) {
     try {
-      this.postService.deletePost(documentId).subscribe({
-        next: response => {
-          console.log('Post deleted successfully', response);
-        },
-        error: error => {
-          console.error('Error deleting post', error);
-        },
-      });
+      this.postService.deletePost(documentId);
+      this.snackbar.open('Post deleted successfully');
     } catch (error) {
-      console.log('error', error); // This catch block is unlikely to trigger with Observables
+      console.log('error', error);
     }
   }
 
@@ -81,7 +79,6 @@ export class PostListComponent {
     return header?.direction ?? '';
   }
 
-  /** Getter for the current sort option in the dropdown */
   get sortOption(): string {
     if (!this.postService.sortColumn || this.postService.sortDirection === '') {
       return 'title_asc';
@@ -90,7 +87,6 @@ export class PostListComponent {
     }
   }
 
-  /** Setter to update sort column and direction when the dropdown changes */
   set sortOption(value: string) {
     const [column, direction] = value.split('_');
     this.postService.sortColumn = column as SortColumn;
