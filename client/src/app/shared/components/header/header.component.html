@@ -11,19 +11,19 @@
           <a class="nav-link" routerLink="/post" >Post</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/post">User Lists</a>
+          <a class="nav-link" routerLink="user/list">User Lists</a>
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown"
              aria-expanded="false" (click)="toggleDropdown($event)">
-            <img src="https://th.bing.com/th/id/OIP.Zvs5IHgOO5kip7A32UwZJgHaHa?rs=1&pid=ImgDetMain" alt="Profile" class="profile-image">
+             <img [src]="getUserImage()" alt="Profile" class="profile-image">
           </a>
           <ul class="dropdown-menu dropdown-menu-end" [ngClass]="{'show': isDropdownOpen}" aria-labelledby="profileDropdown">
-            <li><a class="dropdown-item" routerLink="/profile" style="margin-bottom: 5px;">View Profile</a></li>
+            <li><a class="dropdown-item" routerLink="user/profile" style="margin-bottom: 5px;">View Profile</a></li>
             <li><a class="dropdown-item" routerLink="/settings" style="margin-bottom: 5px;">Settings</a></li>
             <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item" routerLink="/auth/login">Login</a></li>
-            <li><a class="dropdown-item" routerLink="/auth/logout">Log Out</a></li>
+            <li><a class="dropdown-item" (click)="LOGOUT()">Log Out</a></li>
           </ul>
         </li>
       </ul>

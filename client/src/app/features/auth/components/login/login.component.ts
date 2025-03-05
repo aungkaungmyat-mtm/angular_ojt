@@ -51,7 +51,12 @@ export class LoginComponent implements OnInit {
     this.authService.login(loginData).subscribe({
       next: response => {
         this.authService.setToken(response.jwt);
-        this.router.navigate(['/dashboard']);
+        alert('Login successful');
+        console.log(response.jwt);
+        this.router.navigate(['user/list']);
+
+
+
       },
       error: error => {
         console.error(error);

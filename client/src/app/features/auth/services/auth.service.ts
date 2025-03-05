@@ -9,6 +9,7 @@ import {
   LoginResponse,
   RegisterRequest,
   RegisterResponse,
+  resetPasswordRequest,
 } from '../interfaces/interfaces';
 
 @Injectable({
@@ -95,5 +96,19 @@ export class AuthService {
 
   logout(): void {
     if (isPlatformBrowser(this.platformId)) this.clearToken();
+    alert('You have been logged out');
+  }
+
+  forgotPassword(email: string): Observable<any> {
+    return this.http.post<any>(`${API_URL}/api/auth/forgot-password`, { email });
+
+  }
+
+  resetPassword(resetPasswordRequest: resetPasswordRequest): Observable<resetPasswordRequest> {
+    return this.http.post<resetPasswordRequest>(`${API_URL}/api/auth/reset-password`, resetPasswordRequest);
+
   }
 }
+
+
+

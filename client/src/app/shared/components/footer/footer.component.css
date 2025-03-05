@@ -4,7 +4,11 @@
   color: white;
   padding: 4px 0;
   text-align: center;
+  /* position: fixed;
+  bottom: 0; */
+  width: 100%;
 }
+
 
 .footer .container {
   width: 80%;

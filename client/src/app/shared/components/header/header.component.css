@@ -57,6 +57,7 @@ nav {
 
 .nav-item .dropdown-item {
   margin-bottom: 5px;
+  font-size: 14px;
 }
 
 .dropdown-menu {

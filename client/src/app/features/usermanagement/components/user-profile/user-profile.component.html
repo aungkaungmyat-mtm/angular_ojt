@@ -1,0 +1,29 @@
+<div class="profile-card" *ngIf="userProfileData">
+  <button (click)="closeProfile()" class="close-btn">
+    <mat-icon>close</mat-icon>
+  </button>
+  <!-- <img src="https://th.bing.com/th/id/OIP.Zvs5IHgOO5kip7A32UwZJgHaHa?rs=1&pid=ImgDetMain" alt="Profile Image"
+    class="profile-img"> -->
+    <img *ngIf="userProfileData.image"
+       [src]="'http://localhost:1337' + userProfileData.image.url"
+       alt="User Image"
+        class = "profile-img">
+
+    <h2>{{ userProfileData.username }}</h2>
+
+  <div class="profile-info">
+
+
+
+    <div>Email</div>
+    <div>{{ userProfileData.email }}</div>
+    <div>Address</div>
+    <div>{{ userProfileData.address }}</div>
+    <div>Age</div>
+    <div>{{ userProfileData.age }}</div>
+
+
+
+  </div>
+  <button class="update-btn"  [routerLink]="['/user/profile/update',userProfileData.id]">Update Profile</button>
+</div>

@@ -1,13 +1,23 @@
 
-<!-- <nav>
-  <ul>
-    <li><a routerLink="/auth/login" routerLinkActive="active" ariaCurrentWhenActive="page">Login</a></li>
-    <li><a routerLink="/auth/register" routerLinkActive="active" ariaCurrentWhenActive="page">Register</a></li>
-    <li><a routerLink="/auth/logout" routerLinkActive="active" ariaCurrentWhenActive="page">Logout</a></li>
-  </ul>
-</nav> -->
 
-<app-header></app-header>
-<router-outlet />
+
+
+
+<div class="wrapper">
+  <header>
+    <app-header *ngIf="isLoggedIn"></app-header>
+  </header>
+
+  <main>
+    <router-outlet />
+  </main>
+
+  <footer>
+    <app-footer *ngIf="isLoggedIn"></app-footer>
+  </footer>
+</div>
+
 <app-loading-screen></app-loading-screen>
-<app-footer></app-footer>
+
+
+
