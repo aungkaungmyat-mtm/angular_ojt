@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { LoadingService } from './../../../../shared/services/loading/loading.service';
+import { Component, inject } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgIf } from '@angular/common';
@@ -17,7 +18,7 @@ export class ForgotPasswordComponent {
   message: string = '';
   forgotPasswordForm: FormGroup;
   successful: boolean = false;
-  loadingService: any;
+  private loadingService = inject(LoadingService);
 
   constructor(private authService: AuthService, private formBuilder: FormBuilder) {
     this.forgotPasswordForm = this.formBuilder.group({
@@ -26,20 +27,18 @@ export class ForgotPasswordComponent {
   }
 
   onSubmit() {
+    this.loadingService.show();
     this.authService
       .forgotPassword(this.forgotPasswordForm.value.email)
-      .pipe(
-        finalize(() => {
-          this.loadingService.hide();
-        })
-      )
       .subscribe({
         next: () => {
           this.message = 'Check your email to reset your password';
+          this.loadingService.hide();
           this.checkForgotPasswordSuccessful();
         },
         error: () => {
           this.message = 'An error has occured';
+          this.loadingService.hide();
           console.error(Error);
         },
       });

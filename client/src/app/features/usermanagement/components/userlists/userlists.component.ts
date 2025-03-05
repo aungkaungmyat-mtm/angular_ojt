@@ -5,12 +5,12 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import {MatIconModule} from '@angular/material/icon';
-import { User } from '../../../auth/interfaces/interfaces';
 import { UserService } from '../../services/user.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatButtonModule} from '@angular/material/button';
+import { User } from '../../../auth/interfaces/auth-interfaces';
 // import { RouterLink } from '@angular/router';
 
 @Component({

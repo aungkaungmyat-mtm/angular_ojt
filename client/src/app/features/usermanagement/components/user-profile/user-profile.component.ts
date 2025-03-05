@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 // import { Role, User } from '../../../auth/interfaces/interfaces';
-import { User } from '../../../auth/interfaces/interfaces';
+
 import { UserService } from '../../services/user.service';
 import { NgIf } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import {MatIconModule} from '@angular/material/icon';
+import { User } from '../../../auth/interfaces/auth-interfaces';
 
 @Component({
   selector: 'app-user-profile',

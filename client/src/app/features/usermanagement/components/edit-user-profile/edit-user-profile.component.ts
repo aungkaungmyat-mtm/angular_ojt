@@ -1,9 +1,10 @@
 import { UserService } from './../../services/user.service';
 import { Component, OnInit } from '@angular/core';
-import { User } from '../../../auth/interfaces/interfaces';
+
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormsModule, NgModel } from '@angular/forms';
 import { NgIf } from '@angular/common';
+import { User } from '../../../auth/interfaces/auth-interfaces';
 
 @Component({
   selector: 'app-edit-user-profile',

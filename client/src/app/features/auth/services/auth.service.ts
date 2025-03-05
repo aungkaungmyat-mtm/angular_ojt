@@ -9,6 +9,7 @@ import {
   LoginResponse,
   RegisterRequest,
   RegisterResponse,
+  resetPasswordRequest,
 } from '../interfaces/auth-interfaces';
 
 @Injectable({
@@ -99,12 +100,13 @@ export class AuthService {
   }
 
   forgotPassword(email: string): Observable<any> {
-    return this.http.post<any>(`${API_URL}/api/auth/forgot-password`, { email });
+    // return this.http.post<any>(`${API_URL}/api/auth/forgot-password`, { email });
+    return this.http.post<any>(`${API_CONFIG.baseUrl}/auth/forgot-password`, { email });
 
   }
 
   resetPassword(resetPasswordRequest: resetPasswordRequest): Observable<resetPasswordRequest> {
-    return this.http.post<resetPasswordRequest>(`${API_URL}/api/auth/reset-password`, resetPasswordRequest);
+    return this.http.post<resetPasswordRequest>(`${API_CONFIG.baseUrl}/auth/reset-password`, resetPasswordRequest);
 
   }
 }

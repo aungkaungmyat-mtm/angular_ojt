@@ -1,9 +1,42 @@
-import { Routes, CanActivateFn } from '@angular/router';
-import { UserlistsComponent } from './features/usermanagement/components/userlists/userlists.component';
+import { Routes } from '@angular/router';
+
 import { authGuard } from './features/auth/guards/auth.guard';
 
 export const routes: Routes = [
   // { path: 'auth/login', component: LoginComponent },
+  {
+    path: 'post/list',
+
+    loadComponent: () =>
+      import('./features/post-management/components/post-list/post-list.component').then(
+        m => m.PostListComponent
+      ),
+    canActivate: [authGuard],
+  },
+  {
+    path: 'post/create',
+    loadComponent: () =>
+      import('./features/post-management/components/post-form/post-form.component').then(
+        m => m.PostFormComponent
+      ),
+    canActivate: [authGuard],
+  },
+  {
+    path: 'post/detail/:documentId',
+    loadComponent: () =>
+      import('./features/post-management/components/post-detail/post-detail.component').then(
+        m => m.PostDetailComponent
+      ),
+    canActivate: [authGuard],
+  },
+  {
+    path: 'post/edit/:documentId',
+    loadComponent: () =>
+      import('./features/post-management/components/post-form/post-form.component').then(
+        m => m.PostFormComponent
+      ),
+    canActivate: [authGuard],
+  },
 
   {
     path: 'user/list',

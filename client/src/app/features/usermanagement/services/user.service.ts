@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { USER_API } from '../../../core/constants/api';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { User } from '../../auth/interfaces/interfaces';
+import { API_CONFIG } from '../../../core/constants/api';
+import { User } from '../../auth/interfaces/auth-interfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -11,11 +11,12 @@ export class UserService {
   constructor(private http: HttpClient) {}
 
   getUsers(): Observable<User[]> {
-    return this.http.get<User[]>(USER_API);
+    console.log(`${API_CONFIG}${API_CONFIG.endPoints.user}`)
+    return this.http.get<User[]>(`${API_CONFIG.baseUrl}${API_CONFIG.endPoints.user}`);
   }
 
   deleteUser(id: number): Observable<User[]> {
-    return this.http.delete<User[]>(`${USER_API}/${id}`);
+    return this.http.delete<User[]>(`${API_CONFIG.baseUrl}${API_CONFIG.endPoints.user}/${id}`);
   }
 
   // it use in edit user profile
@@ -31,13 +32,13 @@ export class UserService {
 
   //for header image testing
   getCurrentUser(): Observable<User> {
-    return this.http.get<User>(`${USER_API}/me?populate=*`);
+    return this.http.get<User>(`${API_CONFIG.baseUrl}${API_CONFIG.endPoints.user}/me?populate=*`);
   }
 
 
 
   editUserProfile(editData: User, id: number): Observable<User> {
-    return this.http.put<User>(`${USER_API}/${id}`, editData);
+    return this.http.put<User>(`${API_CONFIG.baseUrl}${API_CONFIG.endPoints.user}/${id}`, editData);
   }
 
   // Upload profile image
