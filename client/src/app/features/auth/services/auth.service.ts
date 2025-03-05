@@ -3,14 +3,13 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { jwtDecode } from 'jwt-decode';
 import { catchError, map, Observable, of, tap } from 'rxjs';
-import { API_URL } from '../../../core/constants/api';
+import { API_CONFIG } from '../../../core/constants/api';
 import {
   LoginRequest,
   LoginResponse,
   RegisterRequest,
   RegisterResponse,
-  resetPasswordRequest,
-} from '../interfaces/interfaces';
+} from '../interfaces/auth-interfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -22,7 +21,7 @@ export class AuthService {
 
   register(user: RegisterRequest): Observable<RegisterResponse> {
     this.clearToken();
-    return this.http.post<RegisterResponse>(`${API_URL}/api/auth/local/register`, user).pipe(
+    return this.http.post<RegisterResponse>(`${API_CONFIG.baseUrl}/auth/local/register`, user).pipe(
       tap(response => {
         const token = response.jwt;
         this.setToken(token);
@@ -31,7 +30,7 @@ export class AuthService {
   }
 
   login(user: LoginRequest): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${API_URL}/api/auth/local`, user).pipe(
+    return this.http.post<LoginResponse>(`${API_CONFIG.baseUrl}/auth/local`, user).pipe(
       tap(response => {
         const token = response.jwt;
         this.setToken(token);
@@ -62,7 +61,7 @@ export class AuthService {
 
   private verifyToken(token: string): Observable<boolean> {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.get(`${API_URL}/api/users/me`, { headers }).pipe(
+    return this.http.get(`${API_CONFIG.baseUrl}/users/me`, { headers }).pipe(
       map(() => true),
       catchError(() => of(false))
     );

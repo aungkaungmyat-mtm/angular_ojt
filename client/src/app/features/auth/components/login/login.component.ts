@@ -5,7 +5,7 @@ import { MatError } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { Router, RouterLink } from '@angular/router';
-import { LoginRequest } from '../../interfaces/interfaces';
+import { LoginRequest } from '../../interfaces/auth-interfaces';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -20,10 +20,10 @@ export class LoginComponent implements OnInit {
   errorMessage = '';
   isServer = false;
   constructor(
-    private formbuilder: FormBuilder,
-    private authService: AuthService,
-    private router: Router,
-    @Inject(PLATFORM_ID) private platformId: string
+    private readonly formbuilder: FormBuilder,
+    private readonly authService: AuthService,
+    private readonly router: Router,
+    @Inject(PLATFORM_ID) private readonly platformId: string
   ) {
     this.isServer = isPlatformServer(this.platformId);
   }

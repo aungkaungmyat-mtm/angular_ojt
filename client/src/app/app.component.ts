@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import {
   NavigationCancel,
   NavigationEnd,
@@ -7,10 +7,10 @@ import {
   Router,
   RouterOutlet,
 } from '@angular/router';
+import { FooterComponent } from './shared/components/footer/footer.component';
+import { HeaderComponent } from './shared/components/header/header.component';
 import { LoadingScreenComponent } from './shared/components/loading-screen/loading-screen.component';
-import { LoadingService } from './shared/services/loading.service';
-import { HeaderComponent } from "./shared/components/header/header.component";
-import { FooterComponent } from "./shared/components/footer/footer.component";
+import { LoadingService } from './shared/services/loading/loading.service';
 
 import { AuthService } from './features/auth/services/auth.service';
 import { CommonModule, NgIf } from '@angular/common';
@@ -26,7 +26,9 @@ import { CommonModule, NgIf } from '@angular/common';
 export class AppComponent implements OnInit {
   isLoggedIn: boolean = false; // Store login state
 
-  constructor(private router: Router, private loadingService: LoadingService, private authService: AuthService) {}
+  private readonly router = inject(Router);
+  private readonly loadingService = inject(LoadingService);
+  private readonly authService = inject(AuthService);
 
   ngOnInit(): void {
     this.updateLoginStatus(); // Check login status on app load

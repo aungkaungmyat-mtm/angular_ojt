@@ -1,2 +1,8 @@
-export const API_URL = 'http://localhost:1337';
-export const USER_API = 'http://localhost:1337/api/users';
+export const API_CONFIG = {
+  baseUrl: 'http://127.0.0.1:1337/api',
+  endPoints: {
+    post: '/posts',
+    user: '/users',
+  },
+  defaultPageSize: 20,
+} as const;

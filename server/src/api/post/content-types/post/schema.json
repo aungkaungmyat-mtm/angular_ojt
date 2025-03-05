@@ -11,11 +11,13 @@
   },
   "attributes": {
     "title": {
-      "type": "string",
-      "required": true
+      "type": "string"
     },
     "content": {
       "type": "text"
+    },
+    "author": {
+      "type": "string"
     }
   }
 }
