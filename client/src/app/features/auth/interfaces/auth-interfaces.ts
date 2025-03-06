@@ -74,3 +74,8 @@ export interface User {
   image?: Image;
 }
 
+export interface UpdatePasswordRequest {
+  currentPassword: string;
+  password: string;
+  passwordConfirmation: string;
+}

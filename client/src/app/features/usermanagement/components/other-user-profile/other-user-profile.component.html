@@ -1,0 +1,22 @@
+<div class="profile-card">
+  <button (click)="closeProfile()" class="close-btn">
+    <mat-icon>close</mat-icon>
+  </button>
+  <!-- <img src="https://th.bing.com/th/id/OIP.Zvs5IHgOO5kip7A32UwZJgHaHa?rs=1&pid=ImgDetMain" alt="Profile Image"
+    class="profile-img"> -->
+  <img [src]="getUserImage()" alt="User Image" class="profile-img">
+
+  <h2>{{ otherUserProfileData?.username }}</h2>
+
+  <div class="profile-info">
+
+    <div>Email</div>
+    <div>{{ otherUserProfileData?.email }}</div>
+    <div>Address</div>
+    <div>{{ otherUserProfileData?.address }}</div>
+    <div>Age</div>
+    <div>{{ otherUserProfileData?.age }}</div>
+
+  </div>
+  <!-- <button class="update-btn" [routerLink]="['/user/profile/update',userProfileData.id]">Update Profile</button> -->
+</div>

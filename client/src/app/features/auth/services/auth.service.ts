@@ -1,3 +1,4 @@
+import { UpdatePasswordRequest } from './../interfaces/auth-interfaces';
 import { isPlatformBrowser } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
@@ -108,6 +109,10 @@ export class AuthService {
   resetPassword(resetPasswordRequest: resetPasswordRequest): Observable<resetPasswordRequest> {
     return this.http.post<resetPasswordRequest>(`${API_CONFIG.baseUrl}/auth/reset-password`, resetPasswordRequest);
 
+  }
+
+  updatePassword(updatepassword: UpdatePasswordRequest):Observable<UpdatePasswordRequest>{
+    return this.http.post<UpdatePasswordRequest>(`${API_CONFIG.baseUrl}/auth/change-password`, updatepassword);
   }
 }
 

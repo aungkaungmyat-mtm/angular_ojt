@@ -1,0 +1,98 @@
+.profile-card {
+  max-width: 350px;
+  margin: auto;
+  margin-top: 7%;
+  margin-bottom: 7%;
+  background: linear-gradient(135deg, #457b9d, #667eea);
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  color: white;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  position: relative;
+}
+
+.profile-img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 4px solid white;
+  object-fit: cover;
+  margin-bottom: 15px;
+}
+
+h2 {
+  margin: 10px 0;
+  text-align: right; /* Align text to the right */
+}
+
+p {
+  font-size: 14px;
+  margin: 5px 0;
+  text-align: right; /* Align text to the right */
+}
+
+button {
+  margin-top: 15px;
+}
+h2 {
+  margin: 10px 0;
+  text-align: center; /* Align text to the right */
+}
+
+.profile-info {
+  display: grid;
+  grid-template-columns: 1fr 2fr; /* Two columns: label and value */
+  gap: 10px;
+  max-width: 400px;
+  text-align: start;
+  padding: 20px;
+
+}
+
+.profile-container div:nth-child(odd) {
+  font-weight: bold;
+  color: #333;
+}
+
+.profile-container div:nth-child(even) {
+  color: #555;
+}
+
+
+.profile-card .close-btn {
+  position: absolute;
+  top: 0px;
+  right: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: black;
+}
+
+.profile-card button mat-icon {
+  font-size: 24px;
+  color: black;
+}
+.update-btn {
+  display: inline-block;
+  background: #f1faee;
+  color: black;
+  border: none;
+  padding: 10px 15px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  text-align: center;
+}
+
+.update-btn:hover {
+  background: #a8dadc; /* Lighter shade on hover */
+}
+
+.update-btn:active {
+  background: #a6f1f4; /* Darker shade when clicked */
+}

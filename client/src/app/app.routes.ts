@@ -59,6 +59,12 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   {
+    path: 'otheruser/profile/:id',
+    loadComponent: () => import('./features/usermanagement/components/other-user-profile/other-user-profile.component').then
+    (m=>m.OtherUserProfileComponent),
+    canActivate: [authGuard],
+  },
+  {
     path: 'auth/login',
     loadComponent: () =>
       import('./features/auth/components/login/login.component').then(m => m.LoginComponent),
@@ -69,6 +75,11 @@ export const routes: Routes = [
       import('./features/auth/components/register/register.component').then(
         m => m.RegisterComponent
       ),
+  },
+  {
+    path: 'auth/update-password',
+    loadComponent: () =>
+      import('./features/auth/components/update-password/update-password.component').then(m=>m.UpdatePasswordComponent),
   },
   {
     path: 'auth/forgot-password',

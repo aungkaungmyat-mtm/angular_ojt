@@ -1,24 +1,43 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { passwordMatch } from '../../../../core/utils/validators';
 import { NgIf } from '@angular/common';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { resetPasswordRequest } from '../../interfaces/auth-interfaces';
+import { SnackbarService } from '../../../../shared/services/snackbar/snackbar.service';
+import { MatIcon } from '@angular/material/icon';
+import { MatError } from '@angular/material/form-field';
 
 @Component({
   selector: 'app-reset-password',
   templateUrl: './reset-password.component.html',
-  imports: [NgIf, ReactiveFormsModule],
+  imports: [NgIf, ReactiveFormsModule,MatIcon,MatError,RouterLink],
   styleUrls: ['./reset-password.component.css'],
 })
-export class ResetPasswordComponent {
+export class ResetPasswordComponent implements OnInit {
+  private snackbar = inject(SnackbarService)
   message: string = '';
   resetPasswordForm: FormGroup;
-
-  constructor(private formBuilder: FormBuilder, private authService: AuthService) {
+  resetCode: string = '';
+  showConfirmPassword = false;
+  showPassword = false;
+  errorMessage = '';
+  constructor(
+    private formBuilder: FormBuilder,
+    private authService: AuthService,
+    private acitvatedRoute: ActivatedRoute
+  ) {
     this.resetPasswordForm = this.formBuilder.group({
-      code: ['', Validators.required], // Changed from changePasswordCode to code
       password: ['', [Validators.required, Validators.minLength(8)]],
       passwordConfirmation: ['', [Validators.required, passwordMatch('password')]], // Changed from confirmPassword to passwordConfirmation
+    });
+  }
+  ngOnInit() {
+    // Get the "code" from the URL
+    this.acitvatedRoute.queryParams.subscribe(params => {
+      this.resetCode = params['code'];
+      console.log('reset code', this.resetCode);
     });
   }
 
@@ -28,16 +47,31 @@ export class ResetPasswordComponent {
       return;
     }
 
-    const resetPasswordRequest = this.resetPasswordForm.value;
+    const resetPasswordRequest: resetPasswordRequest = {
+      code: this.resetCode,
+      password: this.resetPasswordForm.value.password,
+      passwordConfirmation: this.resetPasswordForm.value.passwordConfirmation,
+    };
 
-    this.authService.resetPassword(resetPasswordRequest).subscribe(
-      () => {
+    this.authService.resetPassword(resetPasswordRequest).subscribe({
+      next: () => {
         this.message = 'Password reset successfully.';
+        this.snackbar.open(this.message);
       },
-      (error) => {
-        this.message = 'An error has occurred.';
-        console.error(error); // Log the actual error for debugging
-      }
-    );
+      error: error => {
+        this.message = 'Your reset passowrd code is expired or invalid.';
+        console.error(error);
+        this.snackbar.open(this.message);
+      },
+    });
   }
+  get password() {
+    return this.resetPasswordForm.get('password');
+  }
+
+  get passwordConfirmation() {
+    return this.resetPasswordForm.get('passwordConfirmation');
+  }
+
+
 }

@@ -11,6 +11,9 @@ import { MatInputModule } from '@angular/material/input';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatButtonModule} from '@angular/material/button';
 import { User } from '../../../auth/interfaces/auth-interfaces';
+
+import { LoadingService } from '../../../../shared/services/loading/loading.service';
+import { RouterLink } from '@angular/router';
 // import { RouterLink } from '@angular/router';
 
 @Component({
@@ -26,7 +29,7 @@ import { User } from '../../../auth/interfaces/auth-interfaces';
     MatIconModule,
     MatDividerModule,
     MatButtonModule,
-
+    RouterLink
   ],
   templateUrl: './userlists.component.html',
   styleUrl: './userlists.component.css'
@@ -38,7 +41,7 @@ export class UserlistsComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService, private loadingService: LoadingService) {
     this.dataSource = new MatTableDataSource<User>();
   }
 
@@ -47,6 +50,7 @@ export class UserlistsComponent implements OnInit {
   }
 
   loadUsers(): void {
+
     this.userService.getUsers().subscribe({
       next: (data) => {
         this.dataSource.data = data;
