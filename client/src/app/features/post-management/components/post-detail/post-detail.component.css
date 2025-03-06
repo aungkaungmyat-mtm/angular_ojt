@@ -8,19 +8,6 @@
     overflow: hidden;
 }
 
-.post-image {
-    width: 100%;
-    height: 400px;
-    background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
-    position: relative;
-}
-
-.post-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
 .post-header {
     background-color: #a8dadc;
     padding: 40px;
@@ -64,7 +51,6 @@
     width: 80px;
     height: 80px;
     border-radius: 50%;
-    background: #ddd url('https://via.placeholder.com/80') center/cover;
     border: 3px solid #fff;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }

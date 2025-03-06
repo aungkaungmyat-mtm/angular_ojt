@@ -68,21 +68,25 @@ export class PostService {
     // };
 
     // return this.http.get<PostResponse>(this.apiUrl, { params }).pipe(
-    return this.http.get<PostResponse>(`${API_CONFIG.baseUrl}${API_CONFIG.endPoints.post}`).pipe(
-      map(
-        response =>
-          ({
-            data: response.data,
-            meta: response.meta,
-          } as PostResponse)
-      ),
-      catchError(handleError<PostResponse>('getPosts'))
-    );
+    return this.http
+      .get<PostResponse>(`${API_CONFIG.baseUrl}${API_CONFIG.endPoints.post}?populate=*`)
+      .pipe(
+        map(
+          response =>
+            ({
+              data: response.data,
+              meta: response.meta,
+            } as PostResponse)
+        ),
+        catchError(handleError<PostResponse>('getPosts'))
+      );
   }
 
   public findOne(documentId: string): Observable<PostResponse> {
     return this.http
-      .get<PostResponse>(`${API_CONFIG.baseUrl}${API_CONFIG.endPoints.post}/${documentId}`)
+      .get<PostResponse>(
+        `${API_CONFIG.baseUrl}${API_CONFIG.endPoints.post}/${documentId}?populate[author][populate]=*`
+      )
       .pipe(
         map(response => {
           // Ensure data is always an array, even if API returns a single object
@@ -108,10 +112,14 @@ export class PostService {
   }
 
   public updatePost(post: PostRequest, documentId: string): Observable<PostResponse> {
-    return this.http.put<PostResponse>(
-      `${API_CONFIG.baseUrl}${API_CONFIG.endPoints.post}/${documentId}`,
-      post
-    );
+    return this.http
+      .put<PostResponse>(`${API_CONFIG.baseUrl}${API_CONFIG.endPoints.post}/${documentId}`, post)
+      .pipe(
+        map(response => {
+          return response;
+        }),
+        catchError(handleError<PostResponse>('updatePost'))
+      );
   }
 
   public deletePost(documentId: string): void {
@@ -132,7 +140,6 @@ export class PostService {
 
   private _search(): Observable<SearchResult> {
     const { sortColumn, sortDirection, pageSize, page, searchTerm } = this._state;
-
     return this.getPosts().pipe(
       map(response => response.data),
       switchMap(posts => {
@@ -219,7 +226,7 @@ const compare = (v1: string | number, v2: string | number) => (v1 < v2 ? -1 : v1
 function matches(post: Post, term: string) {
   return (
     post.title.toLowerCase().includes(term.toLowerCase()) ||
-    post.author.toLowerCase().includes(term.toLowerCase())
+    post.author.username.toLowerCase().includes(term.toLowerCase())
   );
 }
 
@@ -228,6 +235,16 @@ function sort(posts: Post[], column: SortColumn, direction: string): Post[] {
     return posts;
   } else {
     return [...posts].sort((a, b) => {
+      if (column === 'title') {
+        return direction === 'asc'
+          ? a.title.localeCompare(b.title)
+          : b.title.localeCompare(a.title);
+      }
+      if (column === 'author') {
+        return direction === 'asc'
+          ? a.author.username.localeCompare(b.author.username)
+          : b.author.username.localeCompare(a.author.username);
+      }
       const res = compare(a[column], b[column]);
       return direction === 'asc' ? res : -res;
     });

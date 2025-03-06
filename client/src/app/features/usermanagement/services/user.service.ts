@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { API_CONFIG } from '../../../core/constants/api';
 import { User } from '../../auth/interfaces/auth-interfaces';
 
@@ -11,7 +11,6 @@ export class UserService {
   constructor(private http: HttpClient) {}
 
   getUsers(): Observable<User[]> {
-    console.log(`${API_CONFIG}${API_CONFIG.endPoints.user}`)
     return this.http.get<User[]>(`${API_CONFIG.baseUrl}${API_CONFIG.endPoints.user}`);
   }
 
@@ -28,14 +27,10 @@ export class UserService {
   //   return this.http.get<User>(`${USER_API}/me?populate=image`);
   // }
 
-
-
   //for header image testing
   getCurrentUser(): Observable<User> {
     return this.http.get<User>(`${API_CONFIG.baseUrl}${API_CONFIG.endPoints.user}/me?populate=*`);
   }
-
-
 
   editUserProfile(editData: User, id: number): Observable<User> {
     return this.http.put<User>(`${API_CONFIG.baseUrl}${API_CONFIG.endPoints.user}/${id}`, editData);

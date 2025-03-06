@@ -52,7 +52,6 @@ export class LoginComponent implements OnInit {
       next: response => {
         this.authService.setToken(response.jwt);
         alert('Login successful');
-        console.log(response.jwt);
         this.router.navigate(['user/list']);
 
 

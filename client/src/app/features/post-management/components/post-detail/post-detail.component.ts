@@ -24,9 +24,10 @@ export class PostDetailComponent {
     : throwError(() => new Error('No documentId provided'));
 
   constructor() {
-    console.log('DocumentId', this.documentId);
     this.post$.subscribe({
-      next: response => (this.post = response.data[0]),
+      next: response => {
+        this.post = response.data[0];
+      },
       error: err => console.error('Post fetch error:', err),
     });
   }

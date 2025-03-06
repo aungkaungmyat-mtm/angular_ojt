@@ -164,7 +164,7 @@
                 <ngb-highlight [result]="post.title" [term]="searchTerm" />
               </h5>
               <div class="d-flex justify-content-between mb-2">
-                <small> By <ngb-highlight [result]="post.author" [term]="searchTerm" /> </small>
+                <small> By <ngb-highlight [result]="post.author.username" [term]="searchTerm" /> </small>
                 <small>
                   Created:
 
@@ -177,7 +177,7 @@
                 {{ post.content }}
               </p>
             </div>
-            <div class="action">
+            <div class="action" *ngIf="user!.id == post.author.id">
               <button class="btn btn-primary btn-sm" [routerLink]="['/post/edit', post.documentId]"
                 >Edit</button
               >

@@ -1,12 +1,14 @@
 import { AsyncPipe, CommonModule } from '@angular/common';
-import { Component, inject, QueryList, ViewChildren } from '@angular/core';
+import { Component, inject, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { NgbHighlight, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
 
+import { User } from '../../../../shared/interfaces/user';
 import { RelativeTimePipe } from '../../../../shared/pipes/relative-time.pipe';
 import { SnackbarService } from '../../../../shared/services/snackbar/snackbar.service';
+import { UserService } from '../../../../shared/services/user/user.service';
 import { NgbdSortableHeader, SortColumn, SortDirection } from '../../directives/post.directive';
 import { Post, SortEvent } from '../../interfaces/post-interfaces';
 import { PostService } from '../../services/post.service';
@@ -25,9 +27,10 @@ import { PostService } from '../../services/post.service';
   templateUrl: './post-list.component.html',
   styleUrl: './post-list.component.css',
 })
-export class PostListComponent {
+export class PostListComponent implements OnInit {
   private readonly snackbar = inject(SnackbarService);
   private readonly postService = inject(PostService);
+  private readonly userService = inject(UserService);
 
   posts$: Observable<Post[]> = this.postService.posts$;
   total$: Observable<number> = this.postService.total$;
@@ -35,11 +38,19 @@ export class PostListComponent {
   searchTerm: string = this.postService.searchTerm;
   page: number = this.postService.page;
   pageSize: number = this.postService.pageSize;
+  user: User | null = null;
 
   @ViewChildren(NgbdSortableHeader) headers!: QueryList<NgbdSortableHeader>;
 
-  constructor() {
+  ngOnInit(): void {
     this.sortOption = 'title_asc';
+    this.loadUser();
+  }
+
+  private async loadUser(): Promise<void> {
+    await this.userService.getUser().then(user => {
+      this.user = user;
+    });
   }
 
   onSort({ column, direction }: SortEvent) {

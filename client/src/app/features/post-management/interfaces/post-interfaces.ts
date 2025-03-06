@@ -1,3 +1,4 @@
+import { User } from '../../../shared/interfaces/user';
 import { SortColumn, SortDirection } from '../directives/post.directive';
 
 export interface PostRequest {
@@ -5,7 +6,7 @@ export interface PostRequest {
     documentId?: string;
     title: string;
     content: string;
-    author: string;
+    author: number;
   };
 }
 
@@ -14,10 +15,10 @@ export interface Post {
   documentId: string;
   title: string;
   content: string;
-  author: string;
   createdAt: string;
   updatedAt: string;
   publishedAt: string;
+  author: User;
 }
 
 export interface PostResponse {
