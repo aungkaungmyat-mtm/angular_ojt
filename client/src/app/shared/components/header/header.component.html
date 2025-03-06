@@ -20,10 +20,10 @@
           </a>
           <ul class="dropdown-menu dropdown-menu-end" [ngClass]="{'show': isDropdownOpen}" aria-labelledby="profileDropdown">
             <li><a class="dropdown-item" routerLink="user/profile" style="margin-bottom: 5px;">View Profile</a></li>
-            <li><a class="dropdown-item" routerLink="/settings" style="margin-bottom: 5px;">Settings</a></li>
+            <li><a class="dropdown-item" routerLink="auth/update-password" style="margin-bottom: 5px;">Update Password</a></li>
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" routerLink="/auth/login">Login</a></li>
-            <li><a class="dropdown-item" (click)="LOGOUT()">Log Out</a></li>
+            <li><a class="dropdown-item" routerLink="/auth/login" >Login</a></li>
+            <li><a class="dropdown-item" (click)="LOGOUT()" >Log Out</a></li>
           </ul>
         </li>
       </ul>

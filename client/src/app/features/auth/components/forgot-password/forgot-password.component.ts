@@ -4,13 +4,13 @@ import { AuthService } from '../../services/auth.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgIf } from '@angular/common';
 import { MatError } from '@angular/material/form-field';
-import { LoadingScreenComponent } from '../../../../shared/components/loading-screen/loading-screen.component';
+
 import { RouterLink } from '@angular/router';
-import { finalize } from 'rxjs';
+
 
 @Component({
   selector: 'app-forgot-password',
-  imports: [NgIf, ReactiveFormsModule, MatError, LoadingScreenComponent, RouterLink],
+  imports: [NgIf, ReactiveFormsModule, MatError, RouterLink],
   templateUrl: './forgot-password.component.html',
   styleUrl: './forgot-password.component.css',
 })

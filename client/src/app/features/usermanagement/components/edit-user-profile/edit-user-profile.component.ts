@@ -13,7 +13,7 @@ import { User } from '../../../auth/interfaces/auth-interfaces';
   styleUrl: './edit-user-profile.component.css',
 })
 export class EditUserProfileComponent implements OnInit {
-  editUserData: User | null= null;
+  editUserData: User | null = null;
   instanceId: number = 0;
   selectedFile: File | null = null; // Store selected file
   imagePreview: string | null = null; // Image preview URL
@@ -92,18 +92,23 @@ export class EditUserProfileComponent implements OnInit {
       email: this.editUserData!.email,
       age: this.editUserData!.age,
       address: this.editUserData!.address,
-      image: imageId ? { id: imageId, url: this.editUserData!.image?.url || '', formats: this.editUserData!.image?.formats || { thumbnail: { url: '' } } } : undefined, // Ensure image conforms to Image interface
+      image: imageId
+        ? {
+            id: imageId,
+            url: this.editUserData!.image?.url || '',
+            formats: this.editUserData!.image?.formats || { thumbnail: { url: '' } },
+          }
+        : undefined, // Ensure image conforms to Image interface
     };
 
-    this.userService.editUserProfile(updatePayload, this.instanceId).subscribe(
-      () => {
+    this.userService.editUserProfile(updatePayload, this.instanceId).subscribe({
+      next: () => {
         alert('Profile updated successfully');
-
         window.location.reload();
       },
-      error => {
+      error: error => {
         console.error('Error updating profile:', error);
-      }
-    );
+      },
+    });
   }
 }

@@ -3,15 +3,16 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { API_CONFIG } from '../../../core/constants/api';
 import { User } from '../../auth/interfaces/auth-interfaces';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   getUsers(): Observable<User[]> {
-    console.log(`${API_CONFIG}${API_CONFIG.endPoints.user}`)
+    // console.log(`${API_CONFIG}${API_CONFIG.endPoints.user}`)
     return this.http.get<User[]>(`${API_CONFIG.baseUrl}${API_CONFIG.endPoints.user}`);
   }
 
@@ -47,5 +48,15 @@ export class UserService {
     formData.append('files', file);
 
     return this.http.post<any>('http://localhost:1337/api/upload', formData);
+  }
+
+  getUserProfileById(id: number): Observable<User> {
+    console.log(`${API_CONFIG.baseUrl}${API_CONFIG.endPoints.user}/${id}?populate=*`);
+    return this.http.get<User>(`${API_CONFIG.baseUrl}${API_CONFIG.endPoints.user}/${id}?populate=*`);
+
+  }
+
+  closeProfile(): void {
+    this.router.navigate(['/user/list']);
   }
 }
