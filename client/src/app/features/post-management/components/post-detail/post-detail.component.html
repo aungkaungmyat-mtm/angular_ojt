@@ -14,8 +14,8 @@
       <div class="author-name">
         <p>{{ post.author.username }}</p>
       </div>
-      <div class="author-bio">
-        Nature enthusiast and storyteller. Lover of high places and quiet moments.
+      <div class="author-bio" *ngIf="post.author.bio">
+        {{ post.author.job }} | {{ post.author.bio }} 
       </div>
     </div>
   </div>

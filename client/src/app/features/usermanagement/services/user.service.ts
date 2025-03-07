@@ -48,8 +48,9 @@ export class UserService {
 
   getUserProfileById(id: number): Observable<User> {
     console.log(`${API_CONFIG.baseUrl}${API_CONFIG.endPoints.user}/${id}?populate=*`);
-    return this.http.get<User>(`${API_CONFIG.baseUrl}${API_CONFIG.endPoints.user}/${id}?populate=*`);
-
+    return this.http.get<User>(
+      `${API_CONFIG.baseUrl}${API_CONFIG.endPoints.user}/${id}?populate=*`
+    );
   }
 
   closeProfile(): void {

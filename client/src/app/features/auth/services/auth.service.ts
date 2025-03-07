@@ -1,4 +1,3 @@
-import { UpdatePasswordRequest } from './../interfaces/auth-interfaces';
 import { isPlatformBrowser } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
@@ -12,6 +11,7 @@ import {
   RegisterResponse,
   resetPasswordRequest,
 } from '../interfaces/auth-interfaces';
+import { UpdatePasswordRequest } from './../interfaces/auth-interfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -97,24 +97,24 @@ export class AuthService {
 
   logout(): void {
     if (isPlatformBrowser(this.platformId)) this.clearToken();
-    alert('You have been logged out');
   }
 
   forgotPassword(email: string): Observable<any> {
     // return this.http.post<any>(`${API_URL}/api/auth/forgot-password`, { email });
     return this.http.post<any>(`${API_CONFIG.baseUrl}/auth/forgot-password`, { email });
-
   }
 
   resetPassword(resetPasswordRequest: resetPasswordRequest): Observable<resetPasswordRequest> {
-    return this.http.post<resetPasswordRequest>(`${API_CONFIG.baseUrl}/auth/reset-password`, resetPasswordRequest);
-
+    return this.http.post<resetPasswordRequest>(
+      `${API_CONFIG.baseUrl}/auth/reset-password`,
+      resetPasswordRequest
+    );
   }
 
-  updatePassword(updatepassword: UpdatePasswordRequest):Observable<UpdatePasswordRequest>{
-    return this.http.post<UpdatePasswordRequest>(`${API_CONFIG.baseUrl}/auth/change-password`, updatepassword);
+  updatePassword(updatepassword: UpdatePasswordRequest): Observable<UpdatePasswordRequest> {
+    return this.http.post<UpdatePasswordRequest>(
+      `${API_CONFIG.baseUrl}/auth/change-password`,
+      updatepassword
+    );
   }
 }
-
-
-

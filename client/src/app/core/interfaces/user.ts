@@ -11,6 +11,9 @@ export interface User {
   publishedAt: string;
   address: string;
   age: number;
+  date_of_birth: string;
+  bio: string;
+  job: string;
   image: Image;
   posts: Post[];
 }
