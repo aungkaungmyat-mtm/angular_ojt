@@ -3,56 +3,51 @@
 
   <mat-form-field appearance="outline" class="search-bar">
     <mat-label>Search Users</mat-label>
-    <input matInput (keyup)="applyFilter($event)" placeholder="Search by username or email">
+    <input matInput (keyup)="applyFilter($event)" placeholder="Search by username or email" />
   </mat-form-field>
 
-  <button mat-raised-button color="primary" (click)="csvService.downloadCSV('UserList', dataSource.data)">
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="csvService.downloadCSV('UserList', dataSource.data)"
+  >
     <mat-icon>download</mat-icon>
     Download
   </button>
 
   <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
-
-
     <ng-container matColumnDef="id">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
       <td mat-cell *matCellDef="let user"> {{ user.id }} </td>
     </ng-container>
 
-
     <ng-container matColumnDef="username">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Username </th>
       <td mat-cell *matCellDef="let user">
-
-        <a [routerLink]="['/otheruser/profile',user.id]">{{user.username}}</a>
-
+        <a [routerLink]="['/otheruser/profile', user.id]">{{ user.username }}</a>
       </td>
     </ng-container>
-
 
     <ng-container matColumnDef="email">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
       <td mat-cell *matCellDef="let user"> {{ user.email }} </td>
     </ng-container>
 
-
-    <ng-container matColumnDef="age">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Age </th>
-      <td mat-cell *matCellDef="let user"> {{ user.age }} </td>
+    <ng-container matColumnDef="job">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Job </th>
+      <td mat-cell *matCellDef="let user"> {{ user.job }} </td>
     </ng-container>
-
 
     <ng-container matColumnDef="address">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Address </th>
       <td mat-cell *matCellDef="let user"> {{ user.address }} </td>
     </ng-container>
 
-
     <ng-container matColumnDef="delete">
       <th class="action" mat-header-cell *matHeaderCellDef> Action </th>
       <td class="action-row" mat-cell *matCellDef="let user">
         <!-- <button (click)="deleteUser(user.id)">Delete</button> -->
-        <button class = 'delete' mat-stroked-button (click)="deleteUser(user.id)">
+        <button class="delete" mat-stroked-button (click)="deleteUser(user.id)">
           <mat-icon>delete</mat-icon>
           Delete
         </button>
@@ -60,10 +55,9 @@
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
   </table>
 
   <!-- Pagination -->
-  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons>
-  </mat-paginator>
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons> </mat-paginator>
 </div>

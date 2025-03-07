@@ -2,27 +2,40 @@ import { UserService } from './../../services/user.service';
 import { Component, OnInit } from '@angular/core';
 
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { FormsModule, NgModel } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgIf } from '@angular/common';
 import { User } from '../../../auth/interfaces/auth-interfaces';
 
+
 @Component({
   selector: 'app-edit-user-profile',
-  imports: [FormsModule, NgIf, RouterLink],
+  imports: [ReactiveFormsModule, NgIf, RouterLink],
   templateUrl: './edit-user-profile.component.html',
   styleUrl: './edit-user-profile.component.css',
 })
 export class EditUserProfileComponent implements OnInit {
-  editUserData: User | null = null;
+  editUserForm: FormGroup; // Declare a form group
   instanceId: number = 0;
-  selectedFile: File | null = null; // Store selected file
-  imagePreview: string | null = null; // Image preview URL
+  selectedFile: File | null = null;
+  imagePreview: string | null = null;
 
   constructor(
+    private fb: FormBuilder, // Inject FormBuilder
     private userService: UserService,
     private router: Router,
     private activateRoute: ActivatedRoute
-  ) {}
+  ) {
+    // Initialize form group
+    this.editUserForm = this.fb.group({
+      username: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      job: [''],
+      bio: [''],
+      date_of_birth: [''],
+      address: [''],
+      image: [''],
+    });
+  }
 
   ngOnInit(): void {
     this.fetchUserProfileData();
@@ -34,22 +47,19 @@ export class EditUserProfileComponent implements OnInit {
       console.error('Invalid or missing ID:', paramValue);
       return;
     }
-
-    console.log('User ID:', this.instanceId);
   }
 
   fetchUserProfileData() {
-    this.userService.getCurrentUser().subscribe(data => {
-      this.editUserData = {
-        id: data.id,
+    this.userService.getCurrentUser().subscribe((data) => {
+      this.editUserForm.patchValue({
         username: data.username,
         email: data.email,
-        age: data.age,
+        job: data.job,
+        bio: data.bio,
+        date_of_birth: data.date_of_birth,
         address: data.address,
-        image: data.image ?? { id: 0, url: '', formats: { thumbnail: { url: '' } } }, // Ensure image is properly assigned
-      };
+      });
 
-      // Set preview URL if an image exists
       if (data.image?.url) {
         this.imagePreview = `http://localhost:1337${data.image.url}`;
       }
@@ -59,7 +69,6 @@ export class EditUserProfileComponent implements OnInit {
   onFileSelected(event: any) {
     this.selectedFile = event.target.files[0];
 
-    // Preview selected image
     if (this.selectedFile) {
       const reader = new FileReader();
       reader.onload = () => {
@@ -70,35 +79,40 @@ export class EditUserProfileComponent implements OnInit {
   }
 
   editUserProfile() {
+    if (this.editUserForm.invalid) {
+      return;
+    }
+
     const confirmation = confirm('Are you sure you want to update your profile?');
     if (!confirmation) return;
 
+    const formData = this.editUserForm.value;
+
     if (this.selectedFile) {
       // Upload image first if a new file is selected
-      this.userService.uploadImage(this.selectedFile).subscribe(response => {
+      this.userService.uploadImage(this.selectedFile).subscribe((response) => {
         const uploadedImageId = response[0].id;
-        this.updateUserProfile(uploadedImageId);
+        this.updateUserProfile(uploadedImageId, formData);
       });
     } else {
       // Proceed with existing image
-      this.updateUserProfile(this.editUserData!.image?.id);
+      this.updateUserProfile(undefined, formData);
     }
   }
 
-  updateUserProfile(imageId?: number) {
+  updateUserProfile(imageId: number | undefined, formData: any) {
     const updatePayload: User = {
-      id: this.editUserData!.id,
-      username: this.editUserData!.username,
-      email: this.editUserData!.email,
-      age: this.editUserData!.age,
-      address: this.editUserData!.address,
+      id: this.instanceId,
+      username: formData.username,
+      email: formData.email,
+      age: formData.age,
+      address: formData.address,
+      job: formData.job,
+      bio: formData.bio,
+      date_of_birth: formData.date_of_birth,
       image: imageId
-        ? {
-            id: imageId,
-            url: this.editUserData!.image?.url || '',
-            formats: this.editUserData!.image?.formats || { thumbnail: { url: '' } },
-          }
-        : undefined, // Ensure image conforms to Image interface
+        ? { id: imageId, url: '', formats: { thumbnail: { url: '' } } }
+        : undefined,
     };
 
     this.userService.editUserProfile(updatePayload, this.instanceId).subscribe({
@@ -106,7 +120,7 @@ export class EditUserProfileComponent implements OnInit {
         alert('Profile updated successfully');
         window.location.reload();
       },
-      error: error => {
+      error: (error) => {
         console.error('Error updating profile:', error);
       },
     });
