@@ -34,6 +34,7 @@ export class EditUserProfileComponent implements OnInit {
       date_of_birth: [''],
       address: [''],
       image: [''],
+      role: [''],
     });
   }
 
@@ -58,6 +59,7 @@ export class EditUserProfileComponent implements OnInit {
         bio: data.bio,
         date_of_birth: data.date_of_birth,
         address: data.address,
+
       });
 
       if (data.image?.url) {
@@ -113,6 +115,7 @@ export class EditUserProfileComponent implements OnInit {
       image: imageId
         ? { id: imageId, url: '', formats: { thumbnail: { url: '' } } }
         : undefined,
+      role: formData.role ? (typeof formData.role === 'object' ? formData.role.id : formData.role) : undefined,
     };
 
     this.userService.editUserProfile(updatePayload, this.instanceId).subscribe({
@@ -125,4 +128,5 @@ export class EditUserProfileComponent implements OnInit {
       },
     });
   }
+
 }

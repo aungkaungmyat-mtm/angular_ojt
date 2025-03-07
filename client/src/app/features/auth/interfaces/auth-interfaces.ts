@@ -35,12 +35,12 @@ export interface resetPasswordRequest {
   passwordConfirmation: string;
 
 }
-// export interface Role {
-//   id: number;
-//   name: string;
-//   description: string;
-//   type: string;
-// }
+export interface Role {
+  id: number;
+  name: string;
+  description: string;
+  type: string;
+}
 // export interface User{
 //   id: number;
 //   documentId: string;
@@ -77,6 +77,7 @@ export interface User {
   bio: string;
   date_of_birth: string;
   image?: Image;
+  role: Role;
 }
 
 export interface UpdatePasswordRequest {
@@ -84,3 +85,5 @@ export interface UpdatePasswordRequest {
   password: string;
   passwordConfirmation: string;
 }
+
+

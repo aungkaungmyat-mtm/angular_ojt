@@ -35,14 +35,15 @@ import { CsvService } from '../../../../shared/services/csv/csv.service';
   styleUrl: './userlists.component.css',
 })
 export class UserlistsComponent implements OnInit {
-  displayedColumns: string[] = ['id', 'username', 'email', 'job', 'address', 'delete'];
+  displayedColumns: string[] = ['id', 'username', 'email', 'job', 'address'];
+
   dataSource: MatTableDataSource<User>;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
   public csvService: CsvService = inject(CsvService);
-
+  user: User | undefined;
   constructor(
     private readonly userService: UserService,
     private readonly loadingService: LoadingService
@@ -52,6 +53,21 @@ export class UserlistsComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadUsers();
+    this.userService.getCurrentUser().subscribe({
+      next: data => {
+        console.log('data is', data);
+        this.user = data;
+        this.isAdmin();
+
+      },
+      error: err => console.error('Error fetching user:', err),
+    });
+  }
+
+  isAdmin(): void {
+    if (this.user?.role?.name === 'Admin') {
+     this.displayedColumns.push('delete');
+    }
   }
 
   loadUsers(): void {

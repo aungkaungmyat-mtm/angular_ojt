@@ -31,6 +31,7 @@ export class UserService {
 
   //for header image testing
   getCurrentUser(): Observable<User> {
+    console.log("getCurrentUser", `${API_CONFIG.baseUrl}${API_CONFIG.endPoints.user}/me?populate=*`);
     return this.http.get<User>(`${API_CONFIG.baseUrl}${API_CONFIG.endPoints.user}/me?populate=*`);
   }
 
