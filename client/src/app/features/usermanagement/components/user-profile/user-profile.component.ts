@@ -5,8 +5,10 @@ import { NgIf } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { Router, RouterLink } from '@angular/router';
 
-import { User } from '../../../auth/interfaces/auth-interfaces';
+
 import { UserService } from '../../services/user.service';
+import { User } from '../../../auth/interfaces/auth-interfaces';
+
 
 @Component({
   selector: 'app-user-profile',
@@ -29,6 +31,7 @@ export class UserProfileComponent implements OnInit {
     this.userService.getCurrentUser().subscribe({
       next: res => {
         this.userProfileData = res;
+        console.log("date is",this.userProfileData.date_of_birth);
       },
       error: err => {
         console.error(err);

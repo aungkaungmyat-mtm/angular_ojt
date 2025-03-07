@@ -1,22 +1,27 @@
 .profile-card {
-  max-width: 350px;
+  max-width: 650px;
   margin: auto;
   margin-top: 7%;
   margin-bottom: 7%;
-  background: linear-gradient(135deg, #457b9d, #667eea);
+  /* background: linear-gradient(135deg, #457b9d, #667eea); */
+  background-color: #f1faee;
   padding: 20px;
   border-radius: 12px;
   text-align: center;
-  color: white;
+
+  color: black;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
   position: relative;
 }
+.bio{
+  text-align: justify;
+}
 
 .profile-img {
-  width: 100px;
-  height: 100px;
+  width: 130px;
+  height: 130px;
   border-radius: 50%;
-  border: 4px solid white;
+  border: 4px solid #1d3557;
   object-fit: cover;
   margin-bottom: 15px;
 }
@@ -42,12 +47,28 @@ h2 {
 
 .profile-info {
   display: grid;
-  grid-template-columns: 1fr 2fr; /* Two columns: label and value */
+
+  /* border: 1px solid green; */
+  grid-template-columns: 1fr 3fr; /* Two columns: label and value */
   gap: 10px;
-  max-width: 400px;
+  margin-left: 30px;
+  max-width: 560px;
   text-align: start;
   padding: 20px;
 
+}
+.main{
+  border: 1px solid #eaeaea;
+  padding: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(95, 172, 220, 0.2);
+
+    display: grid;
+    gap: 15px;
+}
+
+.profile-info .label{
+  font-weight: 550;
 }
 
 .profile-container div:nth-child(odd) {
@@ -76,12 +97,12 @@ h2 {
 }
 .update-btn {
   display: inline-block;
-  background: #f1faee;
-  color: black;
+  background: #2e5d7b;
+  color: white;
   border: none;
   padding: 10px 15px;
   font-size: 16px;
-  font-weight: bold;
+  font-weight: 500;
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -90,7 +111,7 @@ h2 {
 }
 
 .update-btn:hover {
-  background: #a8dadc; /* Lighter shade on hover */
+  background: #457b9d; /* Lighter shade on hover */
 }
 
 .update-btn:active {

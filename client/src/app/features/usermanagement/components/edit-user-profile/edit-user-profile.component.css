@@ -1,18 +1,18 @@
 form {
-  max-width: 500px;
+  max-width: 600px;
   margin: 50px auto;
   padding: 20px;
   background: #f1faee;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(69, 123, 157, 0.2);
-  font-family: 'Arial', sans-serif;
+
   display: grid;
   gap: 15px;
 }
 
 h1 {
   text-align: center;
-  color: #457b9d;
+  color: black;
   font-size: 24px;
 }
 
@@ -24,8 +24,8 @@ h1 {
 }
 
 label {
-  font-weight: 700;
-  color: #457b9d;
+  font-weight: 550;
+  color: black;
 }
 
 input {
@@ -35,7 +35,17 @@ input {
   border-radius: 5px;
   font-size: 16px;
   background: #f1faee;
-  color: #457b9d;
+  color: black;
+}
+textarea{
+  width: 100%;
+  padding: 10px;
+  height: 110px;
+  border: 1px solid #a8dadc;
+  border-radius: 5px;
+  font-size: 16px;
+  background: #f1faee;
+  color: black;
 }
 
 input:focus {
@@ -50,6 +60,7 @@ input:focus {
   height: 130px;
   object-fit: cover;
   border-radius: 5px;
+  border: 1px solid #a8dadc;
 }
 
 
@@ -62,7 +73,7 @@ input:focus {
 button {
   flex: 1;
   padding: 12px;
-  background: #457b9d;
+  background: #346583;
   color: #f1faee;
   border: none;
   border-radius: 5px;
@@ -73,6 +84,6 @@ button {
 }
 
 button:hover {
-  background: #a8dadc;
-  color: #457b9d;
+  background: #457b9d;
+  color: whitesmoke;
 }

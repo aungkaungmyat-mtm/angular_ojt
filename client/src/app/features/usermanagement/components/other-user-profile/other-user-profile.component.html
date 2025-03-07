@@ -5,18 +5,21 @@
   <!-- <img src="https://th.bing.com/th/id/OIP.Zvs5IHgOO5kip7A32UwZJgHaHa?rs=1&pid=ImgDetMain" alt="Profile Image"
     class="profile-img"> -->
   <img [src]="getUserImage()" alt="User Image" class="profile-img">
-
+  <div class="main">
   <h2>{{ otherUserProfileData?.username }}</h2>
 
   <div class="profile-info">
 
-    <div>Email</div>
+    <div class="label">Email</div>
     <div>{{ otherUserProfileData?.email }}</div>
-    <div>Address</div>
+    <div class="label">Address</div>
     <div>{{ otherUserProfileData?.address }}</div>
-    <div>Age</div>
-    <div>{{ otherUserProfileData?.age }}</div>
-
+    <div class="label">Job</div>
+    <div>{{ otherUserProfileData?.job }}</div>
+    <div class="label">Bio</div>
+    <div class="bio">{{ otherUserProfileData?.bio }}</div>
+    <div class="label">Date of Birth</div>
+    <div>{{ otherUserProfileData?.date_of_birth }}</div>
   </div>
-  <!-- <button class="update-btn" [routerLink]="['/user/profile/update',userProfileData.id]">Update Profile</button> -->
+</div>
 </div>

@@ -1,9 +1,10 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { ActivatedRoute } from '@angular/router';
-import { User } from '../../../auth/interfaces/auth-interfaces';
+
 
 import { MatIcon } from '@angular/material/icon';
+import { User } from '../../../auth/interfaces/auth-interfaces';
 
 @Component({
   selector: 'app-other-user-profile',

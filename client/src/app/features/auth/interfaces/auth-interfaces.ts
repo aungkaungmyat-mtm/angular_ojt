@@ -52,6 +52,8 @@ export interface resetPasswordRequest {
 
 // };
 
+//use follow
+
 export interface ImageFormat {
   url: string;
 }
@@ -71,6 +73,9 @@ export interface User {
   email: string;
   age: number;
   address: string;
+  job: string;
+  bio: string;
+  date_of_birth: string;
   image?: Image;
 }
 
