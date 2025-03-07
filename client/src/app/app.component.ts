@@ -7,13 +7,13 @@ import {
   Router,
   RouterOutlet,
 } from '@angular/router';
-import { FooterComponent } from './shared/components/footer/footer.component';
-import { HeaderComponent } from './shared/components/header/header.component';
-import { LoadingScreenComponent } from './shared/components/loading-screen/loading-screen.component';
-import { LoadingService } from './shared/services/loading/loading.service';
+import { LoadingService } from './core/services/loading/loading.service';
 
+import { NgIf } from '@angular/common';
+import { FooterComponent } from './core/components/footer/footer.component';
+import { HeaderComponent } from './core/components/header/header.component';
+import { LoadingScreenComponent } from './core/components/loading-screen/loading-screen.component';
 import { AuthService } from './features/auth/services/auth.service';
-import { CommonModule, NgIf } from '@angular/common';
 
 
 

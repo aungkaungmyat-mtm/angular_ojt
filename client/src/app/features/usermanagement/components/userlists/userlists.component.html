@@ -6,6 +6,11 @@
     <input matInput (keyup)="applyFilter($event)" placeholder="Search by username or email">
   </mat-form-field>
 
+  <button mat-raised-button color="primary" (click)="csvService.downloadCSV('UserList', dataSource.data)">
+    <mat-icon>download</mat-icon>
+    Download
+  </button>
+
   <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
 
 

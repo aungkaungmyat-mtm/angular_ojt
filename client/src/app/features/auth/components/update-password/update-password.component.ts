@@ -1,18 +1,18 @@
-import { Component, inject } from '@angular/core';
-import { AuthService } from '../../services/auth.service';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { passwordMatch } from '../../../../core/utils/validators';
-import { SnackbarService } from '../../../../shared/services/snackbar/snackbar.service';
 import { NgIf } from '@angular/common';
+import { Component, inject } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatError } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
+import { SnackbarService } from '../../../../core/services/snackbar/snackbar.service';
+import { passwordMatch } from '../../../../core/utils/validators';
 import { UpdatePasswordRequest } from '../../interfaces/auth-interfaces';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-update-password',
   imports: [NgIf, MatError, ReactiveFormsModule, MatIcon],
   templateUrl: './update-password.component.html',
-  styleUrl: './update-password.component.css'
+  styleUrl: './update-password.component.css',
 })
 export class UpdatePasswordComponent {
   showCurrentPassword = false;
@@ -20,10 +20,10 @@ export class UpdatePasswordComponent {
   showConfirmPassword = false;
   message = '';
   error = '';
-  private readonly authservice= inject(AuthService);
+  private readonly authservice = inject(AuthService);
   private formBuilder = inject(FormBuilder);
   private snakcbarService = inject(SnackbarService);
-  updatePasswordForm:FormGroup;
+  updatePasswordForm: FormGroup;
   constructor() {
     this.updatePasswordForm = this.formBuilder.group({
       currentPassword: ['', [Validators.required]],
@@ -32,7 +32,7 @@ export class UpdatePasswordComponent {
     });
   }
   onSubmit() {
-    const updatePasswordRequest :UpdatePasswordRequest = {
+    const updatePasswordRequest: UpdatePasswordRequest = {
       currentPassword: this.updatePasswordForm.value.currentPassword,
       password: this.updatePasswordForm.value.newPassword,
       passwordConfirmation: this.updatePasswordForm.value.confirmPassword,
@@ -41,7 +41,6 @@ export class UpdatePasswordComponent {
       next: () => {
         this.message = 'Password updated successfully';
         this.snakcbarService.open(this.message);
-
       },
       error: error => {
         console.error('Error updating password:', error);
@@ -50,5 +49,4 @@ export class UpdatePasswordComponent {
       },
     });
   }
-
 }

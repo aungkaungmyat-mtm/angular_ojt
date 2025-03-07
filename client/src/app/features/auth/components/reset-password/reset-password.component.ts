@@ -1,22 +1,22 @@
+import { NgIf } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AuthService } from '../../services/auth.service';
-import { passwordMatch } from '../../../../core/utils/validators';
-import { NgIf } from '@angular/common';
-import { ActivatedRoute, RouterLink } from '@angular/router';
-import { resetPasswordRequest } from '../../interfaces/auth-interfaces';
-import { SnackbarService } from '../../../../shared/services/snackbar/snackbar.service';
-import { MatIcon } from '@angular/material/icon';
 import { MatError } from '@angular/material/form-field';
+import { MatIcon } from '@angular/material/icon';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { SnackbarService } from '../../../../core/services/snackbar/snackbar.service';
+import { passwordMatch } from '../../../../core/utils/validators';
+import { resetPasswordRequest } from '../../interfaces/auth-interfaces';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-reset-password',
   templateUrl: './reset-password.component.html',
-  imports: [NgIf, ReactiveFormsModule,MatIcon,MatError,RouterLink],
+  imports: [NgIf, ReactiveFormsModule, MatIcon, MatError, RouterLink],
   styleUrls: ['./reset-password.component.css'],
 })
 export class ResetPasswordComponent implements OnInit {
-  private snackbar = inject(SnackbarService)
+  private snackbar = inject(SnackbarService);
   message: string = '';
   resetPasswordForm: FormGroup;
   resetCode: string = '';
@@ -72,6 +72,4 @@ export class ResetPasswordComponent implements OnInit {
   get passwordConfirmation() {
     return this.resetPasswordForm.get('passwordConfirmation');
   }
-
-
 }

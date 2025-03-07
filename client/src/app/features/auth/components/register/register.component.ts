@@ -5,9 +5,9 @@ import { MatIcon } from '@angular/material/icon';
 import { MatError, MatInputModule } from '@angular/material/input';
 import { Router, RouterLink } from '@angular/router';
 import { finalize } from 'rxjs';
+import { LoadingScreenComponent } from '../../../../core/components/loading-screen/loading-screen.component';
+import { LoadingService } from '../../../../core/services/loading/loading.service';
 import { passwordMatch } from '../../../../core/utils/validators';
-import { LoadingScreenComponent } from '../../../../shared/components/loading-screen/loading-screen.component';
-import { LoadingService } from '../../../../shared/services/loading/loading.service';
 import { RegisterRequest } from '../../interfaces/auth-interfaces';
 import { AuthService } from '../../services/auth.service';
 
