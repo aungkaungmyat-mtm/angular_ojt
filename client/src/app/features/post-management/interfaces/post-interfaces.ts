@@ -1,4 +1,4 @@
-import { User } from '../../../shared/interfaces/user';
+import { User } from '../../../core/interfaces/user';
 import { SortColumn, SortDirection } from '../directives/post.directive';
 
 export interface PostRequest {

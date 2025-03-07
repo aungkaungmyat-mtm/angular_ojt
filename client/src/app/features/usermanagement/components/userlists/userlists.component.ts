@@ -1,22 +1,19 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatTableModule } from '@angular/material/table';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
-import { MatIconModule } from '@angular/material/icon';
-import { UserService } from '../../services/user.service';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatButtonModule } from '@angular/material/button';
-
-import { LoadingService } from '../../../../shared/services/loading/loading.service';
-import { RouterLink } from '@angular/router';
-import { DownloadCsvsService } from '../../../../shared/services/download-csv/download-csvs.service';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { User } from '../../../auth/interfaces/auth-interfaces';
-import { error } from 'node:console';
+import { UserService } from '../../services/user.service';
 
+import { RouterLink } from '@angular/router';
+import { LoadingService } from '../../../../core/services/loading/loading.service';
+import { CsvService } from '../../../../shared/services/csv/csv.service';
 // import { RouterLink } from '@angular/router';
 
 @Component({
@@ -44,10 +41,11 @@ export class UserlistsComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
+  public csvService: CsvService = inject(CsvService);
+
   constructor(
-    private userService: UserService,
-    private loadingService: LoadingService,
-    private csvService: DownloadCsvsService
+    private readonly userService: UserService,
+    private readonly loadingService: LoadingService
   ) {
     this.dataSource = new MatTableDataSource<User>();
   }
@@ -86,7 +84,7 @@ export class UserlistsComponent implements OnInit {
   }
 
   public saveDataInCSV(name: string, data: Array<any>): void {
-    let csvContent = this.csvService.saveDataInCSV(data);
+    let csvContent = this.csvService.saveDataInCsv(data);
 
     var hiddenElement = document.createElement('a');
     hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csvContent);

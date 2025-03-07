@@ -5,10 +5,10 @@ import { RouterLink } from '@angular/router';
 import { NgbHighlight, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
 
-import { User } from '../../../../shared/interfaces/user';
-import { RelativeTimePipe } from '../../../../shared/pipes/relative-time.pipe';
-import { SnackbarService } from '../../../../shared/services/snackbar/snackbar.service';
-import { UserService } from '../../../../shared/services/user/user.service';
+import { User } from '../../../../core/interfaces/user';
+import { RelativeTimePipe } from '../../../../core/pipes/relative-time.pipe';
+import { SnackbarService } from '../../../../core/services/snackbar/snackbar.service';
+import { UserService } from '../../../../core/services/user/user.service';
 import { NgbdSortableHeader, SortColumn, SortDirection } from '../../directives/post.directive';
 import { Post, SortEvent } from '../../interfaces/post-interfaces';
 import { PostService } from '../../services/post.service';

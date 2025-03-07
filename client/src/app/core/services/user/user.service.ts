@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
-import { API_CONFIG } from '../../../core/constants/api';
+import { API_CONFIG } from '../../constants/api';
 import { User } from '../../interfaces/user';
 
 @Injectable({

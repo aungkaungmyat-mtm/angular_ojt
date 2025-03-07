@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, throwError } from 'rxjs';
-import { RelativeTimePipe } from '../../../../shared/pipes/relative-time.pipe';
+import { RelativeTimePipe } from '../../../../core/pipes/relative-time.pipe';
 import { Post, PostResponse } from '../../interfaces/post-interfaces';
 import { PostService } from '../../services/post.service';
 

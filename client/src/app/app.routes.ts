@@ -1,12 +1,11 @@
 import { Routes } from '@angular/router';
 
+import { PageNotFoundComponent } from './core/components/page-not-found/page-not-found.component';
 import { authGuard } from './features/auth/guards/auth.guard';
 
 export const routes: Routes = [
-  // { path: 'auth/login', component: LoginComponent },
   {
     path: 'post/list',
-
     loadComponent: () =>
       import('./features/post-management/components/post-list/post-list.component').then(
         m => m.PostListComponent
@@ -48,20 +47,26 @@ export const routes: Routes = [
   },
   {
     path: 'user/profile',
-    loadComponent: () => import('./features/usermanagement/components/user-profile/user-profile.component').then
-    (m=>m.UserProfileComponent),
+    loadComponent: () =>
+      import('./features/usermanagement/components/user-profile/user-profile.component').then(
+        m => m.UserProfileComponent
+      ),
     canActivate: [authGuard],
   },
   {
     path: 'user/profile/update/:id',
-    loadComponent: () => import('./features/usermanagement/components/edit-user-profile/edit-user-profile.component').then
-    (m=>m.EditUserProfileComponent),
+    loadComponent: () =>
+      import(
+        './features/usermanagement/components/edit-user-profile/edit-user-profile.component'
+      ).then(m => m.EditUserProfileComponent),
     canActivate: [authGuard],
   },
   {
     path: 'otheruser/profile/:id',
-    loadComponent: () => import('./features/usermanagement/components/other-user-profile/other-user-profile.component').then
-    (m=>m.OtherUserProfileComponent),
+    loadComponent: () =>
+      import(
+        './features/usermanagement/components/other-user-profile/other-user-profile.component'
+      ).then(m => m.OtherUserProfileComponent),
     canActivate: [authGuard],
   },
   {
@@ -79,21 +84,25 @@ export const routes: Routes = [
   {
     path: 'auth/update-password',
     loadComponent: () =>
-      import('./features/auth/components/update-password/update-password.component').then(m=>m.UpdatePasswordComponent),
+      import('./features/auth/components/update-password/update-password.component').then(
+        m => m.UpdatePasswordComponent
+      ),
   },
   {
     path: 'auth/forgot-password',
     loadComponent: () =>
-      import('./features/auth/components/forgot-password/forgot-password.component').then(m=> m.ForgotPasswordComponent)
+      import('./features/auth/components/forgot-password/forgot-password.component').then(
+        m => m.ForgotPasswordComponent
+      ),
   },
   {
     path: 'auth/resetPassword',
     loadComponent: () =>
-      import('./features/auth/components/reset-password/reset-password.component').then(m=>m.ResetPasswordComponent)
+      import('./features/auth/components/reset-password/reset-password.component').then(
+        m => m.ResetPasswordComponent
+      ),
   },
   { path: 'auth/logout', redirectTo: '/auth/login', pathMatch: 'full' },
 
-  // { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
-  { path: '**', redirectTo: '/auth/login', pathMatch: 'full' },
-  // { path: '**', component: PageNotFoundComponent },
+  { path: '**', component: PageNotFoundComponent },
 ];

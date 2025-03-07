@@ -3,10 +3,10 @@ import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { User } from '../../../../shared/interfaces/user';
-import { LoadingService } from '../../../../shared/services/loading/loading.service';
-import { SnackbarService } from '../../../../shared/services/snackbar/snackbar.service';
-import { UserService } from '../../../../shared/services/user/user.service';
+import { User } from '../../../../core/interfaces/user';
+import { LoadingService } from '../../../../core/services/loading/loading.service';
+import { SnackbarService } from '../../../../core/services/snackbar/snackbar.service';
+import { UserService } from '../../../../core/services/user/user.service';
 import { PostRequest } from '../../interfaces/post-interfaces';
 import { PostService } from '../../services/post.service';
 
