@@ -96,13 +96,17 @@ export const routes: Routes = [
       ),
   },
   {
-    path: 'auth/resetPassword',
+    path: 'auth/reset-password',
     loadComponent: () =>
       import('./features/auth/components/reset-password/reset-password.component').then(
         m => m.ResetPasswordComponent
       ),
   },
   { path: 'auth/logout', redirectTo: '/auth/login', pathMatch: 'full' },
+
+  { path: 'auth/confirm-email', redirectTo: '/auth/login', pathMatch: 'full' },
+
+  { path: '', redirectTo: '/post/list', pathMatch: 'full' },
 
   { path: '**', component: PageNotFoundComponent },
 ];

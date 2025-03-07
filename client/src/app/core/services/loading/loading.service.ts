@@ -6,7 +6,7 @@ import { BehaviorSubject, debounceTime } from 'rxjs';
 })
 export class LoadingService {
   private readonly loadingSubject = new BehaviorSubject<boolean>(false);
-  loading$ = this.loadingSubject.asObservable().pipe(debounceTime(100));
+  loading$ = this.loadingSubject.asObservable().pipe(debounceTime(2000));
 
   show() {
     this.loadingSubject.next(true);

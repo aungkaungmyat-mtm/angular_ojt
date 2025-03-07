@@ -13,13 +13,13 @@
       <div class="label">Email</div>
       <div>{{ userProfileData.email }}</div>
       <div class="label">Address</div>
-      <div>{{ userProfileData.address }}</div>
+      <div>{{ userProfileData.address ? userProfileData.address : '-' }}</div>
       <div class="label">Job</div>
-      <div>{{ userProfileData.job }}</div>
+      <div>{{ userProfileData.job ? userProfileData.job : '-' }}</div>
       <div class="label">Bio</div>
-      <div class="bio">{{ userProfileData.bio }}</div>
+      <div class="bio">{{ userProfileData.bio ? userProfileData.bio : '-' }}</div>
       <div class="label">Date of Birth</div>
-      <div>{{ userProfileData.date_of_birth }}</div>
+      <div>{{ userProfileData.date_of_birth ? userProfileData.date_of_birth : '-' }}</div>
 
     </div>
   </div>

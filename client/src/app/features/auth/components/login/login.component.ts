@@ -1,10 +1,12 @@
 import { CommonModule, isPlatformServer } from '@angular/common';
-import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { Component, inject, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatError } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { Router, RouterLink } from '@angular/router';
+import { LoadingService } from '../../../../core/services/loading/loading.service';
+import { SnackbarService } from '../../../../core/services/snackbar/snackbar.service';
 import { LoginRequest } from '../../interfaces/auth-interfaces';
 import { AuthService } from '../../services/auth.service';
 
@@ -19,6 +21,8 @@ export class LoginComponent implements OnInit {
   showPassword = false;
   errorMessage = '';
   isServer = false;
+  private readonly snackBar = inject(SnackbarService);
+  private readonly loadingService = inject(LoadingService);
   constructor(
     private readonly formbuilder: FormBuilder,
     private readonly authService: AuthService,
@@ -47,17 +51,17 @@ export class LoginComponent implements OnInit {
       identifier: this.loginForm.value.email,
       password: this.loginForm.value.password,
     };
+    this.loadingService.show();
 
     this.authService.login(loginData).subscribe({
       next: response => {
         this.authService.setToken(response.jwt);
-        alert('Login successful');
+        this.snackBar.open('Login successful');
+        this.loadingService.hide();
         this.router.navigate(['user/list']);
-
-
-
       },
       error: error => {
+        this.loadingService.hide();
         console.error(error);
         this.errorMessage = error.error.status || 'Login failed. Please check your credentials.';
       },

@@ -86,7 +86,7 @@ export class UserlistsComponent implements OnInit {
   public saveDataInCSV(name: string, data: Array<any>): void {
     let csvContent = this.csvService.saveDataInCsv(data);
 
-    var hiddenElement = document.createElement('a');
+    let hiddenElement = document.createElement('a');
     hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csvContent);
     hiddenElement.target = '_blank';
     hiddenElement.download = name + '.csv';
