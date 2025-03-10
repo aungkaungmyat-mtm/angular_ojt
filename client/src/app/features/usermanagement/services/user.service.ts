@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { API_CONFIG } from '../../../core/constants/api';
-import { User } from '../../auth/interfaces/auth-interfaces';
+import { User } from '../../../core/interfaces/user';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +12,6 @@ export class UserService {
   constructor(private http: HttpClient, private router: Router) {}
 
   getUsers(): Observable<User[]> {
-    // console.log(`${API_CONFIG}${API_CONFIG.endPoints.user}`)
     return this.http.get<User[]>(`${API_CONFIG.baseUrl}${API_CONFIG.endPoints.user}`);
   }
 
@@ -31,7 +30,6 @@ export class UserService {
 
   //for header image testing
   getCurrentUser(): Observable<User> {
-    console.log("getCurrentUser", `${API_CONFIG.baseUrl}${API_CONFIG.endPoints.user}/me?populate=*`);
     return this.http.get<User>(`${API_CONFIG.baseUrl}${API_CONFIG.endPoints.user}/me?populate=*`);
   }
 
@@ -48,7 +46,6 @@ export class UserService {
   }
 
   getUserProfileById(id: number): Observable<User> {
-    console.log(`${API_CONFIG.baseUrl}${API_CONFIG.endPoints.user}/${id}?populate=*`);
     return this.http.get<User>(
       `${API_CONFIG.baseUrl}${API_CONFIG.endPoints.user}/${id}?populate=*`
     );

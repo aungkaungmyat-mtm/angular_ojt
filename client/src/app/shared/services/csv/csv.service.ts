@@ -58,7 +58,9 @@ export class CsvService {
     }
 
     const csvContent = this.saveDataInCsv(data);
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8' });
+    const bom = '\uFEFF';
+    const fullContent = bom + csvContent;
+    const blob = new Blob([fullContent], { type: 'text/csv;charset=utf-8' });
     const url = URL.createObjectURL(blob);
 
     const hiddenElement = document.createElement('a');
@@ -66,6 +68,7 @@ export class CsvService {
     hiddenElement.target = '_blank';
     hiddenElement.download = `${name}.csv`;
     hiddenElement.click();
+    document.body.removeChild(hiddenElement);
 
     URL.revokeObjectURL(url);
   }

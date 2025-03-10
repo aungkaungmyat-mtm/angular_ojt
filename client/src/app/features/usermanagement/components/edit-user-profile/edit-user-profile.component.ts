@@ -1,11 +1,10 @@
-import { UserService } from './../../services/user.service';
 import { Component, OnInit } from '@angular/core';
+import { UserService } from './../../services/user.service';
 
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgIf } from '@angular/common';
-import { User } from '../../../auth/interfaces/auth-interfaces';
-
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { User } from '../../../../core/interfaces/user';
 
 @Component({
   selector: 'app-edit-user-profile',
@@ -51,7 +50,7 @@ export class EditUserProfileComponent implements OnInit {
   }
 
   fetchUserProfileData() {
-    this.userService.getCurrentUser().subscribe((data) => {
+    this.userService.getCurrentUser().subscribe(data => {
       this.editUserForm.patchValue({
         username: data.username,
         email: data.email,
@@ -59,7 +58,6 @@ export class EditUserProfileComponent implements OnInit {
         bio: data.bio,
         date_of_birth: data.date_of_birth,
         address: data.address,
-
       });
 
       if (data.image?.url) {
@@ -92,7 +90,7 @@ export class EditUserProfileComponent implements OnInit {
 
     if (this.selectedFile) {
       // Upload image first if a new file is selected
-      this.userService.uploadImage(this.selectedFile).subscribe((response) => {
+      this.userService.uploadImage(this.selectedFile).subscribe(response => {
         const uploadedImageId = response[0].id;
         this.updateUserProfile(uploadedImageId, formData);
       });
@@ -112,10 +110,12 @@ export class EditUserProfileComponent implements OnInit {
       job: formData.job,
       bio: formData.bio,
       date_of_birth: formData.date_of_birth,
-      image: imageId
-        ? { id: imageId, url: '', formats: { thumbnail: { url: '' } } }
+      image: imageId ? { id: imageId, url: '', formats: { thumbnail: { url: '' } } } : undefined,
+      role: formData.role
+        ? typeof formData.role === 'object'
+          ? formData.role.id
+          : formData.role
         : undefined,
-      role: formData.role ? (typeof formData.role === 'object' ? formData.role.id : formData.role) : undefined,
     };
 
     this.userService.editUserProfile(updatePayload, this.instanceId).subscribe({
@@ -123,10 +123,9 @@ export class EditUserProfileComponent implements OnInit {
         alert('Profile updated successfully');
         window.location.reload();
       },
-      error: (error) => {
+      error: error => {
         console.error('Error updating profile:', error);
       },
     });
   }
-
 }

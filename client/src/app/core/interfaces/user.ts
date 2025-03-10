@@ -1,50 +1,69 @@
 export interface User {
   id: number;
-  documentId: string;
+  documentId?: string;
   username: string;
   email: string;
-  provider: string;
-  confirmed: boolean;
-  blocked: boolean;
-  createdAt: string;
-  updatedAt: string;
-  publishedAt: string;
+  provider?: string;
+  confirmed?: boolean;
+  blocked?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+  publishedAt?: string;
   address: string;
   age: number;
   date_of_birth: string;
   bio: string;
   job: string;
-  image: Image;
-  posts: Post[];
+  image?: Image;
+  posts?: Post[];
+  role: Role;
 }
 
+export interface Role {
+  id: number;
+  name: string;
+  description: string;
+  type: string;
+}
 export interface Image {
   id: number;
-  documentId: string;
-  name: string;
-  alternativeText: any;
-  caption: any;
-  width: number;
-  height: number;
-  formats: Formats;
-  hash: string;
-  ext: string;
-  mime: string;
-  size: number;
   url: string;
-  previewUrl: any;
-  provider: string;
-  provider_metadata: any;
-  createdAt: string;
-  updatedAt: string;
-  publishedAt: string;
+  formats: {
+    thumbnail?: ImageFormat;
+  };
 }
 
+export interface ImageFormat {
+  url: string;
+}
+
+// export interface Image {
+//   id: number;
+//   documentId: string;
+//   name: string;
+//   alternativeText?: any;
+//   caption?: any;
+//   width?: number;
+//   height?: number;
+//   formats?: Formats;
+//   hash?: string;
+//   ext?: string;
+//   mime?: string;
+//   size?: number;
+//   url?: string;
+//   previewUrl?: any;
+//   provider?: string;
+//   provider_metadata?: any;
+//   createdAt?: string;
+//   updatedAt?: string;
+//   publishedAt?: string;
+// }
+
 export interface Formats {
-  large: Large;
-  small: Small;
-  medium: Medium;
-  thumbnail: Thumbnail;
+  large?: Large;
+  small?: Small;
+  medium?: Medium;
+  thumbnail?: Thumbnail;
 }
 
 export interface Large {
@@ -87,16 +106,16 @@ export interface Medium {
 }
 
 export interface Thumbnail {
-  ext: string;
-  url: string;
-  hash: string;
-  mime: string;
-  name: string;
-  path: any;
-  size: number;
-  width: number;
-  height: number;
-  sizeInBytes: number;
+  ext?: string;
+  url?: string;
+  hash?: string;
+  mime?: string;
+  name?: string;
+  path?: any;
+  size?: number;
+  width?: number;
+  height?: number;
+  sizeInBytes?: number;
 }
 
 export interface Post {

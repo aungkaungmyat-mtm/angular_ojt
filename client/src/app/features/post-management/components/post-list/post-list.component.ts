@@ -43,7 +43,7 @@ export class PostListComponent implements OnInit {
   @ViewChildren(NgbdSortableHeader) headers!: QueryList<NgbdSortableHeader>;
 
   ngOnInit(): void {
-    this.sortOption = 'title_asc';
+    this.sortOption = 'createdAt_desc';
     this.loadUser();
   }
 
@@ -92,7 +92,7 @@ export class PostListComponent implements OnInit {
 
   get sortOption(): string {
     if (!this.postService.sortColumn || this.postService.sortDirection === '') {
-      return 'title_asc';
+      return 'createdAt_desc';
     } else {
       return `${this.postService.sortColumn}_${this.postService.sortDirection}`;
     }

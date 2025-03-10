@@ -6,9 +6,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { Router, RouterLink } from '@angular/router';
 
 
-import { UserService } from '../../services/user.service';
 import { User } from '../../../auth/interfaces/auth-interfaces';
-
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -31,7 +30,6 @@ export class UserProfileComponent implements OnInit {
     this.userService.getCurrentUser().subscribe({
       next: res => {
         this.userProfileData = res;
-        console.log("date is",this.userProfileData.date_of_birth);
       },
       error: err => {
         console.error(err);
@@ -46,7 +44,6 @@ export class UserProfileComponent implements OnInit {
       return this.defaultImage; // If user has no image, show default
     }
   }
-
 
   closeProfile(): void {
     this.userService.closeProfile();

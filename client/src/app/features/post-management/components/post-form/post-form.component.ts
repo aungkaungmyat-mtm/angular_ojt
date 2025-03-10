@@ -98,7 +98,6 @@ export class PostFormComponent implements OnInit {
         author: this.user.id,
       },
     };
-    console.log(postData);
     if (this.documentId) {
       this.editPost(postData, this.documentId);
     } else {

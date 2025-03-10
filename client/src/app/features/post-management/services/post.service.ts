@@ -7,7 +7,7 @@ import {
   delay,
   map,
   Observable,
-  of,
+  shareReplay,
   Subject,
   switchMap,
   tap,
@@ -40,7 +40,17 @@ export class PostService {
     sortDirection: '',
   };
 
+  // Cache for all posts
+  private postsCache$!: Observable<Post[]>;
+  // Cache expiration time (e.g., 5 minutes)
+  private readonly CACHE_DURATION = 5 * 60 * 1000;
+  private cacheTimestamp: number = 0;
+
   constructor() {
+    this.initializeSearch();
+  }
+
+  private initializeSearch(): void {
     this._search$
       .pipe(
         tap(() => this._loading$.next(true)),
@@ -57,17 +67,7 @@ export class PostService {
     this._search$.next();
   }
 
-  private getPosts(
-    page: number = 1,
-    pageSize: number = API_CONFIG.defaultPageSize
-  ): Observable<PostResponse> {
-    // const params = {
-    //   'sort[0]': 'createdAt:desc',
-    //   'pagination[page]': page.toString(),
-    //   'pagination[pageSize]': pageSize.toString(),
-    // };
-
-    // return this.http.get<PostResponse>(this.apiUrl, { params }).pipe(
+  private getPostsFromApi(): Observable<PostResponse> {
     return this.http
       .get<PostResponse>(`${API_CONFIG.baseUrl}${API_CONFIG.endPoints.post}?populate=*`)
       .pipe(
@@ -82,20 +82,33 @@ export class PostService {
       );
   }
 
+  private getCachedPosts(): Observable<Post[]> {
+    const now = Date.now();
+    const isCacheExpired = now - this.cacheTimestamp > this.CACHE_DURATION;
+
+    if (!this.postsCache$ || isCacheExpired) {
+      this.postsCache$ = this.getPostsFromApi().pipe(
+        map(response => response.data),
+        tap(() => (this.cacheTimestamp = now)),
+        shareReplay(1) // Cache the last emitted value
+      );
+    }
+    return this.postsCache$;
+  }
+
   public findOne(documentId: string): Observable<PostResponse> {
     return this.http
       .get<PostResponse>(
         `${API_CONFIG.baseUrl}${API_CONFIG.endPoints.post}/${documentId}?populate[author][populate]=*`
       )
       .pipe(
-        map(response => {
-          // Ensure data is always an array, even if API returns a single object
-          const data = Array.isArray(response.data) ? response.data : [response.data];
-          return {
-            data,
-            meta: response.meta,
-          } as PostResponse;
-        }),
+        map(
+          response =>
+            ({
+              data: Array.isArray(response.data) ? response.data : [response.data],
+              meta: response.meta,
+            } as PostResponse)
+        ),
         catchError(handleError<PostResponse>('findOne'))
       );
   }
@@ -104,9 +117,7 @@ export class PostService {
     return this.http
       .post<PostResponse>(`${API_CONFIG.baseUrl}${API_CONFIG.endPoints.post}`, post)
       .pipe(
-        map(response => {
-          return response;
-        }),
+        tap(() => this.invalidateCache()),
         catchError(handleError<PostResponse>('createPost'))
       );
   }
@@ -115,9 +126,7 @@ export class PostService {
     return this.http
       .put<PostResponse>(`${API_CONFIG.baseUrl}${API_CONFIG.endPoints.post}/${documentId}`, post)
       .pipe(
-        map(response => {
-          return response;
-        }),
+        tap(() => this.invalidateCache()),
         catchError(handleError<PostResponse>('updatePost'))
       );
   }
@@ -126,42 +135,52 @@ export class PostService {
     this.http
       .delete<PostResponse>(`${API_CONFIG.baseUrl}${API_CONFIG.endPoints.post}/${documentId}`)
       .subscribe({
-        next: response => {
-          console.log('Post deleted successfully', response);
-        },
-        error: error => {
-          console.error('Error deleting post', error);
-        },
-        complete: () => {
+        next: () => {
+          this.invalidateCache();
           this.refresh();
         },
+        error: error => console.error('Error deleting post', error),
       });
   }
 
   private _search(): Observable<SearchResult> {
     const { sortColumn, sortDirection, pageSize, page, searchTerm } = this._state;
-    return this.getPosts().pipe(
-      map(response => response.data),
-      switchMap(posts => {
-        let filteredPosts = sort(posts, sortColumn, sortDirection);
 
-        filteredPosts = filteredPosts.filter(post => matches(post, searchTerm));
+    return this.getCachedPosts().pipe(
+      map(posts => {
+        let filteredPosts = this.sortPosts(posts, sortColumn, sortDirection);
+        filteredPosts = this.filterPosts(filteredPosts, searchTerm);
         const total = filteredPosts.length;
 
-        filteredPosts = filteredPosts.slice(
-          (page - 1) * pageSize,
-          (page - 1) * pageSize + pageSize
-        );
+        const paginatedPosts = this.paginatePosts(filteredPosts, page, pageSize);
 
-        return of({ posts: filteredPosts, total });
+        return { posts: paginatedPosts, total };
       })
     );
+  }
+
+  private filterPosts(posts: Post[], searchTerm: string): Post[] {
+    return posts.filter(post => matches(post, searchTerm));
+  }
+
+  private sortPosts(posts: Post[], column: SortColumn, direction: string): Post[] {
+    return sort(posts, column, direction);
+  }
+
+  private paginatePosts(posts: Post[], page: number, pageSize: number): Post[] {
+    return posts.slice((page - 1) * pageSize, (page - 1) * pageSize + pageSize);
+  }
+
+  private invalidateCache(): void {
+    this.postsCache$ = null as any;
+    this.cacheTimestamp = 0;
   }
 
   public refresh(): void {
     this._search$.next();
   }
 
+  // Getters
   get posts$(): Observable<Post[]> {
     return this._posts$.asObservable();
   }
@@ -177,53 +196,46 @@ export class PostService {
   get page(): number {
     return this._state.page;
   }
-
   get pageSize(): number {
     return this._state.pageSize;
   }
-
   get searchTerm(): string {
     return this._state.searchTerm;
   }
-
   get sortColumn(): SortColumn {
     return this._state.sortColumn;
   }
-
   get sortDirection(): string {
     return this._state.sortDirection;
   }
 
-  // State setters
-  set page(page: number) {
-    this._set({ page });
-  }
-
-  set pageSize(pageSize: number) {
-    this._set({ pageSize });
-  }
-
-  set searchTerm(searchTerm: string) {
-    this._set({ searchTerm });
-  }
-
-  set sortColumn(sortColumn: SortColumn) {
-    this._set({ sortColumn });
-  }
-
-  set sortDirection(sortDirection: SortDirection) {
-    this._set({ sortDirection });
-  }
-
-  private _set(patch: Partial<State>) {
+  // Setters
+  private _set(patch: Partial<State>): void {
     Object.assign(this._state, patch);
     this._search$.next();
   }
+
+  set page(page: number) {
+    this._set({ page });
+  }
+  set pageSize(pageSize: number) {
+    this._set({ pageSize });
+  }
+  set searchTerm(searchTerm: string) {
+    this._set({ searchTerm });
+  }
+  set sortColumn(sortColumn: SortColumn) {
+    this._set({ sortColumn });
+  }
+  set sortDirection(sortDirection: SortDirection) {
+    this._set({ sortDirection });
+  }
 }
 
+// Keep the helper functions outside the class
 const compare = (v1: string | number, v2: string | number) => (v1 < v2 ? -1 : v1 > v2 ? 1 : 0);
 
-function matches(post: Post, term: string) {
+function matches(post: Post, term: string): boolean {
   return (
     post.title.toLowerCase().includes(term.toLowerCase()) ||
     post.author.username.toLowerCase().includes(term.toLowerCase())
@@ -231,22 +243,18 @@ function matches(post: Post, term: string) {
 }
 
 function sort(posts: Post[], column: SortColumn, direction: string): Post[] {
-  if (direction === '' || column === '') {
-    return posts;
-  } else {
-    return [...posts].sort((a, b) => {
-      if (column === 'title') {
-        return direction === 'asc'
-          ? a.title.localeCompare(b.title)
-          : b.title.localeCompare(a.title);
-      }
-      if (column === 'author') {
-        return direction === 'asc'
-          ? a.author.username.localeCompare(b.author.username)
-          : b.author.username.localeCompare(a.author.username);
-      }
-      const res = compare(a[column], b[column]);
-      return direction === 'asc' ? res : -res;
-    });
-  }
+  if (!direction || !column) return posts;
+
+  return [...posts].sort((a, b) => {
+    if (column === 'title') {
+      return direction === 'asc' ? a.title.localeCompare(b.title) : b.title.localeCompare(a.title);
+    }
+    if (column === 'author') {
+      return direction === 'asc'
+        ? a.author.username.localeCompare(b.author.username)
+        : b.author.username.localeCompare(a.author.username);
+    }
+    const res = compare(a[column], b[column]);
+    return direction === 'asc' ? res : -res;
+  });
 }
