@@ -16,6 +16,7 @@ export class PostDetailComponent {
   private readonly postService = inject(PostService);
   private readonly route = inject(ActivatedRoute);
   post: Post | null = null;
+  defaultImage = 'https://th.bing.com/th/id/OIP.QOMRexd-LyIorC_N-w1bvwAAAA?rs=1&pid=ImgDetMain';
 
   private readonly documentId: string = this.route.snapshot.paramMap.get('documentId')!;
 
@@ -30,5 +31,12 @@ export class PostDetailComponent {
       },
       error: err => console.error('Post fetch error:', err),
     });
+  }
+
+  getAuthorAvatarBackground(): string {
+    const url = this.post?.author?.image?.url
+      ? `http://localhost:1337${this.post.author.image.url}`
+      : this.defaultImage;
+    return `url(${url}) center/cover`;
   }
 }

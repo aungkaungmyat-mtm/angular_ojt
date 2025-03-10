@@ -7,15 +7,15 @@
     </div>
   </div>
   <div class="author-section">
-    <div class="author-avatar" [style.background]="'url(http://localhost:1337' + post.author.image.url + ') center/cover'">
-    </div>
+    <div class="author-avatar" [style.background]="getAuthorAvatarBackground()"> </div>
 
     <div class="author-info">
       <div class="author-name">
         <p>{{ post.author.username }}</p>
       </div>
-      <div class="author-bio" *ngIf="post.author.bio">
-        {{ post.author.job }} | {{ post.author.bio }}
+      <div class="author-bio" *ngIf="post.author.job || post.author.bio">
+        {{ post.author.job ? post.author.job + ' | ' : '' }}
+        {{ post.author.bio ? post.author.bio : '' }}
       </div>
     </div>
   </div>
