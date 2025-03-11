@@ -50,6 +50,7 @@ export class PostListComponent implements OnInit {
   ngOnInit(): void {
     this.sortOption = 'createdAt_desc';
     this.loadUser();
+    this.postService.invalidateCache();
   }
 
   private async loadUser(): Promise<void> {
