@@ -243,18 +243,22 @@ function matches(post: Post, term: string): boolean {
 }
 
 function sort(posts: Post[], column: SortColumn, direction: string): Post[] {
-  if (!direction || !column) return posts;
-
-  return [...posts].sort((a, b) => {
-    if (column === 'title') {
-      return direction === 'asc' ? a.title.localeCompare(b.title) : b.title.localeCompare(a.title);
-    }
-    if (column === 'author') {
-      return direction === 'asc'
-        ? a.author.username.localeCompare(b.author.username)
-        : b.author.username.localeCompare(a.author.username);
-    }
-    const res = compare(a[column], b[column]);
-    return direction === 'asc' ? res : -res;
-  });
+  if (direction === '' || column === '') {
+    return posts;
+  } else {
+    return [...posts].sort((a, b) => {
+      if (column === 'title') {
+        return direction === 'asc'
+          ? a.title.localeCompare(b.title)
+          : b.title.localeCompare(a.title);
+      }
+      if (column === 'author') {
+        return direction === 'asc'
+          ? a.author.username.localeCompare(b.author.username)
+          : b.author.username.localeCompare(a.author.username);
+      }
+      const res = compare(a[column], b[column]);
+      return direction === 'asc' ? res : -res;
+    });
+  }
 }

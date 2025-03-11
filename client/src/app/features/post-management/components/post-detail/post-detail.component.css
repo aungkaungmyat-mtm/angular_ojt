@@ -29,7 +29,7 @@
     display: flex;
     gap: 20px;
 }
-
+/*
 .post-content {
     padding: 40px;
 }
@@ -38,6 +38,21 @@
     font-size: 1.1em;
     margin-bottom: 20px;
     color: #444;
+} */
+
+.post-content {
+  padding: 10px;
+  word-wrap: break-word; /* This ensures long words break to the next line */
+  overflow-wrap: break-word; /* Additional rule for word breaking */
+  word-break: break-word; /* Ensures long words break and stay inside */
+}
+
+.content-text {
+  font-size: 1.1em;
+  margin-bottom: 20px;
+
+  color: #444;
+  white-space: normal; /* Ensures text doesn't stay on a single line */
 }
 
 .author-section {

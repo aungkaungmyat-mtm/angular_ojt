@@ -1,5 +1,6 @@
 .post-form-container {
   margin-top: 2rem;
+  margin-bottom: 2rem;
 }
 
 .card {
@@ -19,6 +20,7 @@
   font-weight: bold;
 }
 
+
 .card-body {
   padding: 2rem;
 }
@@ -37,7 +39,7 @@
 }
 
 .form-control-lg {
-  font-size: 1.1rem;
+  font-size: 16px;
 }
 
 .invalid-feedback {

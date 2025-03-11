@@ -1,3 +1,4 @@
+import { QuillModule } from 'ngx-quill';
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -12,7 +13,7 @@ import { PostService } from '../../services/post.service';
 
 @Component({
   selector: 'app-post-form',
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, QuillModule],
   templateUrl: './post-form.component.html',
   styleUrl: './post-form.component.css',
 })
@@ -30,13 +31,16 @@ export class PostFormComponent implements OnInit {
   documentId: string | null = null;
   user: User | null = null;
 
+
   constructor() {
     this.documentId = this.route.snapshot.paramMap.get('documentId');
     this.postForm = this.formBuilder.group({
       title: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
-      content: ['', [Validators.required]],
+      content: ['', [Validators.required, Validators.maxLength(500)]],
+      description: ['', [Validators.required]],
     });
   }
+
   ngOnInit(): void {
     if (this.documentId) {
       this.postService.findOne(this.documentId).subscribe({
@@ -96,6 +100,7 @@ export class PostFormComponent implements OnInit {
         title: this.postForm.value.title,
         content: this.postForm.value.content,
         author: this.user.id,
+        description: this.postForm.value.description,
       },
     };
     if (this.documentId) {
@@ -118,4 +123,23 @@ export class PostFormComponent implements OnInit {
   get content() {
     return this.postForm.get('content');
   }
+
+  get description() {
+    return this.postForm.get('description');
+  }
+
+  editorModules = {
+    toolbar: [
+      ['bold', 'italic', 'underline', 'strike'],
+      ['blockquote', 'code-block'],
+      [{ list: 'ordered' }, { list: 'bullet' }],
+      [{ align: [] }],
+      [{ header: [1, 2, 3, 4, 5, 6, false] }],
+      [{ color: [] }, { background: [] }],
+      ['image'],
+      ['clean'],
+    ],
+  };
+
+
 }

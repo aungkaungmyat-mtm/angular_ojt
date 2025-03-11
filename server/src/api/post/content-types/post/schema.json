@@ -22,6 +22,9 @@
       "relation": "manyToOne",
       "target": "plugin::users-permissions.user",
       "inversedBy": "posts"
+    },
+    "description": {
+      "type": "richtext"
     }
   }
 }
