@@ -1,6 +1,6 @@
 nav {
   background-color: #457b9d;
-
+  padding-left: 60px;
 }
 
 .navbarNav a:hover{
@@ -21,6 +21,7 @@ nav {
   display: block;
 } */
  .nav-item{
+
   margin-right: 25px;
   align-items: center;
   justify-content: center;
@@ -38,7 +39,7 @@ nav {
   height: 40px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid darkblue;
+  border: 2px solid blue;
 }
 
 

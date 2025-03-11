@@ -46,7 +46,11 @@ textarea{
   font-size: 16px;
   background: #f1faee;
   color: black;
+  /* overflow: hidden; */
 }
+
+
+
 
 input:focus {
   border-color: #457b9d;

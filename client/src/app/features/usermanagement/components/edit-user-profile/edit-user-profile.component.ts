@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from './../../services/user.service';
+import { Inject } from '@angular/core';
 
 import { NgIf } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -13,18 +14,18 @@ import { User } from '../../../../core/interfaces/user';
   styleUrl: './edit-user-profile.component.css',
 })
 export class EditUserProfileComponent implements OnInit {
-  editUserForm: FormGroup; // Declare a form group
+  editUserForm: FormGroup;
   instanceId: number = 0;
   selectedFile: File | null = null;
   imagePreview: string | null = null;
 
   constructor(
-    private fb: FormBuilder, // Inject FormBuilder
+    private fb: FormBuilder,
     private userService: UserService,
     private router: Router,
     private activateRoute: ActivatedRoute
   ) {
-    // Initialize form group
+
     this.editUserForm = this.fb.group({
       username: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
@@ -121,7 +122,8 @@ export class EditUserProfileComponent implements OnInit {
     this.userService.editUserProfile(updatePayload, this.instanceId).subscribe({
       next: () => {
         alert('Profile updated successfully');
-        window.location.reload();
+        // window.location.reload();
+        this.router.navigate(['/user/profile']);
       },
       error: error => {
         console.error('Error updating profile:', error);
