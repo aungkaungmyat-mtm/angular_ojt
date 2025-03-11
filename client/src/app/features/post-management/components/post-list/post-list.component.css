@@ -73,4 +73,67 @@ th:last-child {
 
 .card-text {
   margin-bottom: 15px;
+  /* border : 1px solid red; */
+  /* height: inherit; */
 }
+
+/* Style the Quill container */
+.ql-container {
+  border: 1px solid red !important;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+
+}
+
+/* Style the Quill editor content */
+.ql-editor {
+  background: #f9f9f9;
+  padding: 15px;
+  border-radius: 8px;
+
+}
+
+/* Style headings */
+.ql-editor h1 {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+}
+
+.ql-editor h2 {
+  font-size: 20px;
+  font-weight: bold;
+  color: #444;
+}
+
+/* Style paragraphs */
+.ql-editor p {
+  line-height: 1.6;
+  color: #555;
+}
+
+/* Custom styling for links */
+.ql-editor a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.ql-editor a:hover {
+  text-decoration: underline;
+}
+
+/* Custom blockquotes */
+.ql-editor blockquote {
+  border-left: 4px solid #007bff;
+  padding-left: 10px;
+  color: #666;
+  font-style: italic;
+}
+
+/* Custom styling for images */
+.ql-editor img {
+  max-width: 100%;
+  border-radius: 5px;
+}
+
+

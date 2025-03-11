@@ -1,3 +1,4 @@
+import { SafeHtml } from '@angular/platform-browser';
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import {
@@ -249,4 +250,6 @@ function sort(posts: Post[], column: SortColumn, direction: string): Post[] {
       return direction === 'asc' ? res : -res;
     });
   }
+
+
 }

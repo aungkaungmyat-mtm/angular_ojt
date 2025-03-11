@@ -173,9 +173,9 @@
                   {{ post.updatedAt | relativeTime }}
                 </small>
               </div>
-              <p class="card-text">
-                {{ post.content }}
-              </p>
+
+              <p>{{post.content}}</p>
+
             </div>
             <div class="action" *ngIf="user!.id == post.author.id">
               <button class="btn btn-primary btn-sm" [routerLink]="['/post/edit', post.documentId]"

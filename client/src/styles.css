@@ -1,6 +1,84 @@
 /* You can add global styles to this file, and also import other style files */
+@import "quill/dist/quill.snow.css";
+@import "quill/dist/quill.bubble.css";
 
 html, body { height: 1vh; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+
+
+/* Ensure toolbar is aligned properly */
+.ql-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+
+  padding: 8px;
+  background-color: #f8f9fa;
+  border-radius: 8px 8px 0 0;
+
+}
+
+/* Align toolbar button groups correctly */
+.ql-toolbar .ql-formats {
+  display: flex;
+  align-items: center;
+  border : 1px solid #ccc;
+  margin-right: 8px;
+}
+
+/* Fix alignment button positioning */
+.ql-toolbar .ql-formats:nth-last-child(1) {
+  margin-left: auto;
+
+}
+
+
+
+.ql-toolbar button:hover {
+  background-color: #e0e0e0;
+}
+
+/* Fix placeholder text */
+.ql-editor.ql-blank::before {
+  font-style: normal !important;
+  font-size: 16px;
+  color: #a0a0a0; /* Lighter color */
+
+}
+
+/* Ensure the editor field has a border-radius */
+.ql-container {
+  border-radius: 0 0 8px 8px;
+  overflow: hidden;
+  border: 1px solid #ccc;
+}
+
+/* Editor content area */
+.ql-editor {
+  min-height: 150px;
+  padding: 10px;
+  font-size: 16px;
+  font-style: normal !important;
+  border-radius: 0 0 8px 8px;
+}
+
+/* Placeholder text styling */
+.ql-editor.ql-blank::before {
+  font-style: normal !important;
+  font-size: 16px;
+  color: #a0a0a0;
+}
+.richtext{
+  font-size: 1.1rem;
+  height:200px;
+  width: 100%;
+  border-radius: 8px;
+  border-color: 1px solid #ccc;
+
+}
+
 
 

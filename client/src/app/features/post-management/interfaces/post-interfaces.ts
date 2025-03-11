@@ -6,6 +6,7 @@ export interface PostRequest {
     documentId?: string;
     title: string;
     content: string;
+    description: string;
     author: number;
   };
 }
@@ -13,6 +14,7 @@ export interface PostRequest {
 export interface Post {
   id: number;
   documentId: string;
+  description: string;
   title: string;
   content: string;
   createdAt: string;
