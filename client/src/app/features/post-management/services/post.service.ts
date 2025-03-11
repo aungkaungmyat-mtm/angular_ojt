@@ -171,7 +171,7 @@ export class PostService {
     return posts.slice((page - 1) * pageSize, (page - 1) * pageSize + pageSize);
   }
 
-  private invalidateCache(): void {
+  invalidateCache(): void {
     this.postsCache$ = null as any;
     this.cacheTimestamp = 0;
   }

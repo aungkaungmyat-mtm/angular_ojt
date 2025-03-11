@@ -30,7 +30,7 @@ export class UserService {
 
   //for header image testing
   getCurrentUser(): Observable<User> {
-    return this.http.get<User>(`${API_CONFIG.baseUrl}${API_CONFIG.endPoints.user}/me?populate=*`);
+    return this.http.get<User>(`${API_CONFIG.baseUrl}${API_CONFIG.endPoints.user}/me?populate=role`);
   }
 
   editUserProfile(editData: User, id: number): Observable<User> {
@@ -47,7 +47,7 @@ export class UserService {
 
   getUserProfileById(id: number): Observable<User> {
     return this.http.get<User>(
-      `${API_CONFIG.baseUrl}${API_CONFIG.endPoints.user}/${id}?populate=*`
+      `${API_CONFIG.baseUrl}${API_CONFIG.endPoints.user}/${id}`
     );
   }
 
