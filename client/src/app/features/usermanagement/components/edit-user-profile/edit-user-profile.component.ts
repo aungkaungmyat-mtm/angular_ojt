@@ -6,10 +6,11 @@ import { NgIf } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { User } from '../../../../core/interfaces/user';
+import { MatError } from '@angular/material/form-field';
 
 @Component({
   selector: 'app-edit-user-profile',
-  imports: [ReactiveFormsModule, NgIf, RouterLink],
+  imports: [ReactiveFormsModule, NgIf, RouterLink, MatError],
   templateUrl: './edit-user-profile.component.html',
   styleUrl: './edit-user-profile.component.css',
 })
@@ -122,12 +123,18 @@ export class EditUserProfileComponent implements OnInit {
     this.userService.editUserProfile(updatePayload, this.instanceId).subscribe({
       next: () => {
         alert('Profile updated successfully');
-        // window.location.reload();
-        this.router.navigate(['/user/profile']);
+        window.location.reload();
+        // this.router.navigate(['/user/profile']);
       },
       error: error => {
         console.error('Error updating profile:', error);
       },
     });
+  }
+  get email() {
+    return this.editUserForm.get('email');
+  }
+  get username() {
+    return this.editUserForm.get('username');
   }
 }

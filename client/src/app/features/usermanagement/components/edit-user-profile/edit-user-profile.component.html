@@ -4,11 +4,18 @@
   <div class="form-group">
     <label for="username">Username</label>
     <input type="text" id="username" formControlName="username" required>
+    <mat-error *ngIf="username?.hasError('required') && username?.dirty">
+      username is required
+    </mat-error>
   </div>
 
   <div class="form-group">
     <label for="email">Email</label>
     <input type="email" id="email" formControlName="email" required>
+    <mat-error *ngIf="email?.hasError('required') && email?.dirty">
+      Email is required
+    </mat-error>
+    <mat-error *ngIf="email?.hasError('email') && email?.dirty"> Email is invalid </mat-error>
   </div>
 
   <div class="form-group">
@@ -42,7 +49,7 @@
   </div>
 
   <div class="button-group">
-    <button routerLink="/user/profile">Back to Profile</button>
-    <button (click)="editUserProfile()">Update Profile</button>
+    <button routerLink="/user/profile" >Back to Profile</button>
+    <button (click)="editUserProfile()" [disabled]="editUserForm.invalid">Update Profile</button>
   </div>
 </form>

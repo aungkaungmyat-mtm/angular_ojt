@@ -68,7 +68,7 @@ export class CsvService {
     hiddenElement.target = '_blank';
     hiddenElement.download = `${name}.csv`;
     hiddenElement.click();
-    document.body.removeChild(hiddenElement);
+
 
     URL.revokeObjectURL(url);
   }

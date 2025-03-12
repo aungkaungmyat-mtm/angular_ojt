@@ -48,7 +48,10 @@ textarea{
   color: black;
   /* overflow: hidden; */
 }
+mat-error{
+  color: red;
 
+}
 
 
 
@@ -85,6 +88,16 @@ button {
   cursor: pointer;
   transition: 0.3s;
   text-align: center;
+}
+button:disabled{
+  background: #adb5bd;
+  color: black;
+  cursor: not-allowed;
+}
+
+button:disabled:hover{
+  background: #adb5bd;
+  color: black;
 }
 
 button:hover {

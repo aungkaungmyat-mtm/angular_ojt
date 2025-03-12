@@ -55,7 +55,7 @@ export class UserlistsComponent implements OnInit {
     this.loadUsers();
     this.userService.getCurrentUser().subscribe({
       next: data => {
-        console.log('data is', data);
+
         this.user = data;
         this.isAdmin();
 
