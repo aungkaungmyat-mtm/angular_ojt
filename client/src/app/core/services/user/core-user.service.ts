@@ -14,7 +14,6 @@ export class CoreUserService {
 
   constructor() {
     this.loadUser();
-
   }
 
   // private async loadUser(): Promise<User | null> {
@@ -36,7 +35,7 @@ export class CoreUserService {
       next: user => {
         this.userSubject.next(user);
         console.log('loaduser', user);
-        console.log("loaduser subject", this.user$);
+        console.log('loaduser subject', this.user$);
       },
       error: error => {
         console.error('Error retrieving user', error);
@@ -45,12 +44,14 @@ export class CoreUserService {
     });
   }
 
-  upateProfile(user: User): void {
-    this.http.put<User>(`${environment.apiBaseUrl}/api/users/me?populate[image]=true`, user).pipe(
-      tap(response => {
-        console.log('response', response);
-        this.userSubject.next(response);
-      })
-    );
+  updateProfile(user: User): void {
+    this.http
+      .put<User>(`${environment.apiBaseUrl}/api/users/me?populate[image]=true`, user)
+      .pipe(
+        tap(response => {
+          this.userSubject.next(response);
+        })
+      )
+      .subscribe();
   }
 }

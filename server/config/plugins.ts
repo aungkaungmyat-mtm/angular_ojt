@@ -1,16 +1,5 @@
 export default ({ env }) => ({
-  // email: {
-  //   config: {
-  //     provider: "sendgrid",
-  //     providerOptions: {
-  //       apiKey: env("SENDGRID_API_KEY"),
-  //     },
-  //     settings: {
-  //       defaultFrom: env("SENDGRID_DEFAULT_FROM"),
-  //       defaultReplyTo: env("SENDGRID_DEFAULT_TO"),
-  //     },
-  //   },
-  // },
+  
   email: {
     config: {
       provider: "nodemailer",
@@ -23,8 +12,11 @@ export default ({ env }) => ({
         },
       },
       settings: {
-        defaultFrom: env("EMAIL_DEFAULT_FROM", "mtmkaungkhant12@gmail.com"),
-        defaultReplyTo: env("EMAIL_DEFAULT_REPLY_TO", "mtmkaungkhant12@gmail.com"),
+        defaultFrom: env("SMTP_DEFAULT_FROM", "mtmkaungkhant12@gmail.com"),
+        defaultReplyTo: env(
+          "SMTP_DEFAULT_REPLY_TO",
+          "mtmkaungkhant12@gmail.com"
+        ),
       },
     },
   },

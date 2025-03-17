@@ -79,7 +79,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
         },
         error: error => {
           console.error('Error while registering: ', error);
-          this.failed = error.error.error.message;
+          this.failed = error?.error?.error?.message ?? 'An error occurred. Please try again.';
         },
       });
     this.subscription.add(registerSub);

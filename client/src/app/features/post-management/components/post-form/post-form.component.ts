@@ -1,6 +1,6 @@
 import { QuillModule } from 'ngx-quill';
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -10,6 +10,7 @@ import { SnackbarService } from '../../../../core/services/snackbar/snackbar.ser
 import { CoreUserService } from '../../../../core/services/user/core-user.service';
 import { PostRequest } from '../../interfaces/post-interfaces';
 import { PostService } from '../../services/post.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-post-form',
@@ -17,7 +18,7 @@ import { PostService } from '../../services/post.service';
   templateUrl: './post-form.component.html',
   styleUrl: './post-form.component.css',
 })
-export class PostFormComponent implements OnInit {
+export class PostFormComponent implements OnInit, OnDestroy {
   private readonly route = inject(ActivatedRoute);
   private readonly formBuilder = inject(FormBuilder);
   private readonly router = inject(Router);
@@ -26,6 +27,7 @@ export class PostFormComponent implements OnInit {
   private readonly loadingService = inject(LoadingService);
   private readonly snackbar = inject(SnackbarService);
   private readonly userService = inject(CoreUserService);
+  private userSubscription: Subscription = new Subscription();
 
   postForm: FormGroup;
   documentId: string | null = null;
@@ -109,14 +111,21 @@ export class PostFormComponent implements OnInit {
     }
   }
 
-  private async loadUser(): Promise<void> {
-    try {
-      this.userService.user$.subscribe(user => {
+  private loadUser(): void {
+    this.userSubscription = this.userService.user$.subscribe({
+      next: user => {
         this.user = user;
-      });
-    } catch (error) {
-      console.error('Failed to load user', error);
-      // Show an error message, etc.
+      },
+      error: error => {
+        console.error('Failed to load user', error);
+        // Show an error message, etc.
+      },
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.userSubscription) {
+      this.userSubscription.unsubscribe();
     }
   }
 
