@@ -23,12 +23,16 @@ export class HeaderComponent {
   private readonly snackBar = inject(SnackbarService);
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
-  private readonly userService = inject(UserService);
   private readonly coreUserService = inject(CoreUserService);
   apiUrl = environment.apiBaseUrl;
 
+
   user$ = this.coreUserService.user$;
   defaultImage = 'https://th.bing.com/th/id/OIP.QOMRexd-LyIorC_N-w1bvwAAAA?rs=1&pid=ImgDetMain';
+
+  constructor() {
+    this.coreUserService.loadUser();
+  }
 
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;

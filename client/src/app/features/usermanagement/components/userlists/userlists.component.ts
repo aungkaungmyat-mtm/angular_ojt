@@ -85,7 +85,7 @@ export class UserlistsComponent implements OnInit {
   }
 
   deleteUser(id: number) {
-    console.log(id);
+
     if (confirm('Are you sure you want to delete this user?')) {
       this.userService.deleteUser(id).subscribe({
         next: () => {
