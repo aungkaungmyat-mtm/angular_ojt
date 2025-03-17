@@ -25,15 +25,12 @@ export interface LoginResponse {
     username: string;
     email: string;
   };
-
-
 }
 
 export interface resetPasswordRequest {
   code: string;
   password: string;
   passwordConfirmation: string;
-
 }
 export interface Role {
   id: number;
@@ -68,10 +65,8 @@ export interface Image {
 
 export interface User {
   id: number;
-
   username: string;
   email: string;
-  age: number;
   address: string;
   job: string;
   bio: string;
@@ -85,5 +80,3 @@ export interface UpdatePasswordRequest {
   password: string;
   passwordConfirmation: string;
 }
-
-

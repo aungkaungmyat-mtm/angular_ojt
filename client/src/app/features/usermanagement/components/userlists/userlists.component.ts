@@ -55,10 +55,8 @@ export class UserlistsComponent implements OnInit {
     this.loadUsers();
     this.userService.getCurrentUser().subscribe({
       next: data => {
-
         this.user = data;
         this.isAdmin();
-
       },
       error: err => console.error('Error fetching user:', err),
     });
@@ -66,7 +64,7 @@ export class UserlistsComponent implements OnInit {
 
   isAdmin(): void {
     if (this.user?.role?.name === 'Admin') {
-     this.displayedColumns.push('delete');
+      this.displayedColumns.push('delete');
     }
   }
 
@@ -98,14 +96,7 @@ export class UserlistsComponent implements OnInit {
       });
     }
   }
-
-  public saveDataInCSV(name: string, data: Array<any>): void {
-    let csvContent = this.csvService.saveDataInCsv(data);
-
-    let hiddenElement = document.createElement('a');
-    hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csvContent);
-    hiddenElement.target = '_blank';
-    hiddenElement.download = name + '.csv';
-    hiddenElement.click();
+  downloadUserList(): void {
+    this.csvService.downloadCSV('UserList', this.dataSource.data);
   }
 }

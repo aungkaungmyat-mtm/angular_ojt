@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { API_CONFIG } from '../../../core/constants/api';
 import { User } from '../../../core/interfaces/user';
+import { environment } from '../../../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root',
@@ -12,11 +12,11 @@ export class UserService {
   constructor(private http: HttpClient, private router: Router) {}
 
   getUsers(): Observable<User[]> {
-    return this.http.get<User[]>(`${API_CONFIG.baseUrl}${API_CONFIG.endPoints.user}`);
+    return this.http.get<User[]>(`${environment.apiBaseUrl}/api/users`);
   }
 
   deleteUser(id: number): Observable<User[]> {
-    return this.http.delete<User[]>(`${API_CONFIG.baseUrl}${API_CONFIG.endPoints.user}/${id}`);
+    return this.http.delete<User[]>(`${environment.apiBaseUrl}/api/users/${id}`);
   }
 
   // it use in edit user profile
@@ -30,11 +30,11 @@ export class UserService {
 
   //for header image testing
   getCurrentUser(): Observable<User> {
-    return this.http.get<User>(`${API_CONFIG.baseUrl}${API_CONFIG.endPoints.user}/me?populate[image]=true&populate[role]=true`);
+    return this.http.get<User>(`${environment.apiBaseUrl}/api/users/me?populate[image]=true&populate[role]=true`);
   }
 
   editUserProfile(editData: User, id: number): Observable<User> {
-    return this.http.put<User>(`${API_CONFIG.baseUrl}${API_CONFIG.endPoints.user}/${id}`, editData);
+    return this.http.put<User>(`${environment.apiBaseUrl}/api/users/${id}`, editData);
   }
 
   // Upload profile image
@@ -42,12 +42,12 @@ export class UserService {
     const formData = new FormData();
     formData.append('files', file);
 
-    return this.http.post<any>('http://localhost:1337/api/upload', formData);
+    return this.http.post<any>(`${environment.apiBaseUrl}/api/upload`, formData);
   }
 
   getUserProfileById(id: number): Observable<User> {
     return this.http.get<User>(
-      `${API_CONFIG.baseUrl}${API_CONFIG.endPoints.user}/${id}?populate=image`
+      `${environment.apiBaseUrl}/api/users/${id}?populate=image`
     );
   }
 

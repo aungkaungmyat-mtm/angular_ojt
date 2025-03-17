@@ -7,7 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '../../../../core/interfaces/user';
 import { LoadingService } from '../../../../core/services/loading/loading.service';
 import { SnackbarService } from '../../../../core/services/snackbar/snackbar.service';
-import { UserService } from '../../../../core/services/user/user.service';
+import { CoreUserService } from '../../../../core/services/user/core-user.service';
 import { PostRequest } from '../../interfaces/post-interfaces';
 import { PostService } from '../../services/post.service';
 
@@ -25,12 +25,11 @@ export class PostFormComponent implements OnInit {
   private readonly postService = inject(PostService);
   private readonly loadingService = inject(LoadingService);
   private readonly snackbar = inject(SnackbarService);
-  private readonly userService = inject(UserService);
+  private readonly userService = inject(CoreUserService);
 
   postForm: FormGroup;
   documentId: string | null = null;
   user: User | null = null;
-
 
   constructor() {
     this.documentId = this.route.snapshot.paramMap.get('documentId');
@@ -111,9 +110,14 @@ export class PostFormComponent implements OnInit {
   }
 
   private async loadUser(): Promise<void> {
-    await this.userService.getUser().then(user => {
-      this.user = user;
-    });
+    try {
+      this.userService.user$.subscribe(user => {
+        this.user = user;
+      });
+    } catch (error) {
+      console.error('Failed to load user', error);
+      // Show an error message, etc.
+    }
   }
 
   get title() {
@@ -140,6 +144,4 @@ export class PostFormComponent implements OnInit {
       ['clean'],
     ],
   };
-
-
 }

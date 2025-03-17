@@ -23,8 +23,8 @@ export default ({ env }) => ({
         },
       },
       settings: {
-        defaultFrom: "mtmkaungkhant12@gmail.com",
-        defaultReplyTo: "mtmkaungkhant12@gmail.com",
+        defaultFrom: env("EMAIL_DEFAULT_FROM", "mtmkaungkhant12@gmail.com"),
+        defaultReplyTo: env("EMAIL_DEFAULT_REPLY_TO", "mtmkaungkhant12@gmail.com"),
       },
     },
   },

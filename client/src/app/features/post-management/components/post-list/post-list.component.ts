@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 import { User } from '../../../../core/interfaces/user';
 import { RelativeTimePipe } from '../../../../core/pipes/relative-time.pipe';
 import { SnackbarService } from '../../../../core/services/snackbar/snackbar.service';
-import { UserService } from '../../../../core/services/user/user.service';
+import { CoreUserService } from '../../../../core/services/user/core-user.service';
 import { NgbdSortableHeader, SortColumn, SortDirection } from '../../directives/post.directive';
 import { Post, SortEvent } from '../../interfaces/post-interfaces';
 import { PostService } from '../../services/post.service';
@@ -33,7 +33,7 @@ import { PostService } from '../../services/post.service';
 export class PostListComponent implements OnInit {
   private readonly snackbar = inject(SnackbarService);
   private readonly postService = inject(PostService);
-  private readonly userService = inject(UserService);
+  private readonly userService = inject(CoreUserService);
   // private readonly sanitizer = inject(DomSanitizer);
 
   posts$: Observable<Post[]> = this.postService.posts$;
@@ -54,7 +54,7 @@ export class PostListComponent implements OnInit {
   }
 
   private async loadUser(): Promise<void> {
-    await this.userService.getUser().then(user => {
+    this.userService.user$.subscribe(user => {
       this.user = user;
     });
   }
@@ -75,6 +75,7 @@ export class PostListComponent implements OnInit {
       this.snackbar.open('Post deleted successfully');
     } catch (error) {
       console.log('error', error);
+      this.snackbar.open('Failed to delete post');
     }
   }
 

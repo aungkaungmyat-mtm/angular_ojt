@@ -10,11 +10,11 @@ export interface User {
   updatedAt?: string;
   publishedAt?: string;
   address: string;
-  age: number;
+
   date_of_birth: string;
   bio: string;
   job: string;
-  image?: Image;
+  image?: ProfileImage;
   posts?: Post[];
   role: Role;
 }
@@ -25,7 +25,7 @@ export interface Role {
   description: string;
   type: string;
 }
-export interface Image {
+export interface ProfileImage {
   id: number;
   url: string;
   formats: {

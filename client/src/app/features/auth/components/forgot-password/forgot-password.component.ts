@@ -32,10 +32,10 @@ export class ForgotPasswordComponent {
         this.loadingService.hide();
         this.checkForgotPasswordSuccessful();
       },
-      error: () => {
+      error: (error) => {
         this.message = 'An error has occured';
         this.loadingService.hide();
-        console.error(Error);
+        console.error(error);
       },
     });
   }
