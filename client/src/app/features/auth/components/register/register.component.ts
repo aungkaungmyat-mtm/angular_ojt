@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatIcon } from '@angular/material/icon';
 import { MatError, MatInputModule } from '@angular/material/input';
 import { Router, RouterLink } from '@angular/router';
-import { finalize } from 'rxjs';
+import { finalize, Subscription } from 'rxjs';
 import { LoadingScreenComponent } from '../../../../core/components/loading-screen/loading-screen.component';
 import { LoadingService } from '../../../../core/services/loading/loading.service';
 import { passwordMatch } from '../../../../core/utils/validators';
@@ -25,17 +25,24 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './register.component.html',
   styleUrl: './register.component.css',
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent implements OnInit, OnDestroy {
+  private subscription: Subscription = new Subscription();
   registerForm!: FormGroup;
   showPassword = false;
   showConfirmPassword = false;
   success: string = '';
+  failed: string = '';
   constructor(
     private formbuilder: FormBuilder,
     private authService: AuthService,
     private router: Router,
     private loadingService: LoadingService
   ) {}
+  ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  }
   ngOnInit(): void {
     this.registerForm = this.formbuilder.group({
       fullName: ['', [Validators.required, Validators.minLength(3)]],
@@ -47,6 +54,8 @@ export class RegisterComponent implements OnInit {
   onSubmit(): void {
     if (this.registerForm.invalid) return;
     this.loadingService.show();
+    this.success = '';
+    this.failed = '';
 
     const registerData: RegisterRequest = {
       username: this.registerForm.value.fullName,
@@ -54,7 +63,7 @@ export class RegisterComponent implements OnInit {
       password: this.registerForm.value.password,
     };
 
-    this.authService
+    const registerSub = this.authService
       .register(registerData)
       .pipe(
         finalize(() => {
@@ -70,8 +79,10 @@ export class RegisterComponent implements OnInit {
         },
         error: error => {
           console.error('Error while registering: ', error);
+          this.failed = error?.error?.error?.message ?? 'An error occurred. Please try again.';
         },
       });
+    this.subscription.add(registerSub);
   }
 
   get fullName() {

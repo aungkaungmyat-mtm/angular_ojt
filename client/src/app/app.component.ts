@@ -17,11 +17,12 @@ import { AuthService } from './features/auth/services/auth.service';
 
 
 
+
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet, LoadingScreenComponent, HeaderComponent, FooterComponent, NgIf],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css',
+  styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
   isLoggedIn: boolean = false; // Store login state

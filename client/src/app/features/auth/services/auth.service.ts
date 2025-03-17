@@ -3,7 +3,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { jwtDecode } from 'jwt-decode';
 import { catchError, map, Observable, of, tap } from 'rxjs';
-import { API_CONFIG } from '../../../core/constants/api';
 import {
   LoginRequest,
   LoginResponse,
@@ -12,6 +11,7 @@ import {
   resetPasswordRequest,
 } from '../interfaces/auth-interfaces';
 import { UpdatePasswordRequest } from './../interfaces/auth-interfaces';
+import { environment } from '../../../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root',
@@ -23,7 +23,7 @@ export class AuthService {
 
   register(user: RegisterRequest): Observable<RegisterResponse> {
     this.clearToken();
-    return this.http.post<RegisterResponse>(`${API_CONFIG.baseUrl}/auth/local/register`, user).pipe(
+    return this.http.post<RegisterResponse>(`${environment.apiBaseUrl}/api/auth/local/register`, user).pipe(
       tap(response => {
         const token = response.jwt;
         this.setToken(token);
@@ -32,7 +32,7 @@ export class AuthService {
   }
 
   login(user: LoginRequest): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${API_CONFIG.baseUrl}/auth/local`, user).pipe(
+    return this.http.post<LoginResponse>(`${environment.apiBaseUrl}/api/auth/local`, user).pipe(
       tap(response => {
         const token = response.jwt;
         this.setToken(token);
@@ -63,7 +63,7 @@ export class AuthService {
 
   private verifyToken(token: string): Observable<boolean> {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.get(`${API_CONFIG.baseUrl}/users/me`, { headers }).pipe(
+    return this.http.get(`${environment.apiBaseUrl}/api/users/me`, { headers }).pipe(
       map(() => true),
       catchError(() => of(false))
     );
@@ -101,19 +101,19 @@ export class AuthService {
 
   forgotPassword(email: string): Observable<any> {
     // return this.http.post<any>(`${API_URL}/api/auth/forgot-password`, { email });
-    return this.http.post<any>(`${API_CONFIG.baseUrl}/auth/forgot-password`, { email });
+    return this.http.post<any>(`${environment.apiBaseUrl}/api/auth/forgot-password`, { email });
   }
 
   resetPassword(resetPasswordRequest: resetPasswordRequest): Observable<resetPasswordRequest> {
     return this.http.post<resetPasswordRequest>(
-      `${API_CONFIG.baseUrl}/auth/reset-password`,
+      `${environment.apiBaseUrl}/api/auth/reset-password`,
       resetPasswordRequest
     );
   }
 
   updatePassword(updatepassword: UpdatePasswordRequest): Observable<UpdatePasswordRequest> {
     return this.http.post<UpdatePasswordRequest>(
-      `${API_CONFIG.baseUrl}/auth/change-password`,
+      `${environment.apiBaseUrl}/api/auth/change-password`,
       updatepassword
     );
   }

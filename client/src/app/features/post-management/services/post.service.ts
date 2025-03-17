@@ -12,7 +12,6 @@ import {
   switchMap,
   tap,
 } from 'rxjs';
-import { API_CONFIG } from '../../../core/constants/api';
 import { handleError } from '../../../core/utils/http-utils';
 import { SortColumn, SortDirection } from '../directives/post.directive';
 import {
@@ -22,6 +21,7 @@ import {
   SearchResult,
   State,
 } from '../interfaces/post-interfaces';
+import { environment } from '../../../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root',
@@ -69,7 +69,7 @@ export class PostService {
 
   private getPostsFromApi(): Observable<PostResponse> {
     return this.http
-      .get<PostResponse>(`${API_CONFIG.baseUrl}${API_CONFIG.endPoints.post}?populate=*`)
+      .get<PostResponse>(`${environment.apiBaseUrl}/api/posts?populate=*`)
       .pipe(
         map(
           response =>
@@ -99,7 +99,7 @@ export class PostService {
   public findOne(documentId: string): Observable<PostResponse> {
     return this.http
       .get<PostResponse>(
-        `${API_CONFIG.baseUrl}${API_CONFIG.endPoints.post}/${documentId}?populate[author][populate]=*`
+        `${environment.apiBaseUrl}/api/posts/${documentId}?populate[author][populate]=*`
       )
       .pipe(
         map(
@@ -115,7 +115,7 @@ export class PostService {
 
   public createPost(post: PostRequest): Observable<PostResponse> {
     return this.http
-      .post<PostResponse>(`${API_CONFIG.baseUrl}${API_CONFIG.endPoints.post}`, post)
+      .post<PostResponse>(`${environment.apiBaseUrl}/api/posts`, post)
       .pipe(
         tap(() => this.invalidateCache()),
         catchError(handleError<PostResponse>('createPost'))
@@ -124,7 +124,7 @@ export class PostService {
 
   public updatePost(post: PostRequest, documentId: string): Observable<PostResponse> {
     return this.http
-      .put<PostResponse>(`${API_CONFIG.baseUrl}${API_CONFIG.endPoints.post}/${documentId}`, post)
+      .put<PostResponse>(`${environment.apiBaseUrl}/api/posts/${documentId}`, post)
       .pipe(
         tap(() => this.invalidateCache()),
         catchError(handleError<PostResponse>('updatePost'))
@@ -133,7 +133,7 @@ export class PostService {
 
   public deletePost(documentId: string): void {
     this.http
-      .delete<PostResponse>(`${API_CONFIG.baseUrl}${API_CONFIG.endPoints.post}/${documentId}`)
+      .delete<PostResponse>(`${environment.apiBaseUrl}/api/posts/${documentId}`)
       .subscribe({
         next: () => {
           this.invalidateCache();

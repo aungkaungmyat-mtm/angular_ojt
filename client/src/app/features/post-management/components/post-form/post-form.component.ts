@@ -1,15 +1,16 @@
 import { QuillModule } from 'ngx-quill';
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { User } from '../../../../core/interfaces/user';
 import { LoadingService } from '../../../../core/services/loading/loading.service';
 import { SnackbarService } from '../../../../core/services/snackbar/snackbar.service';
-import { UserService } from '../../../../core/services/user/user.service';
+import { CoreUserService } from '../../../../core/services/user/core-user.service';
 import { PostRequest } from '../../interfaces/post-interfaces';
 import { PostService } from '../../services/post.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-post-form',
@@ -17,7 +18,7 @@ import { PostService } from '../../services/post.service';
   templateUrl: './post-form.component.html',
   styleUrl: './post-form.component.css',
 })
-export class PostFormComponent implements OnInit {
+export class PostFormComponent implements OnInit, OnDestroy {
   private readonly route = inject(ActivatedRoute);
   private readonly formBuilder = inject(FormBuilder);
   private readonly router = inject(Router);
@@ -25,12 +26,12 @@ export class PostFormComponent implements OnInit {
   private readonly postService = inject(PostService);
   private readonly loadingService = inject(LoadingService);
   private readonly snackbar = inject(SnackbarService);
-  private readonly userService = inject(UserService);
+  private readonly userService = inject(CoreUserService);
+  private userSubscription: Subscription = new Subscription();
 
   postForm: FormGroup;
   documentId: string | null = null;
   user: User | null = null;
-
 
   constructor() {
     this.documentId = this.route.snapshot.paramMap.get('documentId');
@@ -110,10 +111,22 @@ export class PostFormComponent implements OnInit {
     }
   }
 
-  private async loadUser(): Promise<void> {
-    await this.userService.getUser().then(user => {
-      this.user = user;
+  private loadUser(): void {
+    this.userSubscription = this.userService.user$.subscribe({
+      next: user => {
+        this.user = user;
+      },
+      error: error => {
+        console.error('Failed to load user', error);
+        // Show an error message, etc.
+      },
     });
+  }
+
+  ngOnDestroy(): void {
+    if (this.userSubscription) {
+      this.userSubscription.unsubscribe();
+    }
   }
 
   get title() {
@@ -140,6 +153,4 @@ export class PostFormComponent implements OnInit {
       ['clean'],
     ],
   };
-
-
 }

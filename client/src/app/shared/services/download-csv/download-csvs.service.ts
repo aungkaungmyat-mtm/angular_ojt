@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DownloadCsvsService {
-
-  constructor() { }
+  constructor() {}
   public saveDataInCSV(data: Array<any>): string {
     if (data.length == 0) {
       return '';
@@ -14,12 +13,16 @@ export class DownloadCsvsService {
     let rowWithPropertyNames = propertyNames.join(',') + '\n';
     let csvContent = rowWithPropertyNames;
     let rows: string[] = [];
-    data.forEach((item) => {
+    data.forEach(item => {
       let values: string[] = [];
-      propertyNames.forEach((key) => {
+      propertyNames.forEach(key => {
         let val: any = item[key];
         if (val !== undefined && val !== null) {
-          val = new String(val);
+          val = String(val);
+          // Escape quotes and wrap in quotes if value contains commas or quotes
+          if (val.includes(',') || val.includes('"')) {
+            val = '"' + val.replace(/"/g, '""') + '"';
+          }
         } else {
           val = '';
         }

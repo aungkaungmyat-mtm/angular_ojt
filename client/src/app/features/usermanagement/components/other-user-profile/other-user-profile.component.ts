@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { MatIcon } from '@angular/material/icon';
 import { User } from '../../../auth/interfaces/auth-interfaces';
+import { environment } from '../../../../../environments/environment.development';
 
 @Component({
   selector: 'app-other-user-profile',
@@ -48,7 +49,7 @@ export class OtherUserProfileComponent implements OnInit {
 
   getUserImage(): string {
     if (this.otherUserProfileData && this.otherUserProfileData.image && this.otherUserProfileData.image.url) {
-      return `http://localhost:1337${this.otherUserProfileData.image.url}`; // If user has an image
+      return `${environment.apiBaseUrl}${this.otherUserProfileData.image.url}`; // If user has an image
     } else {
       return this.defaultImage; // If user has no image, show default
     }

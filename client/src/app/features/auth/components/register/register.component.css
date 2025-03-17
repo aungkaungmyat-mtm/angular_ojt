@@ -55,6 +55,9 @@ mat-error {
 .success-message {
   color: green;
 }
+.failed-message {
+  color: red;
+}
 
 @media (min-width: 600px) {
   .register-container {

@@ -6,7 +6,7 @@
     <input matInput (keyup)="applyFilter($event)" placeholder="Search by username or email" />
   </mat-form-field>
 
-  <button mat-raised-button color="primary" (click)="csvService.downloadCSV('UserList', dataSource.data)" *ngIf="user?.role?.name === 'Admin'">
+  <button mat-raised-button color="primary" (click)="downloadUserList()" *ngIf="user?.role?.name === 'Admin'">
     <mat-icon>download</mat-icon>
     Download
   </button>
@@ -40,7 +40,7 @@
     </ng-container>
 
     <ng-container matColumnDef="delete">
-      <th class="action" mat-header-cell *matHeaderCellDef > Action </th>
+      <th class="action" mat-header-cell *matHeaderCellDef> Action </th>
       <td class="action-row" mat-cell *matCellDef="let user">
         <!-- <button (click)="deleteUser(user.id)">Delete</button> -->
         <button class="delete" mat-stroked-button (click)="deleteUser(user.id)">
@@ -67,4 +67,3 @@
 />
 <button (click)="fileUploadSimple.click()">Import from csv</button>
 <br /><br /> -->
-

@@ -1,15 +1,18 @@
-import { NgClass } from '@angular/common';
+import { CommonModule, NgClass } from '@angular/common';
 import { Component, HostListener, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../features/auth/services/auth.service';
 import { UserService } from '../../../features/usermanagement/services/user.service';
 import { LoadingService } from '../../services/loading/loading.service';
 import { SnackbarService } from '../../services/snackbar/snackbar.service';
+import { User } from '../../interfaces/user';
+import { environment } from '../../../../environments/environment.development';
+import { CoreUserService } from '../../services/user/core-user.service';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  imports: [NgClass, RouterLink],
+  imports: [NgClass, RouterLink, CommonModule],
   styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent {
@@ -20,10 +23,16 @@ export class HeaderComponent {
   private readonly snackBar = inject(SnackbarService);
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
-  private readonly userService = inject(UserService);
+  private readonly coreUserService = inject(CoreUserService);
+  apiUrl = environment.apiBaseUrl;
 
-  user: any = null;
+
+  user$ = this.coreUserService.user$;
   defaultImage = 'https://th.bing.com/th/id/OIP.QOMRexd-LyIorC_N-w1bvwAAAA?rs=1&pid=ImgDetMain';
+
+  constructor() {
+    this.coreUserService.loadUser();
+  }
 
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
@@ -34,23 +43,6 @@ export class HeaderComponent {
     this.isScrolled = window.scrollY > 50;
   }
   isDropdownOpen = false;
-
-  ngOnInit(): void {
-    this.userService.getCurrentUser().subscribe({
-      next: user => {
-        this.user = user;
-      },
-      error: error => {
-        console.error('Error fetching user:', error);
-      },
-    });
-  }
-
-  getUserImage(): string {
-    return this.user?.image?.url
-      ? `http://localhost:1337${this.user.image.url}` // If user has an image
-      : this.defaultImage; // If user has no image, show default
-  }
 
   toggleDropdown(event: MouseEvent): void {
     event.preventDefault();
@@ -67,6 +59,7 @@ export class HeaderComponent {
     } catch (error) {
       console.error(error);
       this.loadingService.hide();
+      this.snackBar.open('Failed to log out. Please try again.');
     }
   }
 }

@@ -57,7 +57,7 @@ tr:hover {
 
 .delete {
   color: red !important;
-  border-radius: none !important;
+  border-radius: 0 !important;
 }
 
 mat-icon {

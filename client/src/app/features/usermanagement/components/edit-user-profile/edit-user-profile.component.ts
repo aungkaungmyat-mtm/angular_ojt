@@ -1,12 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from './../../services/user.service';
-import { Inject } from '@angular/core';
 
 import { NgIf } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { User } from '../../../../core/interfaces/user';
+import { ProfileImage, User } from '../../../../core/interfaces/user';
 import { MatError } from '@angular/material/form-field';
+import { environment } from '../../../../../environments/environment.development';
+import { SnackbarService } from '../../../../core/services/snackbar/snackbar.service';
+import { firstValueFrom } from 'rxjs';
+import { CoreUserService } from '../../../../core/services/user/core-user.service';
 
 @Component({
   selector: 'app-edit-user-profile',
@@ -24,8 +27,16 @@ export class EditUserProfileComponent implements OnInit {
     private fb: FormBuilder,
     private userService: UserService,
     private router: Router,
-    private activateRoute: ActivatedRoute
+    private activateRoute: ActivatedRoute,
+    private snackbar: SnackbarService,
+    private coreUserService: CoreUserService
   ) {
+    const paramValue = this.activateRoute.snapshot.paramMap.get('id');
+    if (paramValue && !isNaN(Number(paramValue))) {
+      this.instanceId = Number(paramValue);
+    } else {
+      console.error('Invalid or missing ID:', paramValue);
+    }
 
     this.editUserForm = this.fb.group({
       username: ['', Validators.required],
@@ -41,14 +52,6 @@ export class EditUserProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchUserProfileData();
-
-    const paramValue = this.activateRoute.snapshot.paramMap.get('id');
-    if (paramValue && !isNaN(Number(paramValue))) {
-      this.instanceId = Number(paramValue);
-    } else {
-      console.error('Invalid or missing ID:', paramValue);
-      return;
-    }
   }
 
   fetchUserProfileData() {
@@ -63,7 +66,7 @@ export class EditUserProfileComponent implements OnInit {
       });
 
       if (data.image?.url) {
-        this.imagePreview = `http://localhost:1337${data.image.url}`;
+        this.imagePreview = `${environment.apiBaseUrl}${data.image.url}`;
       }
     });
   }
@@ -103,33 +106,67 @@ export class EditUserProfileComponent implements OnInit {
   }
 
   updateUserProfile(imageId: number | undefined, formData: any) {
-    const updatePayload: User = {
-      id: this.instanceId,
-      username: formData.username,
-      email: formData.email,
-      age: formData.age,
-      address: formData.address,
-      job: formData.job,
-      bio: formData.bio,
-      date_of_birth: formData.date_of_birth,
-      image: imageId ? { id: imageId, url: '', formats: { thumbnail: { url: '' } } } : undefined,
-      role: formData.role
+    try {
+      const imageobj: ProfileImage | undefined = imageId
+        ? {
+            id: imageId,
+            url: '',
+            formats: { thumbnail: { url: '' } },
+          }
+        : undefined;
+
+      const roleId = formData.role
         ? typeof formData.role === 'object'
           ? formData.role.id
           : formData.role
-        : undefined,
-    };
+        : undefined;
 
-    this.userService.editUserProfile(updatePayload, this.instanceId).subscribe({
-      next: () => {
-        alert('Profile updated successfully');
-        window.location.reload();
-        // this.router.navigate(['/user/profile']);
-      },
-      error: error => {
-        console.error('Error updating profile:', error);
-      },
-    });
+      const updatePayload: User = {
+        id: this.instanceId,
+        username: formData.username,
+        email: formData.email,
+        address: formData.address,
+        job: formData.job,
+        bio: formData.bio,
+        date_of_birth: formData.date_of_birth,
+        image: imageobj,
+        role: roleId,
+      };
+
+
+      this.userService.editUserProfile(updatePayload, this.instanceId).subscribe({
+        next: () => {
+          this.snackbar.open('Profile updated successfully');
+          this.router.navigate(['/user/profile']);
+          this.coreUserService.loadUser();
+        },
+        error: error => {
+          console.error('Error updating profile:', error);
+        },
+      });
+
+
+
+      this.snackbar.open('Profile updated successfully');
+      this.router.navigate(['/user/profile']);
+    } catch (error: any) {
+      console.error('Error updating profile:', error);
+      let errorMessage = 'Failed to update profile';
+
+      switch (error.status) {
+        case 400:
+          errorMessage = 'Invalid form data. Please check your inputs.';
+          break;
+        case 403:
+          errorMessage = 'You do not have permission to update this profile.';
+          break;
+        case 500:
+          errorMessage = 'Server error. Please try again later.';
+          break;
+      }
+
+      this.snackbar.open(errorMessage);
+    }
   }
   get email() {
     return this.editUserForm.get('email');

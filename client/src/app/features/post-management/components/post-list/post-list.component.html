@@ -1,141 +1,12 @@
-<!-- <div class="container">
-  <form>
-    <div class="mb-3 row align-items-center">
-      <label for="post-search" class="col-xs-3 col-sm-auto col-form-label search-label">
-        <mat-icon class="search-icon">search</mat-icon>
-      </label>
-      <div class="col-xs-3 col-sm-auto">
-        <input
-          id="post-search"
-          type="text"
-          class="form-control"
-          name="searchTerm"
-          [(ngModel)]="postService.searchTerm"
-          (ngModelChange)="onSearch($event)"
-        />
-      </div>
-      @if (loading$ | async) {
-      <div class="col-auto">
-        <div class="spinner-border text-primary" role="status">
-          <span class="visually-hidden">Loading...</span>
-        </div>
-      </div>
-      }
-    </div>
-
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th scope="col" sortable="title" (sort)="onSort($event)">
-            Title
-            <span class="sort-icon ms-1">
-              {{ getSortDirection('title') === 'asc' ? '↑' : '' }}
-              {{ getSortDirection('title') === 'desc' ? '↓' : '' }}
-            </span>
-          </th>
-          <th scope="col" sortable="author" (sort)="onSort($event)">
-            Author
-            <span class="sort-icon ms-1">
-              {{ getSortDirection('author') === 'asc' ? '↑' : '' }}
-              {{ getSortDirection('author') === 'desc' ? '↓' : '' }}
-            </span>
-          </th>
-          <th scope="col" sortable="content" (sort)="onSort($event)">
-            Content
-            <span class="sort-icon ms-1">
-              {{ getSortDirection('content') === 'asc' ? '↑' : '' }}
-              {{ getSortDirection('content') === 'desc' ? '↓' : '' }}
-            </span>
-          </th>
-          <th scope="col" sortable="createdAt" (sort)="onSort($event)">
-            Created At
-            <span class="sort-icon ms-1">
-              {{ getSortDirection('createdAt') === 'asc' ? '↑' : '' }}
-              {{ getSortDirection('createdAt') === 'desc' ? '↓' : '' }}
-            </span>
-          </th>
-          <th scope="col" sortable="updatedAt" (sort)="onSort($event)">
-            Updated At
-            <span class="sort-icon ms-1">
-              {{ getSortDirection('updatedAt') === 'asc' ? '↑' : '' }}
-              {{ getSortDirection('updatedAt') === 'desc' ? '↓' : '' }}
-            </span>
-          </th>
-          <th scope="col">
-            Actions
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        @for (post of posts$ | async; track post.id) {
-        <tr>
-          <td><ngb-highlight [result]="post.title" [term]="postService.searchTerm" /></td>
-          <td><ngb-highlight [result]="post.author" [term]="postService.searchTerm" /></td>
-          <td><ngb-highlight [result]="post.content" [term]="postService.searchTerm" /></td>
-          <td><ngb-highlight [result]="post.createdAt | date:'yyyy-MM-dd'" [term]="postService.searchTerm" /></td>
-          <td><ngb-highlight [result]="post.updatedAt | relativeTime" [term]="postService.searchTerm" /></td>
-          <td class="action">
-            <button class="btn btn-primary btn-sm ml-6">
-              <mat-icon>edit</mat-icon>
-            </button>
-            <button class="btn btn-danger btn-sm">
-              <mat-icon>delete</mat-icon>
-            </button>
-          </td>
-        </tr>
-        } @empty {
-        <tr>
-          <td colspan="5" class="text-center">No posts found</td>
-        </tr>
-        }
-      </tbody>
-    </table>
-
-    <div class="d-flex justify-content-between p-2">
-      <ngb-pagination
-        [collectionSize]="(total$ | async) || 0"
-        [(page)]="postService.page"
-        [pageSize]="postService.pageSize"
-        (pageChange)="onPageChange($event)"
-      ></ngb-pagination>
-
-      <select
-        class="form-select"
-        style="width: auto"
-        name="pageSize"
-        [(ngModel)]="postService.pageSize"
-        (ngModelChange)="onPageSizeChange($event)"
-      >
-        <option [ngValue]="2">2 items per page</option>
-        <option [ngValue]="4">4 items per page</option>
-        <option [ngValue]="6">6 items per page</option>
-      </select>
-    </div>
-  </form>
-
-</div> -->
-
 <div class="container">
   <form>
     <div class="mb-3 row align-items-center">
       <div class="col-auto">
-        <input
-          id="post-search"
-          type="text"
-          class="form-control"
-          name="searchTerm"
-          [(ngModel)]="searchTerm"
-          (ngModelChange)="onSearch($event)"
-          placeholder="Search..."
-        />
+        <input id="post-search" type="text" class="form-control" name="searchTerm" [(ngModel)]="searchTerm"
+          (ngModelChange)="onSearch($event)" placeholder="Search..." />
       </div>
       <div class="col-auto">
-        <select
-          class="form-select"
-          id="sort-select"
-          [(ngModel)]="sortOption"
-          name="sortOptionValue"
-        >
+        <select class="form-select" id="sort-select" [(ngModel)]="sortOption" name="sortOptionValue">
           <option value="title_asc">Title (A-Z)</option>
           <option value="title_desc">Title (Z-A)</option>
           <option value="author_asc">Author (A-Z)</option>
@@ -151,15 +22,16 @@
     <div class="row">
       @if (loading$ | async) {
       <div class="col-12 text-center">
-        <output class="spinner-border text-primary">
+        <div class="spinner-border text-primary">
           <span class="visually-hidden">Loading...</span>
-        </output>
+        </div>
       </div>
       } @else { @for (post of posts$ | async; track post.id) {
       <div class="col-12 mb-3">
         <div class="card">
           <div class="card-body">
-            <div [routerLink]="['/post/detail', post.documentId]">
+            <a [routerLink]="['/post/detail', post.documentId]" class="card-link text-decoration-none" tabindex="0"
+              role="button">
               <h5 class="card-title">
                 <ngb-highlight [result]="post.title" [term]="searchTerm" />
               </h5>
@@ -178,14 +50,10 @@
 
               <p>{{post.content}}</p>
 
-            </div>
-            <div class="action" *ngIf="user!.id == post.author.id">
-              <button class="btn btn-primary btn-sm" [routerLink]="['/post/edit', post.documentId]"
-                >Edit</button
-              >
-              <button class="btn btn-danger btn-sm" (click)="onDelete(post.documentId)"
-                >Delete</button
-              >
+            </a>
+            <div class="action" *ngIf="user && user.id === post.author.id">
+              <button class="btn btn-primary btn-sm" [routerLink]="['/post/edit', post.documentId]">Edit</button>
+              <button class="btn btn-danger btn-sm" (click)="onDelete(post.documentId)">Delete</button>
             </div>
           </div>
         </div>
@@ -199,19 +67,10 @@
 
     <!-- Pagination Controls -->
     <div class="d-flex justify-content-between p-2">
-      <ngb-pagination
-        [collectionSize]="(total$ | async) || 0"
-        [(page)]="page"
-        [pageSize]="pageSize"
-        (pageChange)="onPageChange($event)"
-      ></ngb-pagination>
-      <select
-        class="form-select"
-        style="width: auto"
-        name="pageSize"
-        [(ngModel)]="pageSize"
-        (ngModelChange)="onPageSizeChange($event)"
-      >
+      <ngb-pagination [collectionSize]="(total$ | async) || 0" [(page)]="page" [pageSize]="pageSize"
+        (pageChange)="onPageChange($event)"></ngb-pagination>
+      <select class="form-select" style="width: auto" name="pageSize" [(ngModel)]="pageSize"
+        (ngModelChange)="onPageSizeChange($event)">
         <option [ngValue]="2">2 items per page</option>
         <option [ngValue]="4">4 items per page</option>
         <option [ngValue]="6">6 items per page</option>

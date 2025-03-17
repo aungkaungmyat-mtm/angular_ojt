@@ -72,7 +72,7 @@
         <mat-error *ngIf="confirmPassword?.hasError('required') && confirmPassword?.dirty">
           Confirm password is required
         </mat-error>
-        <mat-error *ngIf="confirmPassword?.hasError('passwordMatch') && confirmPassword?.dirty">
+        <mat-error *ngIf="confirmPassword?.hasError('passwordMismatch') && !confirmPassword?.hasError('required')">
           Passwords do not match
         </mat-error>
       </div>
@@ -82,6 +82,7 @@
         >
         <div>
           <p *ngIf="success" class="success-message">{{ success }}</p>
+          <p *ngIf="failed" class="failed-message">{{ failed }}</p>
         </div>
       </div>
     </form>

@@ -5,6 +5,11 @@
   border-radius: 10px;
 }
 
+.card-link {
+  text-decoration: none;
+  color: black;
+}
+
 .table-container {
   margin-top: 50px;
 }
@@ -67,7 +72,7 @@ th:last-child {
   height: 40px;
 }
 
-.action .btn{
+.action .btn {
   margin-left: 15px;
 }
 
@@ -79,10 +84,8 @@ th:last-child {
 
 /* Style the Quill container */
 .ql-container {
-  border: 1px solid red !important;
   font-family: Arial, sans-serif;
   font-size: 16px;
-
 }
 
 /* Style the Quill editor content */
@@ -90,8 +93,6 @@ th:last-child {
   background: #f9f9f9;
   padding: 15px;
   border-radius: 8px;
-  border:1px solid red;
-
 }
 
 /* Style headings */
@@ -136,5 +137,3 @@ th:last-child {
   max-width: 100%;
   border-radius: 5px;
 }
-
-
