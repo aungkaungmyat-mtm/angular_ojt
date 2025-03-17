@@ -17,8 +17,11 @@
           <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown"
             aria-expanded="false" (click)="toggleDropdown($event)">
             <ng-container *ngIf="user$ | async as user">
-              <img *ngIf="user.image?.url" class="profile-image"  [src]="apiUrl + user.image?.url" alt="Profile">
+              <img class="profile-image"
+                   [src]="user.image?.url ? (apiUrl + user.image?.url) : 'https://th.bing.com/th/id/OIP.QOMRexd-LyIorC_N-w1bvwAAAA?rs=1&pid=ImgDetMain'"
+                   alt="Profile Image">
             </ng-container>
+
           </a>
 
           <ul class="dropdown-menu dropdown-menu-end" [ngClass]="{'show': isDropdownOpen}"

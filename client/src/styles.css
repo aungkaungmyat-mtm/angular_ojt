@@ -54,7 +54,7 @@ body {
   font-size: 16px;
   font-style: normal !important;
   border-radius: 0 0 8px 8px;
-  border-top: 1px solid #ccc;
+
 }
 
 /* Placeholder text styling */
@@ -68,5 +68,5 @@ body {
   height: 200px;
   width: 100%;
   border-radius: 8px;
-  border: 1px solid #ccc;
+
 }

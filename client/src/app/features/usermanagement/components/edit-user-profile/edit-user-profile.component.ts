@@ -138,7 +138,6 @@ export class EditUserProfileComponent implements OnInit {
         next: () => {
           this.snackbar.open('Profile updated successfully');
           this.router.navigate(['/user/profile']);
-          this.coreUserService.updateProfile(updatePayload);
           this.coreUserService.loadUser();
         },
         error: error => {

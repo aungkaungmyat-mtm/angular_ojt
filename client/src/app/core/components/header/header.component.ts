@@ -40,26 +40,6 @@ export class HeaderComponent {
   }
   isDropdownOpen = false;
 
-  ngOnInit(): void {
-    this.user$.subscribe(user => {
-      console.log('user', user?.image?.url);
-    });
-    // this.userService.getCurrentUser().subscribe({
-    //   next: user => {
-    //     this.user = user;
-    //   },
-    //   error: error => {
-    //     console.error('Error fetching user:', error);
-    //   },
-    // });
-  }
-
-  // getUserImage(): string {
-  //   return this.user?.image?.url
-  //     ? `${environment.apiBaseUrl}${this.user.image.url}`
-  //     : this.defaultImage; // If user has no image, show default
-  // }
-
   toggleDropdown(event: MouseEvent): void {
     event.preventDefault();
     this.isDropdownOpen = !this.isDropdownOpen;
