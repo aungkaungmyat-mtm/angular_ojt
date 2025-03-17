@@ -12,6 +12,7 @@ import {
   switchMap,
   tap,
 } from 'rxjs';
+import { environment } from '../../../../environments/environment.development';
 import { handleError } from '../../../core/utils/http-utils';
 import { SortColumn, SortDirection } from '../directives/post.directive';
 import {
@@ -21,7 +22,6 @@ import {
   SearchResult,
   State,
 } from '../interfaces/post-interfaces';
-import { environment } from '../../../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root',
@@ -68,18 +68,16 @@ export class PostService {
   }
 
   private getPostsFromApi(): Observable<PostResponse> {
-    return this.http
-      .get<PostResponse>(`${environment.apiBaseUrl}/api/posts?populate=*`)
-      .pipe(
-        map(
-          response =>
-            ({
-              data: response.data,
-              meta: response.meta,
-            } as PostResponse)
-        ),
-        catchError(handleError<PostResponse>('getPosts'))
-      );
+    return this.http.get<PostResponse>(`${environment.apiBaseUrl}/api/posts?populate=*`).pipe(
+      map(
+        response =>
+          ({
+            data: response.data,
+            meta: response.meta,
+          } as PostResponse)
+      ),
+      catchError(handleError<PostResponse>('getPosts'))
+    );
   }
 
   private getCachedPosts(): Observable<Post[]> {
@@ -114,12 +112,10 @@ export class PostService {
   }
 
   public createPost(post: PostRequest): Observable<PostResponse> {
-    return this.http
-      .post<PostResponse>(`${environment.apiBaseUrl}/api/posts`, post)
-      .pipe(
-        tap(() => this.invalidateCache()),
-        catchError(handleError<PostResponse>('createPost'))
-      );
+    return this.http.post<PostResponse>(`${environment.apiBaseUrl}/api/posts`, post).pipe(
+      tap(() => this.invalidateCache()),
+      catchError(handleError<PostResponse>('createPost'))
+    );
   }
 
   public updatePost(post: PostRequest, documentId: string): Observable<PostResponse> {
@@ -132,15 +128,13 @@ export class PostService {
   }
 
   public deletePost(documentId: string): void {
-    this.http
-      .delete<PostResponse>(`${environment.apiBaseUrl}/api/posts/${documentId}`)
-      .subscribe({
-        next: () => {
-          this.invalidateCache();
-          this.refresh();
-        },
-        error: error => console.error('Error deleting post', error),
-      });
+    this.http.delete<PostResponse>(`${environment.apiBaseUrl}/api/posts/${documentId}`).subscribe({
+      next: () => {
+        this.invalidateCache();
+        this.refresh();
+      },
+      error: error => console.error('Error deleting post', error),
+    });
   }
 
   private _search(): Observable<SearchResult> {

@@ -2,14 +2,11 @@
   <button (click)="closeProfile()" class="close-btn">
     <mat-icon>close</mat-icon>
   </button>
-  <!-- <img src="https://th.bing.com/th/id/OIP.Zvs5IHgOO5kip7A32UwZJgHaHa?rs=1&pid=ImgDetMain" alt="Profile Image"
-    class="profile-img"> -->
-  <img [src]="getUserImage()" alt="User Image" class="profile-img">
+  <img [src]="getUserImage()" alt="User Image" class="profile-img" />
   <div class="main">
     <h2>{{ userProfileData.username }}</h2>
 
     <div class="profile-info">
-
       <div class="label">Email</div>
       <div>{{ userProfileData.email }}</div>
       <div class="label">Address</div>
@@ -20,9 +17,10 @@
       <div class="bio">{{ userProfileData.bio ? userProfileData.bio : '-' }}</div>
       <div class="label">Date of Birth</div>
       <div>{{ userProfileData.date_of_birth ? userProfileData.date_of_birth : '-' }}</div>
-
     </div>
   </div>
 
-  <button class="update-btn" [routerLink]="['/user/profile/update',userProfileData.id]">Update Profile</button>
+  <button class="update-btn" [routerLink]="['/user/profile/update', userProfileData.id]"
+    >Update Profile</button
+  >
 </div>

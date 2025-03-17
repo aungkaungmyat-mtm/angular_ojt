@@ -37,28 +37,6 @@ export interface ImageFormat {
   url: string;
 }
 
-// export interface Image {
-//   id: number;
-//   documentId: string;
-//   name: string;
-//   alternativeText?: any;
-//   caption?: any;
-//   width?: number;
-//   height?: number;
-//   formats?: Formats;
-//   hash?: string;
-//   ext?: string;
-//   mime?: string;
-//   size?: number;
-//   url?: string;
-//   previewUrl?: any;
-//   provider?: string;
-//   provider_metadata?: any;
-//   createdAt?: string;
-//   updatedAt?: string;
-//   publishedAt?: string;
-// }
-
 export interface Formats {
   large?: Large;
   small?: Small;

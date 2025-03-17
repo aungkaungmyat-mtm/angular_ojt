@@ -1,15 +1,14 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { UserService } from '../../services/user.service';
+import { MatIcon } from '@angular/material/icon';
 import { ActivatedRoute } from '@angular/router';
 
-
-import { MatIcon } from '@angular/material/icon';
-import { User } from '../../../auth/interfaces/auth-interfaces';
 import { environment } from '../../../../../environments/environment.development';
+import { User } from '../../../auth/interfaces/auth-interfaces';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-other-user-profile',
-  imports: [ MatIcon],
+  imports: [MatIcon],
   templateUrl: './other-user-profile.component.html',
   styleUrl: './other-user-profile.component.css',
 })
@@ -34,7 +33,6 @@ export class OtherUserProfileComponent implements OnInit {
   showOtherUserProfile() {
     this.userSerive.getUserProfileById(this.temporaryId).subscribe({
       next: res => {
-        // console.log(res);
         this.otherUserProfileData = res;
       },
       error: err => {
@@ -48,7 +46,11 @@ export class OtherUserProfileComponent implements OnInit {
   }
 
   getUserImage(): string {
-    if (this.otherUserProfileData && this.otherUserProfileData.image && this.otherUserProfileData.image.url) {
+    if (
+      this.otherUserProfileData &&
+      this.otherUserProfileData.image &&
+      this.otherUserProfileData.image.url
+    ) {
       return `${environment.apiBaseUrl}${this.otherUserProfileData.image.url}`; // If user has an image
     } else {
       return this.defaultImage; // If user has no image, show default

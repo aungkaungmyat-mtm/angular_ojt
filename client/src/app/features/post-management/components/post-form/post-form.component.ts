@@ -1,16 +1,16 @@
-import { QuillModule } from 'ngx-quill';
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { QuillModule } from 'ngx-quill';
 
+import { Subscription } from 'rxjs';
 import { User } from '../../../../core/interfaces/user';
 import { LoadingService } from '../../../../core/services/loading/loading.service';
 import { SnackbarService } from '../../../../core/services/snackbar/snackbar.service';
 import { CoreUserService } from '../../../../core/services/user/core-user.service';
 import { PostRequest } from '../../interfaces/post-interfaces';
 import { PostService } from '../../services/post.service';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-post-form',

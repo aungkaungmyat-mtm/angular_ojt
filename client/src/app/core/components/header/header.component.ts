@@ -1,12 +1,10 @@
 import { CommonModule, NgClass } from '@angular/common';
 import { Component, HostListener, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
+import { environment } from '../../../../environments/environment.development';
 import { AuthService } from '../../../features/auth/services/auth.service';
-import { UserService } from '../../../features/usermanagement/services/user.service';
 import { LoadingService } from '../../services/loading/loading.service';
 import { SnackbarService } from '../../services/snackbar/snackbar.service';
-import { User } from '../../interfaces/user';
-import { environment } from '../../../../environments/environment.development';
 import { CoreUserService } from '../../services/user/core-user.service';
 
 @Component({
@@ -24,9 +22,8 @@ export class HeaderComponent {
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
   private readonly coreUserService = inject(CoreUserService);
+
   apiUrl = environment.apiBaseUrl;
-
-
   user$ = this.coreUserService.user$;
   defaultImage = 'https://th.bing.com/th/id/OIP.QOMRexd-LyIorC_N-w1bvwAAAA?rs=1&pid=ImgDetMain';
 

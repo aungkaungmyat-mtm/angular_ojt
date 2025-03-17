@@ -1,13 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { QuillModule } from 'ngx-quill';
 import { Observable, Subject, takeUntil, throwError } from 'rxjs';
+import { environment } from '../../../../../environments/environment.development';
 import { RelativeTimePipe } from '../../../../core/pipes/relative-time.pipe';
 import { Post, PostResponse } from '../../interfaces/post-interfaces';
 import { PostService } from '../../services/post.service';
-import { QuillModule } from 'ngx-quill';
-import { FormsModule } from '@angular/forms';
-import { environment } from '../../../../../environments/environment.development';
 
 @Component({
   selector: 'app-post-detail',

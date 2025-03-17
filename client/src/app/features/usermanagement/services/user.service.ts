@@ -2,8 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { User } from '../../../core/interfaces/user';
+
 import { environment } from '../../../../environments/environment.development';
+import { User } from '../../../core/interfaces/user';
 
 @Injectable({
   providedIn: 'root',
@@ -19,18 +20,11 @@ export class UserService {
     return this.http.delete<User[]>(`${environment.apiBaseUrl}/api/users/${id}`);
   }
 
-  // it use in edit user profile
-  // getCurrentUser():Observable<User>{
-  //   return this.http.get<User>(`${USER_API}/me`);
-  // }
-
-  // getUserData(): Observable<User> {       //it use in user profile
-  //   return this.http.get<User>(`${USER_API}/me?populate=image`);
-  // }
-
   //for header image testing
   getCurrentUser(): Observable<User> {
-    return this.http.get<User>(`${environment.apiBaseUrl}/api/users/me?populate[image]=true&populate[role]=true`);
+    return this.http.get<User>(
+      `${environment.apiBaseUrl}/api/users/me?populate[image]=true&populate[role]=true`
+    );
   }
 
   editUserProfile(editData: User, id: number): Observable<User> {
@@ -46,9 +40,7 @@ export class UserService {
   }
 
   getUserProfileById(id: number): Observable<User> {
-    return this.http.get<User>(
-      `${environment.apiBaseUrl}/api/users/${id}?populate=image`
-    );
+    return this.http.get<User>(`${environment.apiBaseUrl}/api/users/${id}?populate=image`);
   }
 
   closeProfile(): void {

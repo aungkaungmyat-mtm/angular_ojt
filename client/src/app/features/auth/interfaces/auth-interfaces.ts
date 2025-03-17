@@ -27,7 +27,7 @@ export interface LoginResponse {
   };
 }
 
-export interface resetPasswordRequest {
+export interface ResetPasswordRequest {
   code: string;
   password: string;
   passwordConfirmation: string;
@@ -38,18 +38,6 @@ export interface Role {
   description: string;
   type: string;
 }
-// export interface User{
-//   id: number;
-//   documentId: string;
-//   username: string;
-//   email: string;
-//   age: number;
-//   address: string;
-//   // role: Role;
-
-// };
-
-//use follow
 
 export interface ImageFormat {
   url: string;

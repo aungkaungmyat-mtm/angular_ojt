@@ -3,52 +3,34 @@ nav {
   padding-left: 60px;
 }
 
-.navbarNav a:hover{
+.navbarNav a:hover {
   color: aqua;
 }
 
-
-
-/* .dropdown-menu {
-  min-width: 200px;
-}
-
-.dropdown-item {
-  padding: 0.5rem 1rem;
-}
-
-.dropdown-menu.show {
-  display: block;
-} */
- .nav-item{
-
+.nav-item {
   margin-right: 25px;
   align-items: center;
   justify-content: center;
   margin-top: 5px;
-
- }
-.nav-link{
+}
+.nav-link {
   color: white;
   font-size: 15px;
 }
-
 
 .profile-image {
   width: 40px;
   height: 40px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid blue;
+  border: 2px solid #1d3557;
 }
-
 
 .nav-link.dropdown-toggle {
   padding: 0.25rem 0.5rem;
   display: flex;
   align-items: center;
 }
-
 
 .nav-link.dropdown-toggle::after {
   display: none !important;

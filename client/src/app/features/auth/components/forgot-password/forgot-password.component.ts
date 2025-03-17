@@ -13,10 +13,11 @@ import { AuthService } from '../../services/auth.service';
   styleUrl: './forgot-password.component.css',
 })
 export class ForgotPasswordComponent {
+  private loadingService = inject(LoadingService);
+
   message: string = '';
   forgotPasswordForm: FormGroup;
   successful: boolean = false;
-  private loadingService = inject(LoadingService);
 
   constructor(private authService: AuthService, private formBuilder: FormBuilder) {
     this.forgotPasswordForm = this.formBuilder.group({
@@ -32,7 +33,7 @@ export class ForgotPasswordComponent {
         this.loadingService.hide();
         this.checkForgotPasswordSuccessful();
       },
-      error: (error) => {
+      error: error => {
         this.message = 'An error has occured';
         this.loadingService.hide();
         console.error(error);

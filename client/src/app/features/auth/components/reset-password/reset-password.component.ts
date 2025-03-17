@@ -4,11 +4,11 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { MatError } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { SnackbarService } from '../../../../core/services/snackbar/snackbar.service';
 import { passwordMatch } from '../../../../core/utils/validators';
-import { resetPasswordRequest } from '../../interfaces/auth-interfaces';
+import { ResetPasswordRequest } from '../../interfaces/auth-interfaces';
 import { AuthService } from '../../services/auth.service';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-reset-password',
@@ -29,7 +29,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
-    private acitvatedRoute: ActivatedRoute,
+    private acitvatedRoute: ActivatedRoute
   ) {
     this.resetPasswordForm = this.formBuilder.group({
       password: ['', [Validators.required, Validators.minLength(8)]],
@@ -55,7 +55,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const resetPasswordRequest: resetPasswordRequest = {
+    const resetPasswordRequest: ResetPasswordRequest = {
       code: this.resetCode,
       password: this.resetPasswordForm.value.password,
       passwordConfirmation: this.resetPasswordForm.value.passwordConfirmation,

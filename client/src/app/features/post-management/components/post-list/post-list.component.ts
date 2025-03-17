@@ -12,8 +12,6 @@ import { CoreUserService } from '../../../../core/services/user/core-user.servic
 import { NgbdSortableHeader, SortColumn, SortDirection } from '../../directives/post.directive';
 import { Post, SortEvent } from '../../interfaces/post-interfaces';
 import { PostService } from '../../services/post.service';
-// import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-// import { QuillModule } from 'ngx-quill';
 
 @Component({
   selector: 'app-post-list',
@@ -25,7 +23,6 @@ import { PostService } from '../../services/post.service';
     AsyncPipe,
     NgbHighlight,
     NgbPaginationModule,
-    // QuillModule
   ],
   templateUrl: './post-list.component.html',
   styleUrl: './post-list.component.css',
@@ -34,7 +31,6 @@ export class PostListComponent implements OnInit {
   private readonly snackbar = inject(SnackbarService);
   private readonly postService = inject(PostService);
   private readonly userService = inject(CoreUserService);
-  // private readonly sanitizer = inject(DomSanitizer);
 
   posts$: Observable<Post[]> = this.postService.posts$;
   total$: Observable<number> = this.postService.total$;
@@ -43,7 +39,6 @@ export class PostListComponent implements OnInit {
   page: number = this.postService.page;
   pageSize: number = this.postService.pageSize;
   user: User | null = null;
-
 
   @ViewChildren(NgbdSortableHeader) headers!: QueryList<NgbdSortableHeader>;
 
@@ -110,9 +105,4 @@ export class PostListComponent implements OnInit {
     this.postService.sortColumn = column as SortColumn;
     this.postService.sortDirection = direction as SortDirection;
   }
-
-  // changeTextFormat(text: string): SafeHtml {
-  //   return this.sanitizer.bypassSecurityTrustHtml(text);
-  // }
-
 }

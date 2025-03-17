@@ -5,10 +5,10 @@ import { NgIf } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { Router, RouterLink } from '@angular/router';
 
-import { User } from '../../../auth/interfaces/auth-interfaces';
-import { UserService } from '../../services/user.service';
 import { Subject, takeUntil } from 'rxjs';
 import { environment } from '../../../../../environments/environment.development';
+import { User } from '../../../auth/interfaces/auth-interfaces';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-user-profile',

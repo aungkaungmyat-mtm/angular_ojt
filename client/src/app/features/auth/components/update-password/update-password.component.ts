@@ -3,11 +3,11 @@ import { Component, inject, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatError } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
+import { Subscription } from 'rxjs';
 import { SnackbarService } from '../../../../core/services/snackbar/snackbar.service';
 import { passwordMatch } from '../../../../core/utils/validators';
 import { UpdatePasswordRequest } from '../../interfaces/auth-interfaces';
 import { AuthService } from '../../services/auth.service';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-update-password',

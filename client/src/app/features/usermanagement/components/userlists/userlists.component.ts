@@ -12,9 +12,7 @@ import { User } from '../../../auth/interfaces/auth-interfaces';
 import { UserService } from '../../services/user.service';
 
 import { RouterLink } from '@angular/router';
-import { LoadingService } from '../../../../core/services/loading/loading.service';
 import { CsvService } from '../../../../shared/services/csv/csv.service';
-// import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-userlists',
@@ -44,10 +42,7 @@ export class UserlistsComponent implements OnInit {
 
   public csvService: CsvService = inject(CsvService);
   user: User | undefined;
-  constructor(
-    private readonly userService: UserService,
-    private readonly loadingService: LoadingService
-  ) {
+  constructor(private readonly userService: UserService) {
     this.dataSource = new MatTableDataSource<User>();
   }
 
@@ -85,7 +80,6 @@ export class UserlistsComponent implements OnInit {
   }
 
   deleteUser(id: number) {
-
     if (confirm('Are you sure you want to delete this user?')) {
       this.userService.deleteUser(id).subscribe({
         next: () => {

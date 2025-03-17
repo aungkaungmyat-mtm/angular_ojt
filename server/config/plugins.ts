@@ -1,5 +1,4 @@
 export default ({ env }) => ({
-  
   email: {
     config: {
       provider: "nodemailer",

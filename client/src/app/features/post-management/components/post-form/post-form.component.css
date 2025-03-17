@@ -12,14 +12,13 @@
 .card-header {
   padding: 1.5rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  background-color: #7A73D1;
+  background-color: #7a73d1;
 }
 
 .card-title {
   font-size: 1.75rem;
   font-weight: bold;
 }
-
 
 .card-body {
   padding: 2rem;
@@ -35,7 +34,6 @@
 
 .form-control:focus {
   border-color: #007bff;
-  /* box-shadow: 0 0 5px rgba(0, 123, 255, 0.25); */
 }
 
 .form-control-lg {
@@ -48,7 +46,7 @@
 }
 
 .btn-primary {
-  background-color: #4D55CC;
+  background-color: #4d55cc;
   border: none;
   padding: 0.75rem 1.5rem;
   font-size: 1rem;
@@ -57,7 +55,7 @@
 }
 
 .btn-primary:hover {
-  background-color: #211C84;
+  background-color: #211c84;
 }
 
 .btn-primary:disabled {

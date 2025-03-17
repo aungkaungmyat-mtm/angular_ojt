@@ -3,12 +3,11 @@ import { UserService } from './../../services/user.service';
 
 import { NgIf } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { ProfileImage, User } from '../../../../core/interfaces/user';
 import { MatError } from '@angular/material/form-field';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { environment } from '../../../../../environments/environment.development';
+import { ProfileImage, User } from '../../../../core/interfaces/user';
 import { SnackbarService } from '../../../../core/services/snackbar/snackbar.service';
-import { firstValueFrom } from 'rxjs';
 import { CoreUserService } from '../../../../core/services/user/core-user.service';
 
 @Component({
@@ -133,7 +132,6 @@ export class EditUserProfileComponent implements OnInit {
         role: roleId,
       };
 
-
       this.userService.editUserProfile(updatePayload, this.instanceId).subscribe({
         next: () => {
           this.snackbar.open('Profile updated successfully');
@@ -144,8 +142,6 @@ export class EditUserProfileComponent implements OnInit {
           console.error('Error updating profile:', error);
         },
       });
-
-
 
       this.snackbar.open('Profile updated successfully');
       this.router.navigate(['/user/profile']);

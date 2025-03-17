@@ -37,7 +37,8 @@ input {
   background: #f1faee;
   color: black;
 }
-textarea{
+
+textarea {
   width: 100%;
   padding: 10px;
   height: 110px;
@@ -46,21 +47,17 @@ textarea{
   font-size: 16px;
   background: #f1faee;
   color: black;
-  /* overflow: hidden; */
+
 }
-mat-error{
+mat-error {
   color: red;
-
 }
-
-
 
 input:focus {
   border-color: #457b9d;
   outline: none;
   box-shadow: 0 0 5px rgba(69, 123, 157, 0.5);
 }
-
 
 .image-group img {
   width: 100%;
@@ -69,7 +66,6 @@ input:focus {
   border-radius: 5px;
   border: 1px solid #a8dadc;
 }
-
 
 .button-group {
   display: flex;
@@ -89,13 +85,13 @@ button {
   transition: 0.3s;
   text-align: center;
 }
-button:disabled{
+button:disabled {
   background: #adb5bd;
   color: black;
   cursor: not-allowed;
 }
 
-button:disabled:hover{
+button:disabled:hover {
   background: #adb5bd;
   color: black;
 }

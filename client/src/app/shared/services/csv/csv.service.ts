@@ -69,7 +69,6 @@ export class CsvService {
     hiddenElement.download = `${name}.csv`;
     hiddenElement.click();
 
-
     URL.revokeObjectURL(url);
   }
 }

@@ -3,15 +3,15 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { jwtDecode } from 'jwt-decode';
 import { catchError, map, Observable, of, tap } from 'rxjs';
+import { environment } from '../../../../environments/environment.development';
 import {
   LoginRequest,
   LoginResponse,
   RegisterRequest,
   RegisterResponse,
-  resetPasswordRequest,
+  ResetPasswordRequest,
 } from '../interfaces/auth-interfaces';
 import { UpdatePasswordRequest } from './../interfaces/auth-interfaces';
-import { environment } from '../../../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root',
@@ -23,12 +23,14 @@ export class AuthService {
 
   register(user: RegisterRequest): Observable<RegisterResponse> {
     this.clearToken();
-    return this.http.post<RegisterResponse>(`${environment.apiBaseUrl}/api/auth/local/register`, user).pipe(
-      tap(response => {
-        const token = response.jwt;
-        this.setToken(token);
-      })
-    );
+    return this.http
+      .post<RegisterResponse>(`${environment.apiBaseUrl}/api/auth/local/register`, user)
+      .pipe(
+        tap(response => {
+          const token = response.jwt;
+          this.setToken(token);
+        })
+      );
   }
 
   login(user: LoginRequest): Observable<LoginResponse> {
@@ -100,12 +102,11 @@ export class AuthService {
   }
 
   forgotPassword(email: string): Observable<any> {
-    // return this.http.post<any>(`${API_URL}/api/auth/forgot-password`, { email });
     return this.http.post<any>(`${environment.apiBaseUrl}/api/auth/forgot-password`, { email });
   }
 
-  resetPassword(resetPasswordRequest: resetPasswordRequest): Observable<resetPasswordRequest> {
-    return this.http.post<resetPasswordRequest>(
+  resetPassword(resetPasswordRequest: ResetPasswordRequest): Observable<ResetPasswordRequest> {
+    return this.http.post<ResetPasswordRequest>(
       `${environment.apiBaseUrl}/api/auth/reset-password`,
       resetPasswordRequest
     );

@@ -15,9 +15,6 @@ import { HeaderComponent } from './core/components/header/header.component';
 import { LoadingScreenComponent } from './core/components/loading-screen/loading-screen.component';
 import { AuthService } from './features/auth/services/auth.service';
 
-
-
-
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet, LoadingScreenComponent, HeaderComponent, FooterComponent, NgIf],
@@ -40,10 +37,13 @@ export class AppComponent implements OnInit {
         this.updateLoginStatus();
       }
 
-
       if (event instanceof NavigationStart) {
         this.loadingService.show();
-      } else if (event instanceof NavigationEnd || event instanceof NavigationCancel || event instanceof NavigationError) {
+      } else if (
+        event instanceof NavigationEnd ||
+        event instanceof NavigationCancel ||
+        event instanceof NavigationError
+      ) {
         this.loadingService.hide();
       }
     });
@@ -55,4 +55,3 @@ export class AppComponent implements OnInit {
     });
   }
 }
-

@@ -3,12 +3,10 @@
   margin: auto;
   margin-top: 7%;
   margin-bottom: 7%;
-  /* background: linear-gradient(135deg, #457b9d, #667eea); */
   background-color: #f1faee;
   padding: 20px;
   border-radius: 12px;
   text-align: center;
-
   color: black;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
   position: relative;
@@ -22,7 +20,7 @@
   object-fit: cover;
   margin-bottom: 15px;
 }
-.bio{
+.bio {
   text-align: justify;
 }
 
@@ -33,27 +31,23 @@ h2 {
 
 .profile-info {
   display: grid;
-
-  /* border: 1px solid green; */
   grid-template-columns: 1fr 3fr; /* Two columns: label and value */
   gap: 10px;
   margin-left: 30px;
   max-width: 560px;
   text-align: start;
   padding: 20px;
-
 }
-.main{
+.main {
   border: 1px solid #eaeaea;
   padding: auto;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(95, 172, 220, 0.2);
-
-    display: grid;
-    gap: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(95, 172, 220, 0.2);
+  display: grid;
+  gap: 15px;
 }
 
-.profile-info .label{
+.profile-info .label {
   font-weight: 550;
 }
 
@@ -65,7 +59,6 @@ h2 {
 .profile-container div:nth-child(even) {
   color: #555;
 }
-
 
 .profile-card .close-btn {
   position: absolute;
