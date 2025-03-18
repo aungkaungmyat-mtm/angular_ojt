@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 
 import { PageNotFoundComponent } from './core/components/page-not-found/page-not-found.component';
 import { authGuard } from './features/auth/guards/auth.guard';
+import { notAuthGuard } from './features/auth/guards/not-auth.guard';
 
 export const routes: Routes = [
   {
@@ -73,6 +74,7 @@ export const routes: Routes = [
     path: 'auth/login',
     loadComponent: () =>
       import('./features/auth/components/login/login.component').then(m => m.LoginComponent),
+    canActivate: [notAuthGuard],
   },
   {
     path: 'auth/register',
@@ -80,6 +82,7 @@ export const routes: Routes = [
       import('./features/auth/components/register/register.component').then(
         m => m.RegisterComponent
       ),
+    canActivate: [notAuthGuard],
   },
   {
     path: 'auth/update-password',

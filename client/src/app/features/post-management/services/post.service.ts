@@ -13,6 +13,7 @@ import {
   tap,
 } from 'rxjs';
 import { environment } from '../../../../environments/environment.development';
+import { SnackbarService } from '../../../core/services/snackbar/snackbar.service';
 import { handleError } from '../../../core/utils/http-utils';
 import { SortColumn, SortDirection } from '../directives/post.directive';
 import {
@@ -28,6 +29,7 @@ import {
 })
 export class PostService {
   private readonly http = inject(HttpClient);
+  private readonly snackbar = inject(SnackbarService);
   private readonly _loading$ = new BehaviorSubject<boolean>(true);
   private readonly _search$ = new Subject<void>();
   private readonly _posts$ = new BehaviorSubject<Post[]>([]);
@@ -59,9 +61,15 @@ export class PostService {
         delay(200),
         tap(() => this._loading$.next(false))
       )
-      .subscribe(result => {
-        this._posts$.next(result.posts);
-        this._total$.next(result.total);
+      .subscribe({
+        next: result => {
+          this._posts$.next(result.posts);
+          this._total$.next(result.total);
+        },
+        error: error => {
+          this._loading$.next(false);
+          this.snackbar.open('Error: ' + error, 60000);
+        },
       });
 
     this._search$.next();

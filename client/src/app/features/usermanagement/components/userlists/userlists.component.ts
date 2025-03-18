@@ -12,6 +12,7 @@ import { User } from '../../../auth/interfaces/auth-interfaces';
 import { UserService } from '../../services/user.service';
 
 import { RouterLink } from '@angular/router';
+
 import { CsvService } from '../../../../shared/services/csv/csv.service';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ConfirmDialogService } from '../../../../core/services/confirm-dialog/confirm-dialog.service';
@@ -31,13 +32,13 @@ import { SnackbarService } from '../../../../core/services/snackbar/snackbar.ser
     MatDividerModule,
     MatButtonModule,
     RouterLink,
-    MatDialogModule
+    MatDialogModule,
   ],
   templateUrl: './userlists.component.html',
   styleUrl: './userlists.component.css',
 })
 export class UserlistsComponent implements OnInit {
-  displayedColumns: string[] = ['id', 'username', 'email', 'job', 'address', 'useraction' ];
+  displayedColumns: string[] = ['id', 'username', 'email', 'job', 'address', 'useraction'];
 
   dataSource: MatTableDataSource<User>;
 
@@ -45,10 +46,11 @@ export class UserlistsComponent implements OnInit {
   @ViewChild(MatSort) sort!: MatSort;
 
   public csvService: CsvService = inject(CsvService);
+  private snackbar = inject(SnackbarService);
+  private confirmDialogService = inject(ConfirmDialogService);
   userdata: User | undefined;
-  constructor(private readonly userService: UserService, private confirmDialogService: ConfirmDialogService, private snackbarservice: SnackbarService) {
+  constructor(private readonly userService: UserService) {
     this.dataSource = new MatTableDataSource<User>();
-
   }
 
   ngOnInit(): void {
@@ -58,10 +60,12 @@ export class UserlistsComponent implements OnInit {
         this.userdata = data;
         this.isAdmin();
       },
-      error: err => console.error('Error fetching user:', err),
+      error: err => {
+        console.error('Error fetching user:', err);
+        this.snackbar.open('Error fetching user: ' + err.error.error.message, 60000);
+      },
     });
   }
-
 
   isAdmin() {
     if (this.userdata?.role?.name === 'Admin') {
@@ -76,7 +80,10 @@ export class UserlistsComponent implements OnInit {
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
       },
-      error: err => console.error('Error fetching users:', err),
+      error: err => {
+        console.error('Error fetching users:', err);
+        this.snackbar.open('Error fetching users: ' + err.error.error.message, 60000);
+      },
     });
   }
 
@@ -86,17 +93,22 @@ export class UserlistsComponent implements OnInit {
   }
 
   deleteUser(id: number) {
-    this.confirmDialogService.confirm('Are you sure you want to delete this user?').subscribe(result => {
-      if (result) {
-        this.userService.deleteUser(id).subscribe({
-          next: () => {
-            this.snackbarservice.open('User deleted successfully');
-            this.loadUsers();
-          },
-          error: error => alert('Error deleting user'),
-        });
-      }
-    });
+    this.confirmDialogService
+      .confirm('Are you sure you want to delete this user?')
+      .subscribe(result => {
+        if (result) {
+          this.userService.deleteUser(id).subscribe({
+            next: () => {
+              this.snackbar.open('User deleted successfully');
+              this.loadUsers();
+            },
+            error: error => {
+              console.error('Error deleting user:', error);
+              this.snackbar.open('Error deleting user: ' + error.error.error.message, 60000);
+            },
+          });
+        }
+      });
   }
   downloadUserList(): void {
     this.csvService.downloadCSV('UserList', this.dataSource.data);

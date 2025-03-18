@@ -152,7 +152,7 @@ export class EditUserProfileComponent implements OnInit {
 
       switch (error.status) {
         case 400:
-          errorMessage = 'Invalid form data. Please check your inputs.';
+          errorMessage = 'Invali form data. Please check your inputs.';
           break;
         case 403:
           errorMessage = 'You do not have permission to update this profile.';
@@ -162,7 +162,7 @@ export class EditUserProfileComponent implements OnInit {
           break;
       }
 
-      this.snackbar.open(errorMessage);
+      this.snackbar.open(errorMessage, 60000);
     }
   }
   get email() {

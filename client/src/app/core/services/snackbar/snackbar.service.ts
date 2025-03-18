@@ -9,9 +9,9 @@ export class SnackbarService {
 
   constructor() {}
 
-  open(message: string) {
+  open(message: string, duration: number = 3000): void {
     this.snackbar.open(message, 'Close', {
-      duration: 3000,
+      duration: duration,
     });
   }
 }

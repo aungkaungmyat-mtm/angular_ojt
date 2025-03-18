@@ -54,6 +54,7 @@ export class PostFormComponent implements OnInit, OnDestroy {
         },
         error: error => {
           console.error('Error retrieving post', error);
+          this.snackbar.open('Error retrieving post: ' + error.error.error.message, 60000);
           this.router.navigate(['/post/list']);
         },
       });
@@ -136,7 +137,7 @@ export class PostFormComponent implements OnInit, OnDestroy {
       },
       error: error => {
         console.error('Failed to load user', error);
-        // Show an error message, etc.
+        this.snackbar.open('Error loading user: ' + error.error.error.message, 60000);
       },
     });
   }

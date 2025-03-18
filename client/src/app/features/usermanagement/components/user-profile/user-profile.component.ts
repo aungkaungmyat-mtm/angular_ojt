@@ -7,6 +7,7 @@ import { Router, RouterLink } from '@angular/router';
 
 import { Subject, takeUntil } from 'rxjs';
 import { environment } from '../../../../../environments/environment.development';
+import { SnackbarService } from '../../../../core/services/snackbar/snackbar.service';
 import { User } from '../../../auth/interfaces/auth-interfaces';
 import { UserService } from '../../services/user.service';
 
@@ -21,7 +22,11 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   defaultImage = 'https://th.bing.com/th/id/OIP.QOMRexd-LyIorC_N-w1bvwAAAA?rs=1&pid=ImgDetMain';
   private destroy$ = new Subject<void>();
 
-  constructor(private userService: UserService, private router: Router) {}
+  constructor(
+    private userService: UserService,
+    private router: Router,
+    private snackbar: SnackbarService
+  ) {}
 
   ngOnInit(): void {
     this.getUserProfile();
@@ -41,6 +46,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
         },
         error: err => {
           console.error(err);
+          this.snackbar.open('Error fetching user profile: ' + err.error.error.message, 60000);
         },
       });
   }
