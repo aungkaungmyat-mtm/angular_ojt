@@ -142,6 +142,7 @@ export class EditUserProfileComponent implements OnInit {
             },
             error: error => {
               console.error('Error updating profile:', error);
+              this.snackbar.open('Error updating profile: ' + error.error.error.message, 60000);
             },
           });
         }

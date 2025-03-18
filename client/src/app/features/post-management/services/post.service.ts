@@ -140,8 +140,12 @@ export class PostService {
       next: () => {
         this.invalidateCache();
         this.refresh();
+        this.snackbar.open('Post deleted successfully');
       },
-      error: error => console.error('Error deleting post', error),
+      error: error => {
+        console.error('Error deleting post', error);
+        this.snackbar.open('Error deleting post: ' + error.error.error.message, 60000);
+      },
     });
   }
 

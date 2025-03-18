@@ -75,7 +75,7 @@ export class PostFormComponent implements OnInit, OnDestroy {
             },
             error: error => {
               this.loadingService.hide();
-              this.snackbar.open('Error creating post' + error.error.message);
+              this.snackbar.open('Error creating post' + error);
             },
             complete: () => {
               this.router.navigate(['/post/list']);
@@ -97,7 +97,8 @@ export class PostFormComponent implements OnInit, OnDestroy {
               this.snackbar.open('Post updated successfully');
             },
             error: error => {
-              this.snackbar.open('Error updating post: ' + error.error.message);
+              this.snackbar.open('Error updating post: ' + error);
+              this.loadingService.hide();
             },
             complete: () => {
               this.loadingService.hide();

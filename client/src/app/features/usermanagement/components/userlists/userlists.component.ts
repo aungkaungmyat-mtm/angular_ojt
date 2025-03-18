@@ -99,8 +99,8 @@ export class UserlistsComponent implements OnInit {
         if (result) {
           this.userService.deleteUser(id).subscribe({
             next: () => {
-              this.snackbar.open('User deleted successfully');
               this.loadUsers();
+              this.snackbar.open('User deleted successfully');
             },
             error: error => {
               console.error('Error deleting user:', error);

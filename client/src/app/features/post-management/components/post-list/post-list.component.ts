@@ -67,17 +67,19 @@ export class PostListComponent implements OnInit {
   }
 
   onDelete(documentId: string) {
-    try {
-      this.confirmDialogService.confirm('Are you sure you want to delete this post?').subscribe(result => {
+    this.confirmDialogService.confirm('Are you sure you want to delete this post?').subscribe({
+      next: result => {
         if (result) {
           this.postService.deletePost(documentId);
-          this.snackbar.open('Post deleted successfully');
         }
-      });
-    } catch (error) {
-      console.log('error', error);
-      this.snackbar.open('Failed to delete post');
-    }
+      },
+      error: error => {
+        console.log('error', error);
+      },
+      complete: () => {
+        this.postService.refresh();
+      },
+    });
   }
 
   onPageChange(page: number) {
