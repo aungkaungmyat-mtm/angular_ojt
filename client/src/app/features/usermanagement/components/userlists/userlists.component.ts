@@ -37,7 +37,7 @@ import { SnackbarService } from '../../../../core/services/snackbar/snackbar.ser
   styleUrl: './userlists.component.css',
 })
 export class UserlistsComponent implements OnInit {
-  displayedColumns: string[] = ['id', 'username', 'email', 'job', 'address'];
+  displayedColumns: string[] = ['id', 'username', 'email', 'job', 'address', 'useraction' ];
 
   dataSource: MatTableDataSource<User>;
 
@@ -45,7 +45,7 @@ export class UserlistsComponent implements OnInit {
   @ViewChild(MatSort) sort!: MatSort;
 
   public csvService: CsvService = inject(CsvService);
-  user: User | undefined;
+  userdata: User | undefined;
   constructor(private readonly userService: UserService, private confirmDialogService: ConfirmDialogService, private snackbarservice: SnackbarService) {
     this.dataSource = new MatTableDataSource<User>();
 
@@ -55,16 +55,17 @@ export class UserlistsComponent implements OnInit {
     this.loadUsers();
     this.userService.getCurrentUser().subscribe({
       next: data => {
-        this.user = data;
+        this.userdata = data;
         this.isAdmin();
       },
       error: err => console.error('Error fetching user:', err),
     });
   }
 
-  isAdmin(): void {
-    if (this.user?.role?.name === 'Admin') {
-      this.displayedColumns.push('delete');
+
+  isAdmin() {
+    if (this.userdata?.role?.name === 'Admin') {
+      this.displayedColumns.push('adminaction');
     }
   }
 
@@ -85,7 +86,7 @@ export class UserlistsComponent implements OnInit {
   }
 
   deleteUser(id: number) {
-    this.confirmDialogService.confirm().subscribe(result => {
+    this.confirmDialogService.confirm('Are you sure you want to delete this user?').subscribe(result => {
       if (result) {
         this.userService.deleteUser(id).subscribe({
           next: () => {

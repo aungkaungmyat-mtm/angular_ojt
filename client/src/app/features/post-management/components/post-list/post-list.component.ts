@@ -12,6 +12,7 @@ import { CoreUserService } from '../../../../core/services/user/core-user.servic
 import { NgbdSortableHeader, SortColumn, SortDirection } from '../../directives/post.directive';
 import { Post, SortEvent } from '../../interfaces/post-interfaces';
 import { PostService } from '../../services/post.service';
+import { ConfirmDialogService } from '../../../../core/services/confirm-dialog/confirm-dialog.service';
 
 @Component({
   selector: 'app-post-list',
@@ -31,6 +32,7 @@ export class PostListComponent implements OnInit {
   private readonly snackbar = inject(SnackbarService);
   private readonly postService = inject(PostService);
   private readonly userService = inject(CoreUserService);
+  private readonly confirmDialogService = inject(ConfirmDialogService);
 
   posts$: Observable<Post[]> = this.postService.posts$;
   total$: Observable<number> = this.postService.total$;
@@ -66,8 +68,12 @@ export class PostListComponent implements OnInit {
 
   onDelete(documentId: string) {
     try {
-      this.postService.deletePost(documentId);
-      this.snackbar.open('Post deleted successfully');
+      this.confirmDialogService.confirm('Are you sure you want to delete this post?').subscribe(result => {
+        if (result) {
+          this.postService.deletePost(documentId);
+          this.snackbar.open('Post deleted successfully');
+        }
+      });
     } catch (error) {
       console.log('error', error);
       this.snackbar.open('Failed to delete post');

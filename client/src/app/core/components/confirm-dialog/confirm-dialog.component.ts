@@ -1,6 +1,6 @@
-import { Component, inject } from '@angular/core';
+import { Component, Inject, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
-import { MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 
 
 @Component({
@@ -10,6 +10,9 @@ import { MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/mater
   styleUrl: './confirm-dialog.component.css'
 })
 export class ConfirmDialogComponent {
-  readonly dialogRef = inject(MatDialogRef<ConfirmDialogComponent>);
+  constructor(
+    public dialogRef: MatDialogRef<ConfirmDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: { message: string }
+  ) {}
 
 }

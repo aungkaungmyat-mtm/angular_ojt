@@ -9,10 +9,10 @@ export class ConfirmDialogService {
 
   private dialog = inject(MatDialog);
 
-  confirm(): Observable<boolean> {
+  confirm(message: string): Observable<boolean> {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '250px',
-
+      data: {  message },
       enterAnimationDuration: '0ms',
       exitAnimationDuration: '0ms',
     });
