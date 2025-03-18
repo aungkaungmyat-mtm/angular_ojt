@@ -3,6 +3,7 @@ import { MatIcon } from '@angular/material/icon';
 import { ActivatedRoute } from '@angular/router';
 
 import { environment } from '../../../../../environments/environment.development';
+import { SnackbarService } from '../../../../core/services/snackbar/snackbar.service';
 import { User } from '../../../auth/interfaces/auth-interfaces';
 import { UserService } from '../../services/user.service';
 
@@ -19,6 +20,7 @@ export class OtherUserProfileComponent implements OnInit {
 
   private readonly userSerive = inject(UserService);
   private readonly activatedRoute = inject(ActivatedRoute);
+  private readonly snackbar = inject(SnackbarService);
 
   constructor() {
     const id = this.activatedRoute.snapshot.paramMap.get('id');
@@ -37,6 +39,7 @@ export class OtherUserProfileComponent implements OnInit {
       },
       error: err => {
         console.error(err);
+        this.snackbar.open('Error fetching user profile: ' + err.error.error.message, 60000);
       },
     });
   }

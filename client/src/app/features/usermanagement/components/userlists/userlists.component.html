@@ -57,6 +57,9 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
   </table>
+  <ng-container *ngIf="dataSource.data.length === 0">
+    <h4 class="text-center user-not-found">No users found</h4>
+  </ng-container>
 
   <!-- Pagination -->
   <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons> </mat-paginator>

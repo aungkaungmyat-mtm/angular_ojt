@@ -12,6 +12,7 @@ import { User } from '../../../auth/interfaces/auth-interfaces';
 import { UserService } from '../../services/user.service';
 
 import { RouterLink } from '@angular/router';
+import { SnackbarService } from '../../../../core/services/snackbar/snackbar.service';
 import { CsvService } from '../../../../shared/services/csv/csv.service';
 
 @Component({
@@ -41,6 +42,7 @@ export class UserlistsComponent implements OnInit {
   @ViewChild(MatSort) sort!: MatSort;
 
   public csvService: CsvService = inject(CsvService);
+  private snackbar = inject(SnackbarService);
   user: User | undefined;
   constructor(private readonly userService: UserService) {
     this.dataSource = new MatTableDataSource<User>();
@@ -53,7 +55,10 @@ export class UserlistsComponent implements OnInit {
         this.user = data;
         this.isAdmin();
       },
-      error: err => console.error('Error fetching user:', err),
+      error: err => {
+        console.error('Error fetching user:', err);
+        this.snackbar.open('Error fetching user: ' + err.error.error.message, 60000);
+      },
     });
   }
 
@@ -70,7 +75,10 @@ export class UserlistsComponent implements OnInit {
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
       },
-      error: err => console.error('Error fetching users:', err),
+      error: err => {
+        console.error('Error fetching users:', err);
+        this.snackbar.open('Error fetching users: ' + err.error.error.message, 60000);
+      },
     });
   }
 
@@ -86,7 +94,10 @@ export class UserlistsComponent implements OnInit {
           alert('User deleted successfully');
           this.loadUsers();
         },
-        error: error => alert('Error deleting user'),
+        error: error => {
+          console.error('Error deleting user:', error);
+          this.snackbar.open('Error deleting user: ' + error.error.error.message, 60000);
+        },
       });
     }
   }
