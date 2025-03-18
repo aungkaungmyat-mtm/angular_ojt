@@ -13,6 +13,9 @@ import { UserService } from '../../services/user.service';
 
 import { RouterLink } from '@angular/router';
 import { CsvService } from '../../../../shared/services/csv/csv.service';
+import { MatDialogModule } from '@angular/material/dialog';
+import { ConfirmDialogService } from '../../../../core/services/confirm-dialog/confirm-dialog.service';
+import { SnackbarService } from '../../../../core/services/snackbar/snackbar.service';
 
 @Component({
   selector: 'app-userlists',
@@ -28,12 +31,13 @@ import { CsvService } from '../../../../shared/services/csv/csv.service';
     MatDividerModule,
     MatButtonModule,
     RouterLink,
+    MatDialogModule
   ],
   templateUrl: './userlists.component.html',
   styleUrl: './userlists.component.css',
 })
 export class UserlistsComponent implements OnInit {
-  displayedColumns: string[] = ['id', 'username', 'email', 'job', 'address'];
+  displayedColumns: string[] = ['id', 'username', 'email', 'job', 'address', 'useraction' ];
 
   dataSource: MatTableDataSource<User>;
 
@@ -41,25 +45,27 @@ export class UserlistsComponent implements OnInit {
   @ViewChild(MatSort) sort!: MatSort;
 
   public csvService: CsvService = inject(CsvService);
-  user: User | undefined;
-  constructor(private readonly userService: UserService) {
+  userdata: User | undefined;
+  constructor(private readonly userService: UserService, private confirmDialogService: ConfirmDialogService, private snackbarservice: SnackbarService) {
     this.dataSource = new MatTableDataSource<User>();
+
   }
 
   ngOnInit(): void {
     this.loadUsers();
     this.userService.getCurrentUser().subscribe({
       next: data => {
-        this.user = data;
+        this.userdata = data;
         this.isAdmin();
       },
       error: err => console.error('Error fetching user:', err),
     });
   }
 
-  isAdmin(): void {
-    if (this.user?.role?.name === 'Admin') {
-      this.displayedColumns.push('delete');
+
+  isAdmin() {
+    if (this.userdata?.role?.name === 'Admin') {
+      this.displayedColumns.push('adminaction');
     }
   }
 
@@ -80,15 +86,17 @@ export class UserlistsComponent implements OnInit {
   }
 
   deleteUser(id: number) {
-    if (confirm('Are you sure you want to delete this user?')) {
-      this.userService.deleteUser(id).subscribe({
-        next: () => {
-          alert('User deleted successfully');
-          this.loadUsers();
-        },
-        error: error => alert('Error deleting user'),
-      });
-    }
+    this.confirmDialogService.confirm('Are you sure you want to delete this user?').subscribe(result => {
+      if (result) {
+        this.userService.deleteUser(id).subscribe({
+          next: () => {
+            this.snackbarservice.open('User deleted successfully');
+            this.loadUsers();
+          },
+          error: error => alert('Error deleting user'),
+        });
+      }
+    });
   }
   downloadUserList(): void {
     this.csvService.downloadCSV('UserList', this.dataSource.data);

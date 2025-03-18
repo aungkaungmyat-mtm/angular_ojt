@@ -6,12 +6,7 @@
     <input matInput (keyup)="applyFilter($event)" placeholder="Search by username or email" />
   </mat-form-field>
 
-  <button
-    mat-raised-button
-    color="primary"
-    (click)="downloadUserList()"
-    *ngIf="user?.role?.name === 'Admin'"
-  >
+  <button mat-raised-button color="primary" (click)="downloadUserList()" *ngIf="userdata?.role?.name === 'Admin'">
     <mat-icon>download</mat-icon>
     Download
   </button>
@@ -44,15 +39,32 @@
       <td mat-cell *matCellDef="let user"> {{ user.address ? user.address : '-' }} </td>
     </ng-container>
 
-    <ng-container matColumnDef="delete">
-      <th class="action" mat-header-cell *matHeaderCellDef> Action </th>
-      <td class="action-row" mat-cell *matCellDef="let user">
-        <button class="delete" mat-stroked-button (click)="deleteUser(user.id)">
-          <mat-icon>delete</mat-icon>
-          Delete
+
+    <ng-container matColumnDef="useraction">
+      <th class="useraction" mat-header-cell *matHeaderCellDef>User Action</th>
+      <td class="useraction-row" mat-cell *matCellDef="let user">
+
+        <button class="edit" *ngIf="userdata?.id === user.id" mat-stroked-button
+          [routerLink]="['/user/profile/update', user.id]">
+          <mat-icon>edit</mat-icon>
+          Edit
         </button>
       </td>
     </ng-container>
+
+
+    <ng-container matColumnDef="adminaction">
+      <th class="adminaction" mat-header-cell *matHeaderCellDef>Admin Action</th>
+      <td class="adminaction-row" mat-cell *matCellDef="let user">
+
+        <button mat-stroked-button class="delete-btn" (click)="deleteUser(user.id)">
+          <mat-icon>delete</mat-icon> Delete
+
+        </button>
+
+      </td>
+    </ng-container>
+
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>

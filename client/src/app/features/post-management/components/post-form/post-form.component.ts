@@ -1,3 +1,5 @@
+import { config } from './../../../../app.config.server';
+import { ConfirmDialogComponent } from './../../../../core/components/confirm-dialog/confirm-dialog.component';
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -11,6 +13,7 @@ import { SnackbarService } from '../../../../core/services/snackbar/snackbar.ser
 import { CoreUserService } from '../../../../core/services/user/core-user.service';
 import { PostRequest } from '../../interfaces/post-interfaces';
 import { PostService } from '../../services/post.service';
+import { ConfirmDialogService } from '../../../../core/services/confirm-dialog/confirm-dialog.service';
 
 @Component({
   selector: 'app-post-form',
@@ -27,6 +30,7 @@ export class PostFormComponent implements OnInit, OnDestroy {
   private readonly loadingService = inject(LoadingService);
   private readonly snackbar = inject(SnackbarService);
   private readonly userService = inject(CoreUserService);
+  private readonly confirmDialogService = inject(ConfirmDialogService);
   private userSubscription: Subscription = new Subscription();
 
   postForm: FormGroup;
@@ -58,37 +62,50 @@ export class PostFormComponent implements OnInit, OnDestroy {
   }
 
   createPost(post: PostRequest): void {
-    this.postService.createPost(post).subscribe({
-      next: response => {
-        this.loadingService.hide();
-        this.snackbar.open('Post created successfully');
-      },
-      error: error => {
-        this.loadingService.hide();
-        this.snackbar.open('Error creating post' + error.error.message);
-      },
-      complete: () => {
-        this.postService.refresh();
-        this.postForm.reset();
-        this.router.navigate(['/post/list']);
-      },
-    });
+    this.confirmDialogService
+      .confirm('Are you sure you want to create this post?')
+      .subscribe(result => {
+        if (result) {
+          this.loadingService.show();
+          this.postService.createPost(post).subscribe({
+            next: response => {
+              this.loadingService.hide();
+              this.snackbar.open('Post created successfully');
+            },
+            error: error => {
+              this.loadingService.hide();
+              this.snackbar.open('Error creating post' + error.error.message);
+            },
+            complete: () => {
+              this.router.navigate(['/post/list']);
+            },
+          });
+        }
+      });
   }
 
   editPost(post: PostRequest, documentId: string) {
-    this.postService.updatePost(post, documentId).subscribe({
-      next: response => {
-        this.snackbar.open('Post updated successfully');
-      },
-      error: error => {
-        this.snackbar.open('Error updating post: ' + error.error.message);
-      },
-      complete: () => {
-        this.loadingService.hide();
-        this.postService.refresh();
-        this.router.navigate(['/post/list']);
-      },
-    });
+    this.confirmDialogService
+      .confirm('Are you sure you want to update this post?')
+      .subscribe(result => {
+        if (result) {
+          this.loadingService.show();
+
+          this.postService.updatePost(post, documentId).subscribe({
+            next: response => {
+              this.snackbar.open('Post updated successfully');
+            },
+            error: error => {
+              this.snackbar.open('Error updating post: ' + error.error.message);
+            },
+            complete: () => {
+              this.loadingService.hide();
+              this.postService.refresh();
+              this.router.navigate(['/post/list']);
+            },
+          });
+        }
+      });
   }
 
   onSubmit(): void {
@@ -97,7 +114,6 @@ export class PostFormComponent implements OnInit, OnDestroy {
       this.snackbar.open('Please login to create a post');
       return;
     }
-    this.loadingService.show();
     const postData: PostRequest = {
       data: {
         title: this.postForm.value.title,

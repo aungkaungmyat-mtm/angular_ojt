@@ -9,6 +9,7 @@ import { environment } from '../../../../../environments/environment.development
 import { ProfileImage, User } from '../../../../core/interfaces/user';
 import { SnackbarService } from '../../../../core/services/snackbar/snackbar.service';
 import { CoreUserService } from '../../../../core/services/user/core-user.service';
+import { ConfirmDialogService } from '../../../../core/services/confirm-dialog/confirm-dialog.service';
 
 @Component({
   selector: 'app-edit-user-profile',
@@ -28,7 +29,8 @@ export class EditUserProfileComponent implements OnInit {
     private router: Router,
     private activateRoute: ActivatedRoute,
     private snackbar: SnackbarService,
-    private coreUserService: CoreUserService
+    private coreUserService: CoreUserService,
+    private confirmDialogService: ConfirmDialogService,
   ) {
     const paramValue = this.activateRoute.snapshot.paramMap.get('id');
     if (paramValue && !isNaN(Number(paramValue))) {
@@ -87,8 +89,7 @@ export class EditUserProfileComponent implements OnInit {
       return;
     }
 
-    const confirmation = confirm('Are you sure you want to update your profile?');
-    if (!confirmation) return;
+
 
     const formData = this.editUserForm.value;
 
@@ -131,20 +132,20 @@ export class EditUserProfileComponent implements OnInit {
         image: imageobj,
         role: roleId,
       };
-
-      this.userService.editUserProfile(updatePayload, this.instanceId).subscribe({
-        next: () => {
-          this.snackbar.open('Profile updated successfully');
-          this.router.navigate(['/user/profile']);
-          this.coreUserService.loadUser();
-        },
-        error: error => {
-          console.error('Error updating profile:', error);
-        },
+      this.confirmDialogService.confirm('Are you sure you want to update this profile?').subscribe(result => {
+        if (result) {
+          this.userService.editUserProfile(updatePayload, this.instanceId).subscribe({
+            next: () => {
+              this.snackbar.open('Profile updated successfully');
+              this.router.navigate(['/user/profile']);
+              this.coreUserService.loadUser();
+            },
+            error: error => {
+              console.error('Error updating profile:', error);
+            },
+          });
+        }
       });
-
-      this.snackbar.open('Profile updated successfully');
-      this.router.navigate(['/user/profile']);
     } catch (error: any) {
       console.error('Error updating profile:', error);
       let errorMessage = 'Failed to update profile';
