@@ -70,6 +70,7 @@ export class PostFormComponent implements OnInit, OnDestroy {
       complete: () => {
         this.postService.refresh();
         this.postForm.reset();
+        this.router.navigate(['/post/list']);
       },
     });
   }
@@ -85,6 +86,7 @@ export class PostFormComponent implements OnInit, OnDestroy {
       complete: () => {
         this.loadingService.hide();
         this.postService.refresh();
+        this.router.navigate(['/post/list']);
       },
     });
   }
