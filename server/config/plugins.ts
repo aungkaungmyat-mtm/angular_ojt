@@ -11,11 +11,8 @@ export default ({ env }) => ({
         },
       },
       settings: {
-        defaultFrom: env("SMTP_DEFAULT_FROM", "mtmkaungkhant12@gmail.com"),
-        defaultReplyTo: env(
-          "SMTP_DEFAULT_REPLY_TO",
-          "mtmkaungkhant12@gmail.com"
-        ),
+        defaultFrom: env("SMTP_DEFAULT_FROM"),
+        defaultReplyTo: env("SMTP_DEFAULT_REPLY_TO"),
       },
     },
   },
