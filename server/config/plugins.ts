@@ -10,10 +10,6 @@ export default ({ env }) => ({
           pass: env("SMTP_PASSWORD"),
         },
       },
-      settings: {
-        defaultFrom: env("SMTP_DEFAULT_FROM"),
-        defaultReplyTo: env("SMTP_DEFAULT_REPLY_TO"),
-      },
     },
   },
   plugins: {
